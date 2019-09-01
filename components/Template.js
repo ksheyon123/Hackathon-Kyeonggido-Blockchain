@@ -12,12 +12,6 @@ class Template {
             });
         });
     };
-
-    topBar() {
-        return new Promise(resolve => {
-            
-        })
-    }
 }
 
 
