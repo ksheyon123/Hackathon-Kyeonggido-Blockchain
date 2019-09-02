@@ -12,7 +12,7 @@ app.engine('html', require('ejs').renderFile);
 app.set("/views", static(path.join(__dirname, 'views')));
 
 //Router 설정
-var mainRouter = require('./router/main');
+var mainRouter = require('./router/router');
 
 app.use(mainRouter);
 

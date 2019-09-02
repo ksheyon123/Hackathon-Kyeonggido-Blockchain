@@ -10,7 +10,7 @@ var myConnection = require('../loginConfig');
 
 class User {
     //Login
-    selectOneByUser(req) {
+    login(req) {
         var InsertedUser = req.body.userID;
         var InsertedPassword = req.body.userPW;
         return new Promise(
@@ -54,7 +54,8 @@ class User {
         )
     }
 
-    register() {
+    register(req) {
+        console.log('register' , req.body);
         return new Promise(
             async (resolve, reject) => {
                 try {
@@ -78,9 +79,13 @@ class User {
                             resolve('이미 회원가입하셨습니다.');
                             break;
                         default :
-                        const sql = 'INSERT INTO kyeonggidb SET (id, password, name) values (? ,? ,?)';
-                        var registerData = await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName]);
-                        resolve(registerData);
+                        const sql = 'INSERT INTO kyeonggidb (id, password, name, address, gender, phonenumber) values (? ,? ,?, ?, ?, ?)';
+                        await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN]);
+                        req.session.user = {
+                            userID: req.body.userID,
+                            userPW: req.body.userPW
+                        }
+                        resolve(req.session.user);
                     }   
                 } catch(err) {
                     reject(err);
