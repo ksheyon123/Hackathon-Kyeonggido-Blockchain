@@ -1,3 +1,5 @@
+const mysql = require('mysql2/promise');
+
 var loginConfig = {
     host: 'localhost',
     port: 3306,
@@ -6,4 +8,5 @@ var loginConfig = {
     database: 'kyeonggi',
 };
 
-module.exports = loginConfig;
+const pool = mysql.createPool(loginConfig);
+module.exports = pool;
