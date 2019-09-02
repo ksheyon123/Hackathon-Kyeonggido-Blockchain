@@ -48,6 +48,26 @@ router.get('/register', (req, res) => {
     res.render('register.html');
 });
 
+router.post('/loginConfirmation', async (req, res) => {
+
+    try {
+        var result = await userModel.selectOneByUser(req);
+        if(result[0].length > 0) {
+            req.session.user = {
+                userID : req.body.userID,
+                userPW : req.body.userPW
+            }
+            res.redirect('/');
+        } else {
+            res.redirect('/login');
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('LOGIN_FAILED');
+    }
+
+})
+
 router.get('/logout', (req, res) => {
     if(req.session.user) {
         req.session.destroy(err => {
