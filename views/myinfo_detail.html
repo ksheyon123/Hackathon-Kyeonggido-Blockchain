@@ -5,34 +5,86 @@
     <title>
         MyInfo Page
     </title>
+
 </head>
 
 <body>
 
     <%- include ./topbar/topbar.html %>
     <hr>
-    <p>
-        내 아이디 : <%= data.userData.userID %> 
-    </p>
-    <p>
-        내 이름 : <%= data.userData.userName %>
-    </p>
-    <p>
-        성 별 : <% if (data.userData.userGen == 1) { %>
-        male
-        <% } else if (data.userData.userGen == 2) { %>
-        female
-        <% } %>
-    </p>
-    <p>
-        집 주소 : <%= data.userData.userAddr %>
-    </p>
-    <p>
-        전화번호 : <%= data.userData.userPN %>
-    </p>
-    <p>
-        내 월렛 : <%= data.userData.userPN %>
-    </p>
+    <form action='/myinfo/myinfo_detail' method='post'>
+        <p>
+            내 아이디 : <%= data.userData.userID %>
+        </p>
+        <p>
+            내 이름 : <%= data.userData.userName %>
+        </p>
+        <p>
+            성 별 : <% if (data.userData.userGen == 1) { %>
+            male
+            <% } else if (data.userData.userGen == 2) { %>
+            female
+            <% } %>
+        </p>
+        <p id='change'>
+            집 주소 : <input type='text' name='userAddr' value='' placeholder="<%= data.userData.userAddr %>">
+        </p>
+        <p>
+            전화번호 : <input type='text' name='userPN' value='' placeholder="<%= data.userData.userPN %>">
+        </p>
+        <p>
+            내 월렛 : <%= data.userData.userPN %>
+        </p>
+        <button type='submit'>변경</button>
+    </form>
 </body>
 
 </html>
+<!-- 
+
+<script>
+        $('#change').on('click', function() {
+            $.ajax({
+                method: 'POST',
+                url: '/myinfo/myinfo_detail',
+                data: {'userAddr' : data.userData.userAddr},
+                dataType: "json"
+            }).
+            done(function() {
+                alert('help');
+            });
+        });
+    </script> -->
+
+<!-- 
+<script>
+        $('#change').submit(function(event){
+    
+            event.preventDefault();
+    
+            var $form = $(this),
+            term = $form.find("input[name='userAddr']").val(),
+            url = $form.attr('/myinfo/myinfo_detail');
+    
+            var posting = $.post(url, {userAddr : term});
+    
+            posting.done(function( data) {
+                var content = $(data).get(data.userData.userAddr);
+                $('#result').empty().append(content);
+            });
+        });
+    </script> -->
+
+<!-- <style>
+            #change {
+                margin: 5px;
+                cursor: pointer;
+            }
+        </style> -->
+<!-- <script src="https://code.jquery.com/jquery-1.10.2.js">
+            <script>
+            $("p").click(function () {
+                $(this).slideUp();
+            });
+        </script>
+        </script> -->

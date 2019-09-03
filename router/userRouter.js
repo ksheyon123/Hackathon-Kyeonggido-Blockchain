@@ -88,12 +88,19 @@ userRouter.get('/myinfo',(req, res) => {
 });
 
 userRouter.get('/myinfo/myinfo_detail', (req, res)=> {
+    console.log(req.body.userData);
     console.log(req.session.user);
     data = {
         userData: req.session.user
     }
 res.render('myinfo_detail.html', {data:data})
 })
+
+userRouter.post('/myinfo/myinfo_detail', (req, res)=> {
+    
+    console.log(req.body);
+    res.redirect('/')
+});
 
 userRouter.get('/myinfo/tobeseller', async (req, res) => {
     try {

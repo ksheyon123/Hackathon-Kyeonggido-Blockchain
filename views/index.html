@@ -10,7 +10,14 @@
             Home Banner
             Category Link
             Premium Item Link -->
-            <h3><%= data.userData.userName %> 회원님 반갑습니다.</h3>
+            <h3>
+            <% if(!data.userData) { %>
+                반갑습니다.
+            <% } else { %>
+                <%= data.userData.userName %> 회원님 반갑습니다.
+            <% } %>
+
+            </h3>
         <%- include ./topbar/topbar.html %>
         <hr>
 

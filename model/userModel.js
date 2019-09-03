@@ -107,7 +107,7 @@ class User {
             }
         )
     }
-    check() {
+    confirm() {
         return new Promise(
             async (resolve, reject) => {
 
