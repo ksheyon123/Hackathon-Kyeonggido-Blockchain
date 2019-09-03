@@ -1,0 +1,5 @@
+npm install express
+npm install express-session
+npm install ejs
+npm install mysql2
+npm install session-file-store

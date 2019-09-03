@@ -1,13 +1,5 @@
 var myConnection = require('../loginConfig');
 
-// myConnection.connect(function (err) {
-//     if (err) {
-//         return console.error('error: ' + err.message);
-//     }
-
-//     console.log('Connected to the MySQL server.');
-// });
-
 class User {
     //Login
     login(req) {
@@ -94,14 +86,14 @@ class User {
             }
         )
     }
-
+    //판매자 등록
     tobeseller(req) {
         return new Promise(
             async (resolve, reject) => {
                 const sql = 'UPDATE kyeonggidb SET dnum = 1 WHERE id = ?';
                 try {
                     if (req.session.user.userDN == 0) {
-                        var result = await myConnection.query(sql, req.session.user.userID);
+                        await myConnection.query(sql, req.session.user.userID);
                         req.session.user.userDN = 1;
                         resolve(req.session.user)
                     } else if (req.session.user.userDN == 1) {

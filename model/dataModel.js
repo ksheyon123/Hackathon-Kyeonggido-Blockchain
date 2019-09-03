@@ -1,4 +1,7 @@
-var myConnection = require('../loginConfig');
+var myConnection = require('../categoryConfig');
+
+var userModel = require('../model/userModel');
+var dataModel = require('../model/dataModel');
 
 class Item {
     selectAll() {
@@ -14,7 +17,7 @@ class Item {
             }
         )
     }
-
+    
     
 }
 
