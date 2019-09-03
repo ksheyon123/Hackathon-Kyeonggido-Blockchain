@@ -10,9 +10,7 @@
 <body>
 
     <%- include ./topbar/topbar.html %>
-
     <hr>
-    My Information <a href='/transactioninfo'>거래 내역 조회</a>
     <p>
         내 아이디 : <%= data.userData.userID %> 
     </p>
@@ -35,8 +33,6 @@
     <p>
         내 월렛 : <%= data.userData.userPN %>
     </p>
-    <a href='/myinfo/myinfo_detail'>내 정보 수정</a>
-    <a href='/myinfo/tobeseller'>판매자 등록</a>
 </body>
 
 </html>

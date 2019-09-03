@@ -28,7 +28,6 @@ userRouter.get('/login', async (req, res) => {
 });
 
 userRouter.post('/loginConfirmation', async (req, res) => {
-
     try {
         var result = await userModel.login(req);
         if(result[0].length > 0) {
@@ -59,20 +58,16 @@ userRouter.get('/register', (req, res) => {
 });
 
 userRouter.post('/registerConfirmation', async (req, res) => {
-
+    console.log('req.body', req.body);
     try {
-        var result = await userModel.register(req);
-        data = {
-            userData: result
-        }
-        res.render('index.html', {data:data})
-        
+        await userModel.register(req);
+        res.redirect('/');
     } catch (err) {
         console.log(err);
         res.status(500).send('LOGIN_FAILED');
     }
 
-})
+});
 
 userRouter.get('/logout', (req, res) => {
     if(req.session.user) {
@@ -92,4 +87,31 @@ userRouter.get('/myinfo',(req, res) => {
     res.render('myinfo.html',{data: data});
 });
 
+userRouter.get('/myinfo/myinfo_detail', (req, res)=> {
+    console.log(req.session.user);
+    data = {
+        userData: req.session.user
+    }
+res.render('myinfo_detail.html', {data:data})
+})
+
+userRouter.get('/myinfo/tobeseller', async (req, res) => {
+    try {
+        var result = await userModel.tobeseller(req);
+        if(result == 1) {
+            console.log('')
+            res.redirect('/myinfo');
+        } else if(result == 2) {
+            res.redirect('/');
+        } else {
+            res.redirect('/')
+        }
+    } catch(err) {
+        console.log(err);
+    }
+});
+
+userRouter.get('/transactioninfo', (req, res) =>{
+
+});
 module.exports = userRouter;

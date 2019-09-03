@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>
-            Index Page
-        </title>
-    </head>
-    <body>
-            <!-- Login Template
+
+<head>
+    <title>
+        Index Page
+    </title>
+</head>
+
+<body>
+    <!-- Login Template
             Home Banner
             Category Link
             Premium Item Link -->
-        <a href='/list'>LIST</a>
-        <% if (!data.userData) { %>
-            <a href='/login'>LOGIN</a>
-            <a href='/register'>REGISTER</a>
-        <% } else { %>
-            <a href='/myinfo'>MYINFO</a>
-            <a href='/logout'>LOGOUT</a>
-        <% } %>
-            
+    <a href='/'>HOME</a>
+    <a href='/shop'>SHOP</a>
+    <% if (!data.userData) { %>
+    <a href='/login'>LOGIN</a>
+    <a href='/register'>REGISTER</a>
+    <% } else { %>
+    <a href='/myinfo'>MYINFO</a>
+    <a href='/logout'>LOGOUT</a>
+    <% } %>
 
-    </body>
+
+</body>
+
 </html>
-
-
