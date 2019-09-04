@@ -1,12 +1,12 @@
 const mysql = require('mysql2/promise');
 
-var categoryConfig = {
+var itemConfig = {
     host: 'localhost',
     port: 3306,
     user: 'root',
     password: '1234',
-    database: 'category',
+    database: 'kyeonggi',
 };
 
-const pool = mysql.createPool(categoryConfig);
+const pool = mysql.createPool(itemConfig);
 module.exports = pool;

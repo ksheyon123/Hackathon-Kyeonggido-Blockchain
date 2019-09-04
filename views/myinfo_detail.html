@@ -36,55 +36,8 @@
             내 월렛 : <%= data.userData.userPN %>
         </p>
         <button type='submit'>변경</button>
+        <!-- 변경 click 시, 재확인 alert 발생 시켜야함-->
     </form>
 </body>
 
 </html>
-<!-- 
-
-<script>
-        $('#change').on('click', function() {
-            $.ajax({
-                method: 'POST',
-                url: '/myinfo/myinfo_detail',
-                data: {'userAddr' : data.userData.userAddr},
-                dataType: "json"
-            }).
-            done(function() {
-                alert('help');
-            });
-        });
-    </script> -->
-
-<!-- 
-<script>
-        $('#change').submit(function(event){
-    
-            event.preventDefault();
-    
-            var $form = $(this),
-            term = $form.find("input[name='userAddr']").val(),
-            url = $form.attr('/myinfo/myinfo_detail');
-    
-            var posting = $.post(url, {userAddr : term});
-    
-            posting.done(function( data) {
-                var content = $(data).get(data.userData.userAddr);
-                $('#result').empty().append(content);
-            });
-        });
-    </script> -->
-
-<!-- <style>
-            #change {
-                margin: 5px;
-                cursor: pointer;
-            }
-        </style> -->
-<!-- <script src="https://code.jquery.com/jquery-1.10.2.js">
-            <script>
-            $("p").click(function () {
-                $(this).slideUp();
-            });
-        </script>
-        </script> -->

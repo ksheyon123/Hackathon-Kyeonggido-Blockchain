@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+    </title>
+</head>
+
+<body>
+    <h3>Login Page</h3>
+    <hr>
+    <form method="post" action='/myinfo/tobeseller/sellerconfirmation'>
+        <p>
+            판매자 : <%= data.userData.userID %>
+        </p>
+        <p>
+            회사명 : <input type='text' name='inc_name' id='name'>
+        </p>
+        <p>
+            회사 주소 : <input type='text' name='inc_address' id='address'>
+        </p>
+        <p>
+            <input type="submit" value="확인">
+        </p>
+
+    </form>
+</body>
+
+</html>

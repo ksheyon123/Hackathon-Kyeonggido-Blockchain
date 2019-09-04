@@ -14,7 +14,6 @@ userRouter.use(session({
 
 //Model Import
 var userModel = require('../model/userModel');
-var dataModel = require('../model/dataModel');
 
 userRouter.get('/', function (req, res) {
     data = {
@@ -103,20 +102,29 @@ userRouter.post('/myinfo/myinfo_detail', (req, res)=> {
 });
 
 userRouter.get('/myinfo/tobeseller', async (req, res) => {
+    data = {
+        userData : req.session.user
+    }
+    res.render('tobeseller.html',{data: data});
+});
+
+userRouter.post('/myinfo/tobeseller/sellerconfirmation', async (req, res) => {
     try {
         var result = await userModel.tobeseller(req);
         if(result == 1) {
-            console.log('')
+            console.log('이미 판매자로 등록된 회원입니다.');
             res.redirect('/myinfo');
         } else if(result == 2) {
+            console.log('관리자입니다.');            
             res.redirect('/');
         } else {
+            console.log('판매자로 등록되셨습니다.');
             res.redirect('/')
         }
     } catch(err) {
         console.log(err);
     }
-});
+})
 
 userRouter.get('/transactioninfo', (req, res) =>{
 

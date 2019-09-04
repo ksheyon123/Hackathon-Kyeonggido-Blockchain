@@ -88,13 +88,15 @@ class User {
     }
     //판매자 등록
     tobeseller(req) {
+        var data = {
+            userID: req.session.user.userID
+        }
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'UPDATE kyeonggidb SET dnum = 1 WHERE id = ?';
+                const sql ='UPDATE kyeonggidb SET status = 1 WHERE id = ?';
                 try {
                     if (req.session.user.userDN == 0) {
-                        await myConnection.query(sql, req.session.user.userID);
-                        req.session.user.userDN = 1;
+                        var result = await myConnection.query(sql, data.userID);
                         resolve(req.session.user)
                     } else if (req.session.user.userDN == 1) {
                         resolve(1);
