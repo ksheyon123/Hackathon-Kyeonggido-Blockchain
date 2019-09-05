@@ -5,6 +5,7 @@ var path = require('path');
 var static = require('serve-static');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Views template html -> ejs 설정
 app.set('view engine', 'ejs');

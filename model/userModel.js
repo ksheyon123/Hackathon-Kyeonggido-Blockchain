@@ -1,5 +1,6 @@
 var myConnection = require('../loginConfig');
 
+
 class User {
     //Login
     login(req) {
@@ -56,6 +57,8 @@ class User {
                             resolve('이미 회원가입하셨습니다.');
                             break;
                         default:
+                            
+
                             const sql = 'INSERT INTO kyeonggidb (id, password, name, address, gender, phonenumber) values (? ,? ,?, ?, ?, ?)';
                             await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN]);
                             req.session.user = {
