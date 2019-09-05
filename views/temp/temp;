@@ -1,0 +1,10 @@
+            <% for(var i=0; i<data.itemData.length; i++) { %>
+            <% var dataString = JSON.stringify(data.itemData[i]); %>
+            <p>
+                <button onclick='selectItem(`<%= dataString %>`)'>
+                    판매자 : <%= data.itemData[i].user %>
+                    상품명: <%= data.itemData[i].item_name %>
+                    상품 가격: <%= data.itemData[i].item_price %>
+                </button>
+            </p>
+            <% } %>

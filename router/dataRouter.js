@@ -42,28 +42,32 @@ dataRouter.get('/shop', async (req, res) => {
     } catch(err) {
         console.log('selectAllItem Err', err);
     }
-    console.log('shop' , req.body)
-});
-
-dataRouter.post('/item_detail', async (req, res) => {
-    console.log('item_detail', req.body)
-    try {
-            data = {
-                itemData: JSON.parse(req.body.data)
-            }
-        res.render('showitem_detail',{data:data} );
-    } catch(err) {
-        console.log('item_detail Err');
-    }
+    
 });
 
 dataRouter.post('/shop_sub', async (req, res) => {
-    console.log('shop_sub', req.body)
+    console.log('shop_sub', req.body.category)
     try {
-        var result = dataModel;
+        var result = await dataModel.matchcategory(req);
+        res.status(200).send(result);
     } catch(err) {
         console.log('shop_sub Err');
+        res.status(500).send('Err');
     }
 });
+
+dataRouter.post('/item_detail', async (req, res) => {
+    try {
+        result = JSON.parse(req.body.data);
+            data = {
+                itemData: result
+            }
+        res.render('items/showitem_detail.html',{data:data} );
+    } catch(err) {
+        console.log('item_detail Err', err);
+    }
+});
+
+
 
 module.exports = dataRouter;

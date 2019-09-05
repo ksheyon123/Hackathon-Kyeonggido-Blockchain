@@ -56,6 +56,21 @@ class Item {
         )
     }
 
+    matchcategory(req) {
+        return new Promise(
+            async (resolve, reject) => {
+                var data = req.body.category;
+                const sql = 'SELECT * FROM item WHERE item_category = ?';
+                try {
+                    var result = await item_conn.query(sql, data);
+                    resolve(result);
+                } catch(err) {
+                    reject('matchcategory Err');
+                }
+            }
+        )
+    }
+
 }
 
 module.exports = new Item();
