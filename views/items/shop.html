@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <% include ../topbar/topbar.html %>
     <h3>Item List</h3>
     <hr>
     <form>
@@ -30,7 +31,6 @@
         async function categorySelected(data) {
             const shopdata = await shop_sub(data);
             const container = document.getElementById('item-data');
-            // shopdata[0].forEach(data => {
 
             for (var i = 0; i < shopdata[0].length; i++) {
                 var data = [];
@@ -45,12 +45,10 @@
                     `<input type='hidden' name='data' value='${result}'>` +
                     `</button>` +
                     `</form>`;
-
                 const e = document.createElement('p');
                 e.innerHTML = template;
                 container.appendChild(e);
             }
-            // });
         }
 
         async function shop_sub(data) {
@@ -67,16 +65,6 @@
             return dataResult;
         }
 
-        // async function selectItem(data) {
-        //     console.log(data);
-        //     const response = await fetch('http://localhost:3000/item_detail', {
-        //         method: 'POST',
-        //         headers: {
-        //             "Content-Type": 'application/json'
-        //         },
-        //         body: JSON.stringify(data)
-        //     });
-        // }
     </script>
 </body>
 

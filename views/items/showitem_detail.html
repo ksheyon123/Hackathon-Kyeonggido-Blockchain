@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Show Item</title>
-    </head>
-    <body>
-        <h3>결제 창</h3>
-        <hr>
-        <%= data.itemData.item_name %>
-    </body>
+
+<head>
+    <title>Show Item</title>
+</head>
+
+<body>
+    <% include ../topbar/topbar.html %>
+    <h3>결제 창</h3>
+    <hr>
+    <form action='/contract'method='POST'>
+        <p>
+            <%= data.itemData.item_img %>
+            <%= data.itemData.item_name %>
+            <%= data.itemData.item_price %>
+        </p>
+        <button type='submit' value='data.itemData'>결제</button>
+    </form>
+</body>
+
 </html>

@@ -1,6 +1,5 @@
 var myConnection = require('../loginConfig');
 
-
 class User {
     //Login
     login(req) {
@@ -57,7 +56,7 @@ class User {
                             resolve('이미 회원가입하셨습니다.');
                             break;
                         default:
-                            
+
 
                             const sql = 'INSERT INTO kyeonggidb (id, password, name, address, gender, phonenumber) values (? ,? ,?, ?, ?, ?)';
                             await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN]);
@@ -77,18 +76,27 @@ class User {
             }
         )
     }
-
-    update() {
+    //mynfoChange -> sql save
+    myinfoChange(req) {
+        console.log('req.body', req.body);
+        data = {
+            userData: req.body
+        }
         return new Promise(
             async (resolve, reject) => {
+                const sql = `UPDATE kyeonggidb SET address = ?, phonenumber = ? WHERE id = ?`;
                 try {
-
-                } catch {
-
+                    var result = myConnection.query(sql, [data.userData.userAddr, data.userData.userPN, req.session.user.userID]);
+                    req.session.user.userAddr = data.userData.userAddr;
+                    req.session.user.userPN = data.userData.userPN;
+                    resolve(req.session.user);
+                } catch (err) {
+                    reject(err);
                 }
             }
         )
     }
+
     //판매자 등록
     tobeseller(req) {
         var data = {
@@ -96,7 +104,7 @@ class User {
         }
         return new Promise(
             async (resolve, reject) => {
-                const sql ='UPDATE kyeonggidb SET status = 1 WHERE id = ?';
+                const sql = 'UPDATE kyeonggidb SET status = 1 WHERE id = ?';
                 try {
                     if (req.session.user.userDN == 0) {
                         var result = await myConnection.query(sql, data.userID);
@@ -112,13 +120,8 @@ class User {
             }
         )
     }
-    confirm() {
-        return new Promise(
-            async (resolve, reject) => {
 
-            }
-        )
-    }
+
 }
 
 module.exports = new User();
