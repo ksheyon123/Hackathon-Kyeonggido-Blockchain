@@ -60,9 +60,8 @@ userRouter.get('/register', (req, res) => {
 });
 
 userRouter.post('/registerConfirmation', async (req, res) => {
-    console.log('req.body', req.body);
     try {
-        await userModel.register(req);
+        var result =  await userModel.register(req);
         res.redirect('/');
     } catch (err) {
         console.log(err);

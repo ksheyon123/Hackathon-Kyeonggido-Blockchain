@@ -1,4 +1,4 @@
-var myConnection = require('../loginConfig');
+var myConnection = require('../dbConfig');
 
 class User {
     //Login
