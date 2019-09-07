@@ -1,4 +1,5 @@
 var myConnection = require('../dbConfig');
+var web3js = require('./web3');
 
 class User {
     //Login
@@ -56,10 +57,10 @@ class User {
                             resolve('이미 회원가입하셨습니다.');
                             break;
                         default:
-
-
-                            const sql = 'INSERT INTO kyeonggidb (id, password, name, address, gender, phonenumber) values (? ,? ,?, ?, ?, ?)';
-                            await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN]);
+                            var web3Data = await web3js.makeAccounts(req.body.userID);
+                            console.log('web3Data', web3Data);
+                            const sql = 'INSERT INTO kyeonggidb (id, password, name, address, gender, phonenumber, wallet) values (? ,? ,?, ?, ?, ?, ?)';
+                            await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN, web3Data]);
                             req.session.user = {
                                 userID: req.body.userID,
                                 userPW: req.body.userPW,
@@ -67,6 +68,7 @@ class User {
                                 userAddr: req.body.userAddr,
                                 userGen: req.body.userGen,
                                 userPN: req.body.userPN,
+                                userWallet: web3Data
                             }
                             resolve(req.session.user);
                     }
@@ -117,6 +119,15 @@ class User {
                 } catch (err) {
                     reject(err);
                 }
+            }
+        )
+    }
+
+    //eth.Wallet 생성
+    makeEthWallet() {
+        return new Promise(
+            async (resolve, reject) => {
+                
             }
         )
     }

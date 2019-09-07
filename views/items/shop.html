@@ -29,40 +29,49 @@
     <script>
 
         async function categorySelected(data) {
-            const shopdata = await shop_sub(data);
-            const container = document.getElementById('item-data');
+            console.log(data);
+            try {
+                const shopdata = await shop_sub(data);
+                const container = document.getElementById('item-data');
 
-            for (var i = 0; i < shopdata[0].length; i++) {
-                var data = [];
-                data[i] = shopdata[0][i];
-                result = JSON.stringify(data[i]);
-                var template =
-                    `<form method='post' action='/item_detail'>` +
-                    `<button type='submit'>` +
-                    `판매자 :  ${data[i].user}` +
-                    `상품명: ${data[i].item_name}` +
-                    `상품 가격: ${data[i].item_price} ` +
-                    `<input type='hidden' name='data' value='${result}'>` +
-                    `</button>` +
-                    `</form>`;
-                const e = document.createElement('p');
-                e.innerHTML = template;
-                container.appendChild(e);
+                for (var i = 0; i < shopdata[0].length; i++) {
+                    var data = [];
+                    data[i] = shopdata[0][i];
+                    result = JSON.stringify(data[i]);
+                    var template =
+                        `<form method='post' action='/item_detail'>` +
+                        `<button type='submit'>` +
+                        `판매자 :  ${data[i].user}` +
+                        `상품명: ${data[i].item_name}` +
+                        `상품 가격: ${data[i].item_price} ` +
+                        `<input type='hidden' name='data' value='${result}'>` +
+                        `</button>` +
+                        `</form>`;
+                    const e = document.createElement('p');
+                    e.innerHTML = template;
+                    container.appendChild(e);
+                }
+            } catch (err) {
+                console.log('categorySelected java Err');
             }
         }
 
         async function shop_sub(data) {
+            try {
+                const response = await fetch(`http://localhost:3000/shop_sub`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({ 'category': data })
 
-            const response = await fetch(`http://localhost:3000/shop_sub`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({ 'category': data })
+                });
+                var dataResult = await response.json();
+                return dataResult;
+            } catch (err) {
+                console.log('shop_sub java Err')
+            }
 
-            });
-            var dataResult = await response.json();
-            return dataResult;
         }
 
     </script>

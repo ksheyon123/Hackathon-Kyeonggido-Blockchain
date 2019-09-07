@@ -62,6 +62,7 @@ userRouter.get('/register', (req, res) => {
 userRouter.post('/registerConfirmation', async (req, res) => {
     try {
         var result =  await userModel.register(req);
+        //eth.accounts 생성 function
         res.redirect('/');
     } catch (err) {
         console.log(err);

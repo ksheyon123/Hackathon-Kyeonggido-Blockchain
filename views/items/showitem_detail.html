@@ -1,22 +1,47 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Show Item</title>
 </head>
-
 <body>
-    <% include ../topbar/topbar.html %>
+        <% include ../topbar/topbar.html %>
     <h3>결제 창</h3>
     <hr>
-    <form action='/contract'method='POST'>
+    <form action="/contract" method='post'>
         <p>
             <%= data.itemData.item_img %>
             <%= data.itemData.item_name %>
             <%= data.itemData.item_price %>
+            <%= console.log(JSON.stringify(data.itemData)) %>
+            <input type='hidden' name='data' value="<%= JSON.stringify(data.itemData) %>">
         </p>
-        <button type='submit' value='data.itemData'>결제</button>
+        <input type='submit' value='결제'>
+
     </form>
 </body>
-
 </html>
+
+
+<!-- <button onclick="sendItemData(this.value)" value='<%= data.itemData %>'>결제</button> -->
+<!-- <script>
+        async function sendItemData(data) {
+            try {
+                console.log('In Function', data);
+                const response = await fetch(`http://localhost:3000/contract`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: data
+                });
+                var dataResult = await response.json();
+                return dataResult;
+            } catch (err) {
+                console.log('sendItemData java Err');
+            }
+
+        }
+    </script> -->

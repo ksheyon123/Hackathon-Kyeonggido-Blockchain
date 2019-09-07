@@ -70,13 +70,15 @@ dataRouter.post('/item_detail', async (req, res) => {
 
 dataRouter.post('/contract', async (req, res) => {
     try {
+        console.log(JSON.parse(req.body.data));
+        res.send(JSON.parse(req.body.data));
         //req.body 로 상품 정보 load, 
         //contract 함수로 사용자 월렛(이더 매핑)에서 돈 정보 Load
         //결제 가능/불가능 확인
         //결제 가능시 상품 status 변경 (상품 결제 대기)
         //고객이 물건 수령후 결제 내역 창에서 확인 클릭/기간 지나면 고객 월렛에서 판매자 월렛으로 돈 이동
     } catch(err) {
-
+        throw err;
     }
 });
 
