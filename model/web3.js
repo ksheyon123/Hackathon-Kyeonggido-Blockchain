@@ -19,6 +19,42 @@ class web3js {
             }
         )
     }
+    //Ether Account 호출
+    sendAccountInfo(data) {
+        return new Promise(
+            async (resolve, reject) => {
+                try {
+                    web3.setProvider(
+                        new web3.providers.HttpProvider('http://localhost:8545')
+                    );
+                    var accountInfo = await web3.eth.getBalance(data);
+                    var money = accountInfo / 1000000000000000000
+                    resolve(money);
+                } catch(err) {
+                    console.log(err);
+                    reject('Cannot getAccounts');
+                }
+            }
+        )
+    }
+
+    sendToken(data) {
+        console.log(data);
+        return new Promise(
+            async (resolve, reject) => {
+                try {
+                    web3.setProvider(
+                        new web3.providers.HttpProvider('http://localhost:8545')
+                    );
+                    var result = web3.eth.sendTransaction({from : "0x07040cea6aac8bf4337dd412c0af7bae1af08dcf", to: `${data.userWallet}`, value: `${data.userMoney}` });
+                    resolve(result);
+                } catch(err) {
+                    console.log(err);
+                    reject(err);
+                }
+            }
+        )
+    }
 }
 
 module.exports = new web3js();

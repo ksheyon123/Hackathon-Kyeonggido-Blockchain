@@ -14,6 +14,7 @@ userRouter.use(session({
 
 //Model Import
 var userModel = require('../model/userModel');
+var web3js = require('../model/web3');
 
 userRouter.get('/', function (req, res) {
     data = {
@@ -32,6 +33,8 @@ userRouter.post('/loginConfirmation', async (req, res) => {
     try {
         var result = await userModel.login(req);
         if (result[0].length > 0) {
+            console.log(result[0][0]);
+            var accountsInfo = await web3js.sendAccountInfo(result[0][0].wallet);
             req.session.user = {
                 userIndex: result[0][0].index,
                 userID: result[0][0].id,
@@ -41,6 +44,8 @@ userRouter.post('/loginConfirmation', async (req, res) => {
                 userGen: result[0][0].gender,
                 userPN: result[0][0].phonenumber,
                 userDN: result[0][0].dnum,
+                userWallet: result[0][0].wallet,
+                userBalance: accountsInfo
             }
             console.log(req.session.user);
             res.redirect('/');
@@ -133,6 +138,19 @@ userRouter.post('/myinfo/tobeseller/sellerconfirmation', async (req, res) => {
         }
     } catch (err) {
         console.log(err);
+    }
+});
+
+userRouter.get('/admin', async (req, res) => {
+    try {
+        var result = await userModel.adminConfirm();
+        console.log('admin', result[0]);
+        data = {
+            userData: result
+        }
+        res.render('admin.html', {data:data})
+    } catch(err) {
+        console.log('admin Err');
     }
 })
 

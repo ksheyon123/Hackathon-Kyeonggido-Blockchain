@@ -10,6 +10,7 @@ class User {
             async (resolve, reject) => {
                 const sql = `SELECT * FROM kyeonggidb WHERE id = ? AND password = ?`;
                 try {
+                    //geth 에서 지갑 Info load하는 코드
                     var result = await myConnection.query(sql, [InsertedUser, InsertedPassword]);
                     resolve(result);
                 } catch (err) {
@@ -122,16 +123,20 @@ class User {
             }
         )
     }
-
-    //eth.Wallet 생성
-    makeEthWallet() {
+    //판매자 허가 대기자 
+    adminConfirm() {
         return new Promise(
             async (resolve, reject) => {
-                
+                const sql = 'SELECT * FROM kyeonggidb WHERE status = 1';
+                try {
+                    var result = myConnection.query(sql);
+                    resolve(result);
+                } catch(err) {
+                    reject(err);
+                }
             }
         )
     }
-
 
 }
 
