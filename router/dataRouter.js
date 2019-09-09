@@ -3,6 +3,7 @@ var dataRouter = express.Router();
 
 //Module Import
 var dataModel = require('../model/dataModel');
+var web3js = require('../model/web3');
 
 dataRouter.get('/itemup', async (req, res) => {
     try {

@@ -8,21 +8,22 @@ tokenRouter.get('/buytoken', (req, res) => {
         userData: req.session.user
     }
     res.render('token/buytoken.html', {data:data})
-})
+});
 
 
 tokenRouter.post('/buytoken', async(req, res) => {
     try {
         var token = req.body.token * 1000000000000000000;
         data = {
-            userWallet: req.session.user.userWallet,
+            userData: req.session.user,
             userMoney: token
         }
-        await web3js.sendToken(data);
+        await web3js.sendTokenFromAdmin(data);
+        res.redirect('/')
     } catch (err) {
-        console.log('죽여줘....');
+        console.log(err);
     }
-})
+});
 
 
 module.exports = tokenRouter;
