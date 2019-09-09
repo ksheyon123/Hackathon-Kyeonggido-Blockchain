@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 app.set("/views", static(path.join(__dirname, 'views')));
-app.set("/views/items", static(path.join(__dirname, 'views', 'items')));
+// app.set("/views/items", static(path.join(__dirname, 'views', 'items')));
 
 //Router 설정
 var mainRouter = require('./router/router');

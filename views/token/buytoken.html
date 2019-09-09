@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Buy Token</title>
+</head>
+
+<body>
+    <%- include ../topbar/topbar.html %>
+    <hr>
+    <form method='POST' action='/buytoken'>
+        신청 금액 : <input type="text" name="token" id="token">
+        <button type='submit'>신청</button>
+    </form>
+</body>
+
+</html>

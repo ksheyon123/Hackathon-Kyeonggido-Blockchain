@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Show Item</title>
+</head>
+
+<body>
+    <% include ../topbar/topbar.html %>
+    <h3>결제 창</h3>
+    <hr>
+    <form action="/contract" method='post'>
+        <%= console.log(data.itemData) %>
+        <p>
+            <div>
+                <%= data.itemData.item_img %>
+            </div>
+            <div>
+                <%= data.itemData.item_price %>
+            </div>
+            <div>
+                <%= data.itemData.item_category %>
+            </div>
+            <div>
+                <%= data.itemData.item_info %>
+            </div>
+            <div>
+                <%= data.itemData.item_inc %>
+            </div>
+            <div>
+                <%= data.itemData.item_inc_addr %>
+            </div>
+            <input type='hidden' name='data' value="<%= JSON.stringify(data.itemData) %>">
+        </p>
+        <input type='submit' value='결제'>
+
+    </form>
+</body>
+
+</html>

@@ -1,35 +1,39 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>
-        Index Page
-    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index Page</title>
 </head>
-
 <body>
-    <!-- Login Template
+        <!-- Login Template
             Home Banner
             Category Link
             Premium Item Link -->
-    <a href='/'>HOME</a>
-    <a href='/shop'>SHOP</a>
-    <% if (!data.userData) { %>
-    <a href='/login'>LOGIN</a>
-    <a href='/register'>REGISTER</a>
-    <% } else { %>
-        <% if(data.userData.userDN == 1) { %>
-            <a href='/itemup'>ITEMUP</a>
-            <a href='/myinfo'>MYINFO</a>
-            <a href='/logout'>LOGOUT</a>
-        <% } else { %>
-            <a href='/myinfo'>MYINFO</a>
-            <a href='/logout'>LOGOUT</a>
-        <% } %>
-    
-    <% } %>
+            <a href='/'>HOME</a>
+            <a href='/shop'>SHOP</a>
 
-
+            <% if (!data.userData) { %>
+            <a href='/login'>LOGIN</a>
+            <a href='/register'>REGISTER</a>
+            <% } else { %>
+                <% if(data.userData.userDN == 1) { %>
+                    <a href='/buytoken'>BuyToken</a>
+                    <a href='/itemup'>ITEMUP</a>
+                    <a href='/myinfo'>MYINFO</a>
+                    <a href='/logout'>LOGOUT</a>
+                <% } else if (data.userData.userDN == 2) { %>
+                    <a href='/tokenconfirm'>Token Confirmation</a>
+                    <a href='/sellerconfirm'>Seller Confirmation</a>
+                    <a href='/myinfo'>MYINFO</a>
+                    <a href='/logout'>LOGOUT</a>
+                <% } else { %>
+                    <a href='/buytoken'>BuyToken</a>
+                    <a href='/myinfo'>MYINFO</a>
+                    <a href='/logout'>LOGOUT</a>
+                <% } %>
+            
+            <% } %>
 </body>
-
 </html>

@@ -14,31 +14,39 @@ userRouter.use(session({
 
 //Model Import
 var userModel = require('../model/userModel');
+var web3js = require('../model/web3');
 
 userRouter.get('/', function (req, res) {
     data = {
         userData: req.session.user
     }
-    res.render('index.html',{data:data});
+    console.log('페이지 접속', req.session.user);
+    res.render('index.html', { data: data });
 });
 
-userRouter.get('/login', async (req, res) => {   
+//Login(로그인)
+userRouter.get('/login', async (req, res) => {
     res.render('login.html');
 });
 
+//Login Confirm
 userRouter.post('/loginConfirmation', async (req, res) => {
     try {
         var result = await userModel.login(req);
-        if(result[0].length > 0) {
+        if (result[0].length > 0) {
+            console.log(result[0][0]);
+            var accountsInfo = await web3js.sendAccountInfo(result[0][0].wallet);
             req.session.user = {
-                userIndex : result[0][0].index,
-                userID : result[0][0].id,
-                userPW : result[0][0].password,
-                userName : result[0][0].name,
-                userAddr : result[0][0].address,
-                userGen : result[0][0].gender,
-                userPN : result[0][0].phonenumber,
-                userDN : result[0][0].dnum,
+                userIndex: result[0][0].index,
+                userID: result[0][0].user,
+                userPW: result[0][0].password,
+                userName: result[0][0].name,
+                userAddr: result[0][0].address,
+                userGen: result[0][0].gender,
+                userPN: result[0][0].phonenumber,
+                userDN: result[0][0].dnum,
+                userWallet: result[0][0].wallet,
+                userBalance: accountsInfo
             }
             console.log(req.session.user);
             res.redirect('/');
@@ -49,17 +57,17 @@ userRouter.post('/loginConfirmation', async (req, res) => {
         console.log(err);
         res.status(500).send('LOGIN_FAILED');
     }
+});
 
-})
-
+//Register(회원가입)
 userRouter.get('/register', (req, res) => {
     res.render('register.html');
 });
 
 userRouter.post('/registerConfirmation', async (req, res) => {
-    console.log('req.body', req.body);
     try {
-        await userModel.register(req);
+        var result =  await userModel.register(req);
+        //eth.accounts 생성 function
         res.redirect('/');
     } catch (err) {
         console.log(err);
@@ -68,8 +76,9 @@ userRouter.post('/registerConfirmation', async (req, res) => {
 
 });
 
+//Logout(로그아웃)
 userRouter.get('/logout', (req, res) => {
-    if(req.session.user) {
+    if (req.session.user) {
         req.session.destroy(err => {
             console.log('failed: ' + err);
             return;
@@ -79,54 +88,99 @@ userRouter.get('/logout', (req, res) => {
     } else return;
 });
 
-userRouter.get('/myinfo',(req, res) => {
+//myinfo(내 정보)
+userRouter.get('/myinfo', (req, res) => {
     data = {
         userData: req.session.user
     }
-    res.render('myinfo.html',{data: data});
+    res.render('myinfo.html', { data: data });
 });
 
-userRouter.get('/myinfo/myinfo_detail', (req, res)=> {
-    console.log(req.body.userData);
-    console.log(req.session.user);
+//myinfo_detail(내 정보 변경)
+userRouter.get('/myinfo/myinfo_detail', (req, res) => {
     data = {
         userData: req.session.user
     }
-res.render('myinfo_detail.html', {data:data})
-})
-
-userRouter.post('/myinfo/myinfo_detail', (req, res)=> {
-    
-    console.log(req.body);
-    res.redirect('/')
+    res.render('myinfo_detail.html', { data: data })
 });
 
+//myinfo_detail (변경 사항) -> 수정필요 신상 변경 내역이 바로 반영 x
+userRouter.post('/myinfo/myinfo_detail', async (req, res) => {
+    try {
+        var result = await userModel.myinfoChange(req);
+        res.redirect('/');
+    } catch (err) {
+        console.log('myinfoChange_Err');
+    }
+
+
+});
+
+//판매자 전환
 userRouter.get('/myinfo/tobeseller', async (req, res) => {
     data = {
-        userData : req.session.user
+        userData: req.session.user
     }
-    res.render('tobeseller.html',{data: data});
+    res.render('tobeseller.html', { data: data });
 });
 
+//판매자 전환 대기상태
 userRouter.post('/myinfo/tobeseller/sellerconfirmation', async (req, res) => {
     try {
+        console.log(req.session.user);
         var result = await userModel.tobeseller(req);
-        if(result == 1) {
+        if (result == 1) {
             console.log('이미 판매자로 등록된 회원입니다.');
             res.redirect('/myinfo');
-        } else if(result == 2) {
-            console.log('관리자입니다.');            
+        } else if (result == 2) {
+            console.log('관리자입니다.');
             res.redirect('/');
         } else {
             console.log('판매자로 등록되셨습니다.');
             res.redirect('/')
         }
-    } catch(err) {
+    } catch (err) {
         console.log(err);
     }
-})
+});
 
-userRouter.get('/transactioninfo', (req, res) =>{
+//관리자 접근
+userRouter.get('/sellerconfirm', async (req, res) => {
+    try {
+        var result = await userModel.adminConfirm();
+        var incresult = await userModel.selectInc();
+        data = {
+            userData: result,
+            incData: incresult
+        }
+        res.render('admin.html', {data:data});
+    } catch(err) {
+        console.log(err);
+        console.log('admin Err');
+    }
+});
+
+userRouter.post('/sellerconfirm', async (req, res) => {
+    try {
+        var result = await userModel.adminConfirm();
+        var incresult = await userModel.selectInc();
+        data = {
+            userData: result,
+            incData: incresult
+        }
+        var result = await userModel.beingSellerComplete(req.body.id);
+        console.log(result);
+        await res.render('admin.html', {data:data})
+    } catch(err) {
+        console.log(err);
+        console.log('admin post Err');
+    }
+});
+
+
+userRouter.get('/transactioninfo', (req, res) => {
 
 });
+
+
 module.exports = userRouter;

@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <% include ../topbar/topbar.html %>
     <h3>Item List</h3>
     <hr>
     <form>
@@ -20,43 +21,60 @@
 
         </select>
 
+        <div id='item-data'>
 
-        <% for(var i=0; i<data.itemData.length; i++) { %>
-        <% var dataString = JSON.stringify(data.itemData[i]); %>
-        <p>
-            <button onclick='selectItem(`<%= dataString %>`)'>
-                판매자 : <%= data.itemData[i].user %>
-                상품명: <%= data.itemData[i].item_name %>
-                상품 가격: <%= data.itemData[i].item_price %>
-            </button>
-        </p>
-        <% } %>
+        </div>
     </form>
+
     <script>
+
         async function categorySelected(data) {
             console.log(data);
-            const response = await fetch(`http://localhost:3000/shop_sub`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({data})
-            });
-            
+            try {
+                const shopdata = await shop_sub(data);
+                const container = document.getElementById('item-data');
+
+                for (var i = 0; i < shopdata[0].length; i++) {
+                    var data = [];
+                    data[i] = shopdata[0][i];
+                    result = JSON.stringify(data[i]);
+                    var template =
+                        `<form method='post' action='/item_detail'>` +
+                        `${data[i].item_img}` +
+                        `<button type='submit'>` +
+                        `판매자 :  ${data[i].user}` +
+                        `상품명: ${data[i].item_name}` +
+                        `상품 가격: ${data[i].item_price} ` +
+                        `<input type='hidden' name='data' value='${result}'>` +
+                        `</button>` +
+                        `</form>`;
+                    const e = document.createElement('p');
+                    e.innerHTML = template;
+                    container.appendChild(e);
+                }
+            } catch (err) {
+                console.log('categorySelected java Err');
+            }
         }
 
-        async function selectItem(data) {
-            const response = await fetch('http://localhost:3000/item_detail', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({ data })
-            });
+        async function shop_sub(data) {
+            try {
+                const response = await fetch(`http://localhost:3000/shop_sub`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({ 'category': data })
 
-            console.log('response', response);
-            return response;
+                });
+                var dataResult = await response.json();
+                return dataResult;
+            } catch (err) {
+                console.log('shop_sub java Err')
+            }
+
         }
+
     </script>
 </body>
 
