@@ -23,6 +23,7 @@ userRouter.get('/', function (req, res) {
     console.log('페이지 접속', req.session.user);
     res.render('index.html', { data: data });
 });
+
 //Login(로그인)
 userRouter.get('/login', async (req, res) => {
     res.render('login.html');
@@ -37,7 +38,7 @@ userRouter.post('/loginConfirmation', async (req, res) => {
             var accountsInfo = await web3js.sendAccountInfo(result[0][0].wallet);
             req.session.user = {
                 userIndex: result[0][0].index,
-                userID: result[0][0].id,
+                userID: result[0][0].user,
                 userPW: result[0][0].password,
                 userName: result[0][0].name,
                 userAddr: result[0][0].address,
@@ -56,8 +57,7 @@ userRouter.post('/loginConfirmation', async (req, res) => {
         console.log(err);
         res.status(500).send('LOGIN_FAILED');
     }
-
-})
+});
 
 //Register(회원가입)
 userRouter.get('/register', (req, res) => {
@@ -102,7 +102,7 @@ userRouter.get('/myinfo/myinfo_detail', (req, res) => {
         userData: req.session.user
     }
     res.render('myinfo_detail.html', { data: data })
-})
+});
 
 //myinfo_detail (변경 사항) -> 수정필요 신상 변경 내역이 바로 반영 x
 userRouter.post('/myinfo/myinfo_detail', async (req, res) => {
@@ -116,6 +116,7 @@ userRouter.post('/myinfo/myinfo_detail', async (req, res) => {
 
 });
 
+//판매자 전환
 userRouter.get('/myinfo/tobeseller', async (req, res) => {
     data = {
         userData: req.session.user
@@ -123,8 +124,10 @@ userRouter.get('/myinfo/tobeseller', async (req, res) => {
     res.render('tobeseller.html', { data: data });
 });
 
+//판매자 전환 대기상태
 userRouter.post('/myinfo/tobeseller/sellerconfirmation', async (req, res) => {
     try {
+        console.log(req.session.user);
         var result = await userModel.tobeseller(req);
         if (result == 1) {
             console.log('이미 판매자로 등록된 회원입니다.');
@@ -141,20 +144,43 @@ userRouter.post('/myinfo/tobeseller/sellerconfirmation', async (req, res) => {
     }
 });
 
-userRouter.get('/admin', async (req, res) => {
+//관리자 접근
+userRouter.get('/sellerconfirm', async (req, res) => {
     try {
         var result = await userModel.adminConfirm();
-        console.log('admin', result[0]);
+        var incresult = await userModel.selectInc();
         data = {
-            userData: result
+            userData: result,
+            incData: incresult
         }
-        res.render('admin.html', {data:data})
+        res.render('admin.html', {data:data});
     } catch(err) {
+        console.log(err);
         console.log('admin Err');
     }
-})
+});
+
+userRouter.post('/sellerconfirm', async (req, res) => {
+    try {
+        var result = await userModel.adminConfirm();
+        var incresult = await userModel.selectInc();
+        data = {
+            userData: result,
+            incData: incresult
+        }
+        var result = await userModel.beingSellerComplete(req.body.id);
+        console.log(result);
+        await res.render('admin.html', {data:data})
+    } catch(err) {
+        console.log(err);
+        console.log('admin post Err');
+    }
+});
+
 
 userRouter.get('/transactioninfo', (req, res) => {
 
 });
+
+
 module.exports = userRouter;

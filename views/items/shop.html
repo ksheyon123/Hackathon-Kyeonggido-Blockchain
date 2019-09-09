@@ -40,6 +40,7 @@
                     result = JSON.stringify(data[i]);
                     var template =
                         `<form method='post' action='/item_detail'>` +
+                        `${data[i].item_img}` +
                         `<button type='submit'>` +
                         `판매자 :  ${data[i].user}` +
                         `상품명: ${data[i].item_name}` +

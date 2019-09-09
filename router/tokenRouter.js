@@ -18,12 +18,14 @@ tokenRouter.post('/buytoken', async(req, res) => {
             userData: req.session.user,
             userMoney: token
         }
-        await web3js.sendTokenFromAdmin(data);
+        var result = await web3js.sendTokenFromAdmin(data);
+        console.log(result);
         res.redirect('/')
     } catch (err) {
         console.log(err);
     }
 });
+
 
 
 module.exports = tokenRouter;
