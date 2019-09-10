@@ -2,6 +2,7 @@ var express = require('express');
 var tokenRouter = express.Router();
 
 var web3js = require('../model/web3');
+var userModel = require('../model/userModel');
 
 tokenRouter.get('/buytoken', (req, res) => {
     data = {
@@ -9,7 +10,6 @@ tokenRouter.get('/buytoken', (req, res) => {
     }
     res.render('token/buytoken.html', {data:data})
 });
-
 
 tokenRouter.post('/buytoken', async(req, res) => {
     try {
@@ -26,6 +26,31 @@ tokenRouter.post('/buytoken', async(req, res) => {
     }
 });
 
+
+tokenRouter.post('/contract', async (req, res) => {
+    try {
+        var data = JSON.parse(req.body.data);
+        data = {
+            userData: req.session.user,
+            itemData: data
+        }
+        //seller Wallet Balance 호출
+        var result = await userModel.CallBuyerWalletBalance(data);
+
+        //Comparing buyerBalance with item_price(0 : lack of Balance )
+        if (result >= data.itemData.item_price) {
+            var result = await web3js.sendToken(data);
+
+            res.redirect('/');
+        } else {
+            console.log('잔액 부족');
+            res.redirect('/');
+        }
+
+    } catch (err) {
+        throw err;
+    }
+});
 
 
 module.exports = tokenRouter;

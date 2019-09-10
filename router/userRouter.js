@@ -97,7 +97,7 @@ userRouter.get('/myinfo', (req, res) => {
 });
 
 //myinfo_detail(내 정보 변경)
-userRouter.get('/myinfo/myinfo_detail', (req, res) => {
+userRouter.get('/myinfo_detail', (req, res) => {
     data = {
         userData: req.session.user
     }
@@ -105,7 +105,7 @@ userRouter.get('/myinfo/myinfo_detail', (req, res) => {
 });
 
 //myinfo_detail (변경 사항) -> 수정필요 신상 변경 내역이 바로 반영 x
-userRouter.post('/myinfo/myinfo_detail', async (req, res) => {
+userRouter.post('/myinfo_detail', async (req, res) => {
     try {
         var result = await userModel.myinfoChange(req);
         res.redirect('/');
@@ -117,7 +117,7 @@ userRouter.post('/myinfo/myinfo_detail', async (req, res) => {
 });
 
 //판매자 전환
-userRouter.get('/myinfo/tobeseller', async (req, res) => {
+userRouter.get('/tobeseller', async (req, res) => {
     data = {
         userData: req.session.user
     }
@@ -125,7 +125,7 @@ userRouter.get('/myinfo/tobeseller', async (req, res) => {
 });
 
 //판매자 전환 대기상태
-userRouter.post('/myinfo/tobeseller/sellerconfirmation', async (req, res) => {
+userRouter.post('/sellerconfirmation', async (req, res) => {
     try {
         console.log(req.session.user);
         var result = await userModel.tobeseller(req);

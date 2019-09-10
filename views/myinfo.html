@@ -39,14 +39,13 @@
     <p>
         내 월렛 잔액 : <%= data.userData.userBalance %>
     </p>
-    <a href='/myinfo/myinfo_detail'>내 정보 수정</a>
-    <a href='/myinfo/myinfo_detail'>내 상품</a>
-    <% if(data.userData.userDN !== 1) { %>
-        <a href='/myinfo/tobeseller'>판매자 등록</a>
+
+    <% if(data.userData.userDN == 0) { %>
+    <a href='/myinfo_detail'>내 정보 수정</a>
+    <a href='/tobeseller'>판매자 등록</a>
+    <% } else if (data.userData.userDN == 1) { %>
+    <a href='/myshop'>내 상품</a>
     <% } %>
-
-
-
 </body>
 
 </html>

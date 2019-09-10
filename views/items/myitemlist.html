@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Item List</title>
+</head>
+
+<body>
+    <% include ../topbar/topbar.html %>
+    <p>
+        <%= data.userData.userID %> 님이 판매중인 상품 List 입니다
+    </p>
+    <hr>
+
+    <form method='post' action='/editmyitem'>
+        <% for(var i = 0; i < data.itemData.length; i++) { %>
+        <p>
+            #<%=i+1%> <img src='/media/itemimages/<%= data.itemData[i].item_img %>'> <%= data.itemData[i].item_name %> <%= data.itemData[i].item_price %>
+            <button type='submit' name='data' value='<%= JSON.stringify(data.itemData[i]) %>'>수정</button>
+        </p>
+        <% } %>
+    </form>
+
+</body>
+
+</html>

@@ -153,7 +153,7 @@ class User {
     selectInc() {
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'SELECT * FROM kyeonggi.inc WHERE user IN (SELECT id FROM kyeonggi.kyeonggidb WHERE status = 1)';
+                const sql = 'SELECT * FROM kyeonggi.inc WHERE user IN (SELECT user FROM kyeonggi.kyeonggidb WHERE status = 1)';
                 try {
                     var result = await myConnection.query(sql);
                     resolve(result);
@@ -169,7 +169,7 @@ class User {
         console.log(data);
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'UPDATE kyeonggidb, inc SET kyeonggidb.status = 0, kyeonggidb.dnum = 1, inc.inc_confirm = 1 WHERE kyeonggidb.id = ? AND inc.user = ?';
+                const sql = 'UPDATE kyeonggidb, inc SET kyeonggidb.status = 0, kyeonggidb.dnum = 1, inc.inc_confirm = 1 WHERE kyeonggidb.user = ? AND inc.user = ?';
                 try {
                     var result = await myConnection.query(sql, [data, data]);
                     resolve(result);

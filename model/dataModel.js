@@ -27,6 +27,19 @@ class Item {
         )
     }
 
+    itemEdit(data) {
+        return new Promise(
+            async (resolve, reject) => {
+                const sql = 'UPDATE ';
+                try {
+
+                } catch (err) {
+
+                }
+            }
+        )
+    }
+
 
     selectAllItem() {
         return new Promise(
@@ -35,7 +48,7 @@ class Item {
                 try {
                     var result = await myConnection.query(sql);
                     resolve(result)
-                } catch(err) { 
+                } catch (err) {
                     reject(err);
                 }
             }
@@ -49,7 +62,7 @@ class Item {
                 try {
                     var result = await myConnection.query(sql);
                     resolve(result);
-                } catch(err) {
+                } catch (err) {
                     reject(err);
                 }
             }
@@ -64,8 +77,22 @@ class Item {
                 try {
                     var result = await myConnection.query(sql, data);
                     resolve(result);
-                } catch(err) {
+                } catch (err) {
                     reject('matchcategory Err');
+                }
+            }
+        )
+    }
+
+    selectAllItemBasedOnUserId(data) {
+        return new Promise(
+            async (resolve, reject) => {
+                const sql = 'SELECT * FROM item WHERE user = ?';
+                try {
+                    var result = await myConnection.query(sql, data);
+                    resolve(result);
+                } catch (err) {
+                    reject(err);
                 }
             }
         )

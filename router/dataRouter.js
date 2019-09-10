@@ -70,29 +70,38 @@ dataRouter.post('/item_detail', async (req, res) => {
     }
 });
 
-dataRouter.post('/contract', async (req, res) => {
+dataRouter.get('/myshop', async (req, res) => {
     try {
-        var data = JSON.parse(req.body.data);
+        var result = await dataModel.selectAllItemBasedOnUserId(req.session.user.userID);
+        //내 상품 전체 load -> user 로 , inc 정보 , item 정보 
+        //Item Edit 기능
         data = {
             userData: req.session.user,
-            itemData: data
+            itemData: result[0]
         }
-        //seller Wallet Balance 호출
-        var result = await userModel.CallBuyerWalletBalance(data);
-
-
-        //Comparing buyerBalance with item_price(0 : lack of Balance, )
-        if (result >= data.itemData.item_price) {
-            var result = await web3js.sendToken(data);
-
-            res.redirect('/');
-        } else {
-            console.log('잔액 부족');
-            res.redirect('/');
-        }
-        
+        res.render('items/myitemlist.html', { data: data });
     } catch (err) {
-        throw err;
+
+    }
+});
+
+dataRouter.post('/editmyitem', (req, res) => {
+
+        var result = JSON.parse(req.body.data);
+        data = {
+            userData: req.session.user,
+            itemData: result
+        }
+        res.render('items/myitemedit.html', {data:data})
+});
+
+
+
+dataRouter.post('/editconfirm', async (req, res) => {
+    try {
+
+    } catch (err) {
+
     }
 });
 
