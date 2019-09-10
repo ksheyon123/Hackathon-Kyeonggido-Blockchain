@@ -183,6 +183,7 @@ class User {
     CallBuyerWalletBalance(data) {
         return new Promise(
             async (resolve, reject) => {
+                //두 번째 try 까지 없어도 되는 함수
                 console.log(data.itemData);
                 const sql = `SELECT wallet FROM kyeonggidb WHERE user = "${data.itemData.user}"`;
                 try {
@@ -200,6 +201,23 @@ class User {
                         console.log(err);
                     }
                 } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
+
+    //거래 내역 조회
+    CallBoughtItemData(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                const sql = `SELECT * FROM solditem WHERE user = '${data}'`;
+                console.log(sql);
+                try {
+                    var result = await myConnection.query(sql);
+                    console.log(result);
+                    resolve(result);
+                } catch(err) {
                     reject(err);
                 }
             }

@@ -87,16 +87,42 @@ class web3js {
                     web3.setProvider(
                         new web3.providers.HttpProvider('http://localhost:8545')
                     );
-
                     const sql = `SELECT wallet FROM kyeonggidb WHERE user ="${data.itemData.user}"`;
                     var result = await myConnection.query(sql);
                     //sendTransaction userData: 구매자 result : 판매자
-                    await web3.eth.sendTransaction({ from: `${data.userData.userWallet}`, to: `${result[0][0].wallet}`, value: `${data.itemData.item_price * 1000000000000000000}` });
+                    var txResult = await web3.eth.sendTransaction({ from: `${data.userData.userWallet}`, to: `${result[0][0].wallet}`, value: `${data.itemData.item_price * 1000000000000000000}` });
 
                     var balance = await web3.eth.getBalance(data.userData.userWallet);
 
                     //Sum After Transaction userBalance
                     data.userData.userBalance = balance / 1000000000000000000;
+
+                    //Buying Data Put In Database
+                    if(txResult.blockNumber) {
+
+                        //Get Block Data
+                        var blockData = await web3.eth.getBlock(txResult.blockNumber);
+
+                        //Solve Transaction Code into Hex Transaction Code 
+                        var txData = blockData.transactions.toString();
+                        data = {
+                            blockNum: txResult.blockNumber,
+                            tx: txData,
+                            user: data.userData.userID,
+                            itemS: data.itemData.user,
+                            itemP: data.itemData.item_price,
+                            itemC: data.itemData.item_code
+                        }
+                        
+                        console.log('data.tx', data.tx);
+                        const sql = 'INSERT INTO solditem (user, seller, item_price, blocknum, tx, ordernum) values (?, ?, ?, ?, ?, ?)';
+                        await myConnection.query(sql, [data.user,data.itemS, data.itemP, data.blockNum, data.tx,  data.itemC]);
+
+                        //Get Transaction Information
+                        //var TransactionData = await web3.eth.getTransaction(txData);
+                    } else {
+                        console.log('Get Block Number Fail');
+                    }
                     resolve(data);
                 } catch (err) {
                     console.log(err);

@@ -178,9 +178,20 @@ userRouter.post('/sellerconfirm', async (req, res) => {
 });
 
 
-userRouter.get('/transactioninfo', (req, res) => {
-
+userRouter.get('/transactioninfo', async (req, res) => {
+    console.log(req.session.user);
+    try {
+        var result = await userModel.CallBoughtItemData(req.session.user.userID);
+        data = {
+            userData: req.session.user,
+            solditemData: result[0]
+        }
+        res.render('items/transactioninfo.html', {data: data});
+    } catch(err) {
+        console.log('transaction Err');
+    }
 });
+
 
 
 module.exports = userRouter;

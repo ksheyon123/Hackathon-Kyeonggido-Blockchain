@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Transaction Info</title>
+</head>
+
+<body>
+    <% include ../topbar/topbar.html %>
+    <p>
+        <%= data.userData.userID %> 님께서 구매하신 상품 내역입니다
+    </p>
+    <hr>
+    <% for (var i = 0; i < data.solditemData.length; i++) { %>
+    <p>
+        상품 가격 : <%= data.solditemData[i].item_price %>
+    </p>
+    <p>
+        블록 번호 : <%= data.solditemData[i].blocknum %>
+    </p>
+    <p>
+        트랜 잭션 : <%= data.solditemData[i].tx %>
+    </p>
+    <p>
+        판 매 자 : <%= data.solditemData[i].seller %>
+    </p>
+    <hr>
+    <% } %>
+
+</body>
+
+</html>
