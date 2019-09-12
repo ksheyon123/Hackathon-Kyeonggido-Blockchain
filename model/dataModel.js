@@ -97,6 +97,20 @@ class Item {
             }
         )
     }
+    // SELECT TOP 3 Item Based On item_rank
+    selectTop3Item() {
+        return new Promise (
+            async (resolve, reject) => {
+                const sql = 'SELECT item_name, item_price, item_code FROM item ORDER BY item_rank DESC limit 0,3;';
+                try {
+                    var result = await myConnection.query(sql);
+                    resolve(result[0]);
+                } catch(err) {
+                    reject(err);
+                }
+            }
+        )
+    }
 }
 
 module.exports = new Item();

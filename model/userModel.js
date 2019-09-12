@@ -61,7 +61,7 @@ class User {
                             resolve('이미 회원가입하셨습니다.');
                             break;
                         default:
-                            var web3Data = await web3js.makeAccounts(req.body.userID);
+                            var web3Data = await web3js.makeAccounts(req.body.userWalletPW);
                             console.log('web3Data', web3Data);
                             const sql = 'INSERT INTO kyeonggidb (user, password, name, address, gender, phonenumber, wallet) values (? ,? ,?, ?, ?, ?, ?)';
                             await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN, web3Data]);

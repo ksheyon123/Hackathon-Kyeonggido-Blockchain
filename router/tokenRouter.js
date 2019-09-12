@@ -52,5 +52,21 @@ tokenRouter.post('/contract', async (req, res) => {
     }
 });
 
+//wallet Unlock 현재는 의미 없음
+tokenRouter.post('/unlockwallet', async (req, res) => {
+    console.log(req.body.walletPW);
+    try {
+        data = {
+            walletPW : req.body.walletPW,
+            walletAddr : req.session.user.userWallet
+        }
+        var result = await web3js.unlockWallet(data);
+        console.log('unlock data', result);
+        res.redirect('/');
+    } catch(err) {
+        console.log(err);
+    }
+})
+
 
 module.exports = tokenRouter;

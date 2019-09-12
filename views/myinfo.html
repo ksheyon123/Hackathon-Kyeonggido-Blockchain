@@ -39,6 +39,11 @@
     <p>
         내 월렛 잔액 : <%= data.userData.userBalance %>
     </p>
+    <!-- wallet Unlock 현재는 의미 없음 -->
+    <form>
+        Enter Wallet PW : <input type='text' name='walletPW' id='walletPW'></br>
+        <input type='button' value='unlock' onclick="unlockWallet()">
+    </form>
 
     <% if(data.userData.userDN == 0) { %>
     <a href='/myinfo_detail'>내 정보 수정</a>
@@ -46,6 +51,24 @@
     <% } else if (data.userData.userDN == 1) { %>
     <a href='/myshop'>내 상품</a>
     <% } %>
+
+    <script>
+        async function unlockWallet() {
+            var walletpw = document.getElementById("walletPW").value;
+            try {
+                const response = fetch('http://localhost:3000/unlockwallet', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({ 'walletPW': walletpw })
+                })       
+            } catch(err) {
+
+            }
+        }
+    </script>
+
 </body>
 
 </html>

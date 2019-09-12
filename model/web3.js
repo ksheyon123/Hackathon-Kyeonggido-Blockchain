@@ -98,7 +98,7 @@ class web3js {
                     data.userData.userBalance = balance / 1000000000000000000;
 
                     //Buying Data Put In Database
-                    if(txResult.blockNumber) {
+                    if (txResult.blockNumber) {
 
                         //Get Block Data
                         var blockData = await web3.eth.getBlock(txResult.blockNumber);
@@ -113,10 +113,10 @@ class web3js {
                             itemP: data.itemData.item_price,
                             itemC: data.itemData.item_code
                         }
-                        
+
                         console.log('data.tx', data.tx);
                         const sql = 'INSERT INTO solditem (user, seller, item_price, blocknum, tx, ordernum) values (?, ?, ?, ?, ?, ?)';
-                        await myConnection.query(sql, [data.user,data.itemS, data.itemP, data.blockNum, data.tx,  data.itemC]);
+                        await myConnection.query(sql, [data.user, data.itemS, data.itemP, data.blockNum, data.tx, data.itemC]);
 
                         //Get Transaction Information
                         //var TransactionData = await web3.eth.getTransaction(txData);
@@ -147,6 +147,22 @@ class web3js {
                     reject(err);
                 }
             });
+    }
+    //wallet Unlock 현재는 의미 없음
+    unlockWallet(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                try {
+                    web3.setProvider(
+                        new web3.providers.HttpProvider('http://localhost:8545')
+                    );
+                    var result = await web3.eth.personal.unlockAccount(data.walletAddr, data.walletPW, 0);
+                    resolve(result);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
     }
 
 }

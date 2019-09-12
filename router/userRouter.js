@@ -14,14 +14,22 @@ userRouter.use(session({
 
 //Model Import
 var userModel = require('../model/userModel');
+var dataModel = require('../model/dataModel');
 var web3js = require('../model/web3');
 
-userRouter.get('/', function (req, res) {
-    data = {
-        userData: req.session.user
+userRouter.get('/', async (req, res) => {
+    try {
+        var result = await dataModel.selectTop3Item();
+        console.log('/', result);
+        data = {
+            userData: req.session.user,
+            itemCode: result
+        }
+        console.log('페이지 접속', req.session.user);
+        res.render('index.html', { data: data });
+    } catch (err) {
+        console.log(err);
     }
-    console.log('페이지 접속', req.session.user);
-    res.render('index.html', { data: data });
 });
 
 //Login(로그인)
@@ -66,7 +74,7 @@ userRouter.get('/register', (req, res) => {
 
 userRouter.post('/registerConfirmation', async (req, res) => {
     try {
-        var result =  await userModel.register(req);
+        var result = await userModel.register(req);
         //eth.accounts 생성 function
         res.redirect('/');
     } catch (err) {
@@ -153,8 +161,8 @@ userRouter.get('/sellerconfirm', async (req, res) => {
             userData: result,
             incData: incresult
         }
-        res.render('admin.html', {data:data});
-    } catch(err) {
+        res.render('admin.html', { data: data });
+    } catch (err) {
         console.log(err);
         console.log('admin Err');
     }
@@ -170,8 +178,8 @@ userRouter.post('/sellerconfirm', async (req, res) => {
         }
         var result = await userModel.beingSellerComplete(req.body.id);
         console.log(result);
-        await res.render('admin.html', {data:data})
-    } catch(err) {
+        await res.render('admin.html', { data: data })
+    } catch (err) {
         console.log(err);
         console.log('admin post Err');
     }
@@ -186,11 +194,12 @@ userRouter.get('/transactioninfo', async (req, res) => {
             userData: req.session.user,
             solditemData: result[0]
         }
-        res.render('items/transactioninfo.html', {data: data});
-    } catch(err) {
+        res.render('items/transactioninfo.html', { data: data });
+    } catch (err) {
         console.log('transaction Err');
     }
 });
+
 
 
 

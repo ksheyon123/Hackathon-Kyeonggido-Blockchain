@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Index Page</title>
+    <style>
+        #topbar {
+            background-color: #d3e682;
+            padding: 10px;
+            border: 0;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
         <!-- Login Template
             Home Banner
             Category Link
             Premium Item Link -->
+            <div id='topbar'>
             <a href='/'><img src='media/home.jpg' width="45px" height="45px"></a>
             <a href='/shop'><img src='media/shop.png' width="40px" height="40px"></a>
             <% if (!data.userData) { %>
@@ -34,5 +43,6 @@
                 <% } %>
             
             <% } %>
+        </div>
 </body>
 </html>

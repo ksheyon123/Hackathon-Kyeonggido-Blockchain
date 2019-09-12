@@ -1,28 +1,149 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>
-            Index Page
-        </title>
-    </head>
-    <body>
-            <%- include ./topbar/topbar.html %>
-            <!-- Login Template
-            Home Banner
-            Category Link
-            Premium Item Link -->
-            <h3>
-            <% if(!data.userData) { %>
-                반갑습니다.
-            <% } else { %>
-                <%= data.userData.userName %> 회원님 반갑습니다.
-            <% } %>
 
-            </h3>
-            
-        <hr>
-            
-    </body>
+<head>
+    <title>
+        Index Page
+    </title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, sans-serif;
+        }
+
+        .mySlides {
+            display: none;
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Caption text */
+        .text {
+            color: black;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Number text (1/3 etc) */
+        .numbertext {
+            color: black;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+        /* The dots/bullets/indicators */
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active {
+            background-color: #717171;
+        }
+
+        /* Fading animation */
+        .fade {
+            -webkit-animation-name: fade;
+            -webkit-animation-duration: 1.5s;
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <%= console.log(data) %>
+    <%- include ./topbar/topbar.html %>
+    <!-- Login Template
+                Home Banner
+                Category Link
+                Premium Item Link -->
+    <hr>
+    <h3>
+        <% if(!data.userData) { %>
+        반갑습니다.
+        <% } else { %>
+        <%= data.userData.userName %> 회원님 반갑습니다.
+        <% } %>
+    </h3>
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="numbertext"><%= data.itemCode[0].item_name %></div>
+            <img src="media/itemimages/accessory.jpg" style="width:100%" value='<%= data.itemCode[0].item_code %>'
+                onclick="gotoitem(this.value)">
+            <div class="text"><%= data.itemCode[0].item_price %></div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext"><%= data.itemCode[1].item_name %></div>
+            <img src="media/itemimages/bracelet.jpg" style="width:100%" value='<%= data.itemCode[1].item_code %>'
+                onclick="gotoitem(this.value)">
+            <div class="text"><%= data.itemCode[1].item_price %></div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext"><%= data.itemCode[2].item_name %></div>
+            <img src="media/itemimages/figure.jpg" style="width:100%" value='<%= data.itemCode[2].item_code %>'
+                onclick="gotoitem(this.value)">
+            <div class="text"><%= data.itemCode[2].item_price %></div>
+        </div>
+
+    </div>
+    <br>
+    <br>
+
+    <div style="text-align:center">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <!-- Data 호출-->
+    <script>
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            setTimeout(showSlides, 3000); // Change image every 2 seconds
+        }
+    </script>
+</body>
+
 </html>
-
-
