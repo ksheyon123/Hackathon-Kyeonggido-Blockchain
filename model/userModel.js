@@ -212,10 +212,8 @@ class User {
         return new Promise (
             async (resolve, reject) => {
                 const sql = `SELECT * FROM solditem WHERE user = '${data}'`;
-                console.log(sql);
                 try {
                     var result = await myConnection.query(sql);
-                    console.log(result);
                     resolve(result);
                 } catch(err) {
                     reject(err);

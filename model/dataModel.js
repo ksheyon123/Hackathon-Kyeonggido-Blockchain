@@ -97,11 +97,26 @@ class Item {
             }
         )
     }
+
+    selectAllItemBasedOnItemCode(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                const sql = 'SELECT * FROM item WHERE item_code = ?';
+                try {
+                    var result = await myConnection.query(sql, [data]);
+                    resolve(result);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
+
     // SELECT TOP 3 Item Based On item_rank
     selectTop3Item() {
         return new Promise (
             async (resolve, reject) => {
-                const sql = 'SELECT item_name, item_price, item_code FROM item ORDER BY item_rank DESC limit 0,3;';
+                const sql = 'SELECT item_img, item_name, item_price, item_code FROM item ORDER BY item_rank DESC limit 0,3;';
                 try {
                     var result = await myConnection.query(sql);
                     resolve(result[0]);

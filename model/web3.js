@@ -115,7 +115,7 @@ class web3js {
                         }
 
                         console.log('data.tx', data.tx);
-                        const sql = 'INSERT INTO solditem (user, seller, item_price, blocknum, tx, ordernum) values (?, ?, ?, ?, ?, ?)';
+                        const sql = 'INSERT INTO solditem (user, seller, item_price, blocknum, tx, item_code) values (?, ?, ?, ?, ?, ?)';
                         await myConnection.query(sql, [data.user, data.itemS, data.itemP, data.blockNum, data.tx, data.itemC]);
 
                         //Get Transaction Information

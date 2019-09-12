@@ -29,7 +29,6 @@
     <script>
 
         async function categorySelected(data) {
-            console.log(data);
             try {
                 const shopdata = await shop_sub(data);
                 const container = document.getElementById('item-data');
@@ -38,6 +37,7 @@
                     var data = [];
                     data[i] = shopdata[0][i];
                     result = JSON.stringify(data[i]);
+                    console.log('data[i]', data[i]);
                     var template =
                         `<form method='post' action='/item_detail'>` +
                         `<img src='/media/itemimages/${data[i].item_img}' width="60px" height="60px">` +

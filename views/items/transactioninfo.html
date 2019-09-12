@@ -9,26 +9,30 @@
 </head>
 
 <body>
+
     <% include ../topbar/topbar.html %>
-    <p>
-        <%= data.userData.userID %> 님께서 구매하신 상품 내역입니다
-    </p>
-    <hr>
-    <% for (var i = 0; i < data.solditemData.length; i++) { %>
-    <p>
-        상품 가격 : <%= data.solditemData[i].item_price %>
-    </p>
-    <p>
-        블록 번호 : <%= data.solditemData[i].blocknum %>
-    </p>
-    <p>
-        트랜 잭션 : <%= data.solditemData[i].tx %>
-    </p>
-    <p>
-        판 매 자 : <%= data.solditemData[i].seller %>
-    </p>
-    <hr>
-    <% } %>
+    <form method='post' action='/item_detail'>
+        <p>
+            <%= data.userData.userID %> 님께서 구매하신 상품 내역입니다
+        </p>
+        <hr>
+        <% for (var i = 0; i < data.solditemData.length; i++) { %>
+        <p>
+            상품 가격 : <%= data.solditemData[i].item_price %>
+        </p>
+        <p>
+            블록 번호 : <%= data.solditemData[i].blocknum %>
+        </p>
+        <p>
+            트랜 잭션 : <%= data.solditemData[i].tx %>
+        </p>
+        <p>
+            판 매 자 : <%= data.solditemData[i].seller %>
+        </p>
+        <button type='submit' name='data' value='<%= JSON.stringify(data.solditemData[i]) %>'>상품 후기 작성</button>
+        <hr>
+        <% } %>
+    </form>
 
 </body>
 

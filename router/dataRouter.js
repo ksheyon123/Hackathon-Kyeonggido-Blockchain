@@ -59,10 +59,14 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
+        console.log('item_detail?', req.body);
+
         result = JSON.parse(req.body.data);
+        var itemCode = result.item_code
+        var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
         data = {
             userData: req.session.user,
-            itemData: result
+            itemData: result[0][0]
         }
         res.render('items/showitem_detail.html', { data: data });
     } catch (err) {

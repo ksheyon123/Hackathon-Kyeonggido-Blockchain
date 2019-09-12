@@ -24,7 +24,7 @@
 
         /* Slideshow container */
         .slideshow-container {
-            max-width: 1000px;
+            max-width: 500px;
             position: relative;
             margin: auto;
         }
@@ -75,11 +75,9 @@
 </head>
 
 <body>
-    <%= console.log(data) %>
     <%- include ./topbar/topbar.html %>
     <!-- Login Template
                 Home Banner
-                Category Link
                 Premium Item Link -->
     <hr>
     <h3>
@@ -93,21 +91,21 @@
 
         <div class="mySlides fade">
             <div class="numbertext"><%= data.itemCode[0].item_name %></div>
-            <img src="media/itemimages/accessory.jpg" style="width:100%" value='<%= data.itemCode[0].item_code %>'
+            <img src="media/itemimages/<%= data.itemCode[0].item_img %>" style="width:100%" value='<%= data.itemCode[0].item_code %>'
                 onclick="gotoitem(this.value)">
             <div class="text"><%= data.itemCode[0].item_price %></div>
         </div>
 
         <div class="mySlides fade">
             <div class="numbertext"><%= data.itemCode[1].item_name %></div>
-            <img src="media/itemimages/bracelet.jpg" style="width:100%" value='<%= data.itemCode[1].item_code %>'
+            <img src="media/itemimages/<%= data.itemCode[1].item_img %>" style="width:100%" value='<%= data.itemCode[1].item_code %>'
                 onclick="gotoitem(this.value)">
             <div class="text"><%= data.itemCode[1].item_price %></div>
         </div>
 
         <div class="mySlides fade">
             <div class="numbertext"><%= data.itemCode[2].item_name %></div>
-            <img src="media/itemimages/figure.jpg" style="width:100%" value='<%= data.itemCode[2].item_code %>'
+            <img src="media/itemimages/<%= data.itemCode[2].item_img %>" style="width:100%" value='<%= data.itemCode[2].item_code %>'
                 onclick="gotoitem(this.value)">
             <div class="text"><%= data.itemCode[2].item_price %></div>
         </div>
@@ -142,6 +140,20 @@
             slides[slideIndex - 1].style.display = "block";
             dots[slideIndex - 1].className += " active";
             setTimeout(showSlides, 3000); // Change image every 2 seconds
+        }
+
+        async function gotoitem(data) {
+            try {
+                const response = await fetch(`http://localhost:3000/item_detail`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+            } catch (err) {
+                console.log('index Page image Click Err');
+            }
         }
     </script>
 </body>
