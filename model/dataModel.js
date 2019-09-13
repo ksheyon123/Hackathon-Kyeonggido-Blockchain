@@ -1,5 +1,5 @@
 var myConnection = require('../dbConfig');
-
+var randomString = require('randomstring');
 
 class Item {
 
@@ -15,9 +15,11 @@ class Item {
         console.log(data.user);
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'INSERT INTO item (user, item_name, item_category, item_price, item_img, item_info) values (?, ?, ?, ?, ?, ?)';
+                const sql = 'INSERT INTO item (user, item_name, item_category, item_price, item_img, item_info,item_code) values (?, ?, ?, ?, ?, ?, ?)';
                 try {
-                    var result = await myConnection.query(sql, [data.user, data.item_name, data.item_category, data.item_price, data.item_img, data.item_info]);
+                    //item_code 임의 생성 
+                    var item_code = randomString.generate();
+                    var result = await myConnection.query(sql, [data.user, data.item_name, data.item_category, data.item_price, data.item_img, data.item_info, item_code]);
                     resolve('hi');
                 } catch (err) {
                     reject(err);
