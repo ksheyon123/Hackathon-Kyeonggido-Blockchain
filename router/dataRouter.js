@@ -59,14 +59,23 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
-        console.log('item_detail?', req.body);
-
         result = JSON.parse(req.body.data);
         var itemCode = result.item_code
+        //item_Code를 바탕으로 Item 정보 호출
         var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
+
+        //solditem info의 status 가 0이면 댓글 미작성, 1 이면 작성완료 상태
+        var status = await dataModel.showSolditemStatus(itemCode);
+        console.log('status :', status[0]);
+
+        //상품에 대한 Comment 호출
+        var comment = await dataModel.selectAllComment(itemCode);
+        console.log('comment : ', comment[0])
         data = {
             userData: req.session.user,
-            itemData: result[0][0]
+            itemData: result[0][0],
+            commentData : comment[0],
+            statusData: status[0]
         }
         res.render('items/showitem_detail.html', { data: data });
     } catch (err) {
@@ -104,6 +113,14 @@ dataRouter.post('/editmyitem', (req, res) => {
 dataRouter.post('/editconfirm', async (req, res) => {
     try {
 
+    } catch (err) {
+
+    }
+});
+
+dataRouter.post('/submitcomment', async (req, res) => {
+    try{
+        console.log(req.body);
     } catch (err) {
 
     }

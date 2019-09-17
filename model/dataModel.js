@@ -128,6 +128,34 @@ class Item {
             }
         )
     }
+    //Select All Comment Data From Comment Table
+    selectAllComment(data) {
+        return new Promise ( 
+            async (resolve, reject) => {
+                const sql = 'SELECT * FROM comment WHERE item_code = ?';
+                try {
+                    var comment = await myConnection.query(sql, [data]);
+                    resolve(comment[0]);
+                } catch (err) {
+                    reject(err);
+                }   
+            }
+        )
+    }
+
+    showSolditemStatus(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                const sql = 'SELECT status FROM solditem WHERE item_code = ?';
+                try {
+                    var result = await myConnection.query(sql, [data]);
+                    resolve(result[0]);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
 }
 
 module.exports = new Item();

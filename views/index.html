@@ -87,38 +87,44 @@
         <%= data.userData.userName %> 회원님 반갑습니다.
         <% } %>
     </h3>
-    <div class="slideshow-container">
+    <%= console.log(data.itemCode.length) %>
+    <% if(data.itemCode.length == 3) { %>
+        <div class="slideshow-container">
 
-        <div class="mySlides fade">
-            <div class="numbertext"><%= data.itemCode[0].item_name %></div>
-            <img src="media/itemimages/<%= data.itemCode[0].item_img %>" style="width:100%" value='<%= data.itemCode[0].item_code %>'
-                onclick="gotoitem(this.value)">
-            <div class="text"><%= data.itemCode[0].item_price %></div>
+            <div class="mySlides fade">
+                <div class="numbertext"><%= data.itemCode[0].item_name %></div>
+                <img src="media/itemimages/<%= data.itemCode[0].item_img %>" style="width:100%" value='<%= data.itemCode[0].item_code %>'
+                    onclick="gotoitem(this.value)">
+                <div class="text"><%= data.itemCode[0].item_price %></div>
+            </div>
+    
+            <div class="mySlides fade">
+                <div class="numbertext"><%= data.itemCode[1].item_name %></div>
+                <img src="media/itemimages/<%= data.itemCode[1].item_img %>" style="width:100%" value='<%= data.itemCode[1].item_code %>'
+                    onclick="gotoitem(this.value)">
+                <div class="text"><%= data.itemCode[1].item_price %></div>
+            </div>
+    
+            <div class="mySlides fade">
+                <div class="numbertext"><%= data.itemCode[2].item_name %></div>
+                <img src="media/itemimages/<%= data.itemCode[2].item_img %>" style="width:100%" value='<%= data.itemCode[2].item_code %>'
+                    onclick="gotoitem(this.value)">
+                <div class="text"><%= data.itemCode[2].item_price %></div>
+            </div>
+    
         </div>
-
-        <div class="mySlides fade">
-            <div class="numbertext"><%= data.itemCode[1].item_name %></div>
-            <img src="media/itemimages/<%= data.itemCode[1].item_img %>" style="width:100%" value='<%= data.itemCode[1].item_code %>'
-                onclick="gotoitem(this.value)">
-            <div class="text"><%= data.itemCode[1].item_price %></div>
+        <br>
+        <br>
+    
+        <div style="text-align:center">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
+    <% } else { %>
+        상품 등록 대기중
+    <% } %>
 
-        <div class="mySlides fade">
-            <div class="numbertext"><%= data.itemCode[2].item_name %></div>
-            <img src="media/itemimages/<%= data.itemCode[2].item_img %>" style="width:100%" value='<%= data.itemCode[2].item_code %>'
-                onclick="gotoitem(this.value)">
-            <div class="text"><%= data.itemCode[2].item_price %></div>
-        </div>
-
-    </div>
-    <br>
-    <br>
-
-    <div style="text-align:center">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-    </div>
 
     <!-- Data 호출-->
     <script>
