@@ -111,15 +111,16 @@ class web3js {
                             user: data.userData.userID,
                             itemS: data.itemData.user,
                             itemP: data.itemData.item_price,
-                            itemC: data.itemData.item_code
+                            itemC: data.itemData.item_code,
+                            itemN: data.itemData.item_name
                         }
 
                         console.log('data.tx', data.tx);
-                        const sql = 'INSERT INTO solditem (user, seller, item_price, blocknum, tx, item_code) values (?, ?, ?, ?, ?, ?)';
-                        await myConnection.query(sql, [data.user, data.itemS, data.itemP, data.blockNum, data.tx, data.itemC]);
+                        const sql = 'INSERT INTO solditem (user, seller, item_name, item_price, blocknum, tx, item_code) values (?, ?, ?, ?, ?, ?, ?)';
+                        await myConnection.query(sql, [data.user, data.itemS, data.itemN, data.itemP, data.blockNum, data.tx, data.itemC]); 
 
-                        //Get Transaction Information
-                        //var TransactionData = await web3.eth.getTransaction(txData);
+                        
+
                     } else {
                         console.log('Get Block Number Fail');
                     }

@@ -20,12 +20,10 @@ var web3js = require('../model/web3');
 userRouter.get('/', async (req, res) => {
     try {
         var result = await dataModel.selectTop3Item();
-        console.log('/', result);
         data = {
             userData: req.session.user,
             itemCode: result
         }
-        console.log('페이지 접속', req.session.user);
         res.render('index.html', { data: data });
     } catch (err) {
         console.log(err);
@@ -42,7 +40,6 @@ userRouter.post('/loginConfirmation', async (req, res) => {
     try {
         var result = await userModel.login(req);
         if (result[0].length > 0) {
-            console.log(result[0][0]);
             var accountsInfo = await web3js.sendAccountInfo(result[0][0].wallet);
             req.session.user = {
                 userIndex: result[0][0].index,
@@ -56,7 +53,6 @@ userRouter.post('/loginConfirmation', async (req, res) => {
                 userWallet: result[0][0].wallet,
                 userBalance: accountsInfo
             }
-            console.log(req.session.user);
             res.redirect('/');
         } else {
             res.redirect('/login');
@@ -135,7 +131,6 @@ userRouter.get('/tobeseller', async (req, res) => {
 //판매자 전환 대기상태
 userRouter.post('/sellerconfirmation', async (req, res) => {
     try {
-        console.log(req.session.user);
         var result = await userModel.tobeseller(req);
         if (result == 1) {
             console.log('이미 판매자로 등록된 회원입니다.');
@@ -177,7 +172,6 @@ userRouter.post('/sellerconfirm', async (req, res) => {
             incData: incresult
         }
         var result = await userModel.beingSellerComplete(req.body.id);
-        console.log(result);
         await res.render('admin.html', { data: data })
     } catch (err) {
         console.log(err);

@@ -59,14 +59,18 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
-        result = JSON.parse(req.body.data);
-        var itemCode = result.item_code
+        result1 = JSON.parse(req.body.data);
+        console.log('itemDetail', result1);
+        var itemCode = result1.item_code
         //item_Code를 바탕으로 Item 정보 호출
         var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
-
+        solditem = {
+            userID : result1.user,
+            itemCode :  itemCode
+        }
         //solditem info의 status 가 0이면 댓글 미작성, 1 이면 작성완료 상태
-        var status = await dataModel.showSolditemStatus(itemCode);
-        console.log('status :', status[0]);
+        var status = await dataModel.showSolditemStatus(solditem);
+        console.log('status :', status);
 
         //상품에 대한 Comment 호출
         var comment = await dataModel.selectAllComment(itemCode);
@@ -75,7 +79,7 @@ dataRouter.post('/item_detail', async (req, res) => {
             userData: req.session.user,
             itemData: result[0][0],
             commentData : comment[0],
-            statusData: status[0]
+            statusData: status
         }
         res.render('items/showitem_detail.html', { data: data });
     } catch (err) {
@@ -121,8 +125,16 @@ dataRouter.post('/editconfirm', async (req, res) => {
 dataRouter.post('/submitcomment', async (req, res) => {
     try{
         console.log(req.body);
+        data = {
+            itemCode: req.body.itemCode,
+            itemData: req.body.itemData,
+            textarea: req.body.textarea,
+            userData: req.session.user.userID
+        }
+        var result = await dataModel.insertComment(data);
+        
     } catch (err) {
-
+        console.log('submitcomment router Err', err);
     }
 });
 

@@ -89,7 +89,7 @@
     <h3>결제 창</h3>
     <hr>
     <form action="/contract" method='post'>
-        <%= console.log('/showitem_detail', data.itemData) %>
+        <%= console.log('/showitem_detail', data.statusData) %>
         <p>
             <div>
                 <img src='/media/itemimages/<%= data.itemData.item_img %>'>
@@ -117,16 +117,17 @@
     <form method="POST" action="/commentEdit">
         <% if (data.commentData) { %>
         <% for(var  i = 0; i < data.commentData.length; i++) { %>
-        <%= data.commentData[i] %>
+        <%= data.commentData[i].buyer %> <%= data.commentData[i].textarea %>
         <% } %>
         <% } else {  %>
         작성된 댓글이 없습니다.
         <% } %>
     </form>
-    <% if(data.statusData.status == 0) { %>
-    <button id='myBtn' name='itemCode' value='<%= data.itemData.item_code %>'>댓글
-        작성</button>
-    <% } %>
+        <% if(data.statusData == 0) { %>
+            <button id='myBtn' name='itemCode' value='<%= data.itemData.item_code %>'>댓글
+                작성</button>
+        <% } %>
+
 
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -152,9 +153,6 @@
             var itemCode = document.getElementById('myBtn').value;
             var data = document.querySelector('input[name="opinion"]:checked').value;
             var textarea = document.getElementById('textarea').value;
-            console.log(itemCode);
-            console.log(data);
-            console.log(textarea);
             try {
                 const response = await fetch(`http://localhost:3000/submitcomment`, {
                     method: 'POST',
@@ -164,7 +162,7 @@
                     body: JSON.stringify({ itemCode, data, textarea })
                 });
             } catch (err) {
-
+                window.alert('Data submit Err');
             }
         }
 
