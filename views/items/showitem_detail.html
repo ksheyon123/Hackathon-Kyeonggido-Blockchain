@@ -150,7 +150,7 @@
     <script>
         async function submitData() {
             var itemCode = document.getElementById('myBtn').value;
-            var data = document.getElementsByName('opinion')[1].value;
+            var data = document.querySelector('input[name="opinion"]:checked').value;
             var textarea = document.getElementById('textarea').value;
             console.log(itemCode);
             console.log(data);
