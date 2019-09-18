@@ -1,7 +1,7 @@
 var myConnection = require('../dbConfig');
 var Web3 = require("web3");
 var web3 = new Web3();
-
+var myContract = require('./abi');
 
 class web3js {
     //register 시, eth 계정 생성
@@ -169,6 +169,8 @@ class web3js {
     }
 
 }
+
+
 
 module.exports = new web3js();
 

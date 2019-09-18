@@ -1,8 +1,9 @@
 var myConnection = require('../dbConfig');
-var randomString = require('randomstring');
+var Web3 = require("web3");
+var web3 = new Web3();
+var myContract = require('./abi');
 
 class Item {
-
     itemup(req) {
         var data = {
             user: req.body.user,

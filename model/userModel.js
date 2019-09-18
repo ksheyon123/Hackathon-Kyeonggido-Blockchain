@@ -1,8 +1,8 @@
 var myConnection = require('../dbConfig');
 var web3js = require('./web3');
+var myContract = require('./abi');
 var Web3 = require("web3");
 var web3 = new Web3();
-
 
 class User {
     //Login
@@ -40,6 +40,7 @@ class User {
     register(req) {
         return new Promise(
             async (resolve, reject) => {
+
                 try {
                     var allData = await this.selectAll();
                     let flags = 0;
@@ -62,7 +63,6 @@ class User {
                             break;
                         default:
                             var web3Data = await web3js.makeAccounts(req.body.userWalletPW);
-                            console.log('web3Data', web3Data);
                             const sql = 'INSERT INTO kyeonggidb (user, password, name, address, gender, phonenumber, wallet) values (? ,? ,?, ?, ?, ?, ?)';
                             await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN, web3Data]);
                             req.session.user = {
@@ -113,11 +113,18 @@ class User {
         return new Promise(
             async (resolve, reject) => {
                 try {
+                    web3.setProvider(
+                        new web3.providers.HttpProvider('http://localhost:8545')
+                    );
                     if (req.session.user.userDN == 0) {
                         const sql = 'UPDATE kyeonggidb SET status = 1 WHERE user = ?';
                         console.log(sql);
                         var result = await myConnection.query(sql, data.userID);
                         console.log(result);
+                        console.log('userWallet', req.session.user.userWallet);
+                        //Mindhub Solidity
+                        await myContract.methods._register_seller(req.session.user.userWallet);
+
                         //inc Database에 Data저장
                         const incsql = 'INSERT INTO inc (user, inc_name, inc_address, inc_info) values (?, ?, ?, ?)';
                         await myConnection.query(incsql, [data.userID, data.incInfo.inc_name, data.incInfo.inc_address, data.incInfo.inc_info]);
@@ -179,6 +186,7 @@ class User {
             }
         )
     }
+
     //Buyer 의 address Balance 호출
     CallBuyerWalletBalance(data) {
         return new Promise(

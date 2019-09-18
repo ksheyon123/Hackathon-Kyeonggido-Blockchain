@@ -59,13 +59,14 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
-        result1 = JSON.parse(req.body.data);
-        console.log('itemDetail', result1);
-        var itemCode = result1.item_code
+        itemData = JSON.parse(req.body.data);
+        console.log('itemDetail', itemData);
+        var itemCode = itemData.item_code
         //item_Code를 바탕으로 Item 정보 호출
         var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
+        console.log('result', result[0][0]);
         solditem = {
-            userID : result1.user,
+            userID : req.session.user.userID,
             itemCode :  itemCode
         }
         //solditem info의 status 가 0이면 댓글 미작성, 1 이면 작성완료 상태

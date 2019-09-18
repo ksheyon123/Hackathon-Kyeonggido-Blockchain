@@ -139,7 +139,7 @@ userRouter.post('/sellerconfirmation', async (req, res) => {
             console.log('관리자입니다.');
             res.redirect('/');
         } else {
-            console.log('판매자로 등록되셨습니다.');
+            console.log('판매자로 등록되셨습니다.');   
             res.redirect('/')
         }
     } catch (err) {
