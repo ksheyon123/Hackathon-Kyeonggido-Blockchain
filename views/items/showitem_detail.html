@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Show Item</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -89,7 +88,6 @@
     <h3>결제 창</h3>
     <hr>
     <form action="/contract" method='post'>
-        <%= console.log('/showitem_detail', data.statusData) %>
         <p>
             <div>
                 <img src='/media/itemimages/<%= data.itemData.item_img %>'>
@@ -116,8 +114,20 @@
     </form>
     <form method="POST" action="/commentEdit">
         <% if (data.commentData) { %>
+        <%= console.log('in the showitem_detatil', data) %>
         <% for(var  i = 0; i < data.commentData.length; i++) { %>
-        <%= data.commentData[i].buyer %> <%= data.commentData[i].textarea %>
+        <%= data.commentData[i].buyer %> <%= data.commentData[i].comment %> 
+        <% if(data.commentData[i].selectoption == 0) { %>
+            가격에 비해 가성비가 좋아요
+        <% } else if (data.commentData[i].selectoption == 1) { %>
+            이미지보다 실물이 더 예뻐요
+        <% } else if (data.commentData[i].selectoption == 2) { %>
+            상품이 튼튼해요
+        <% } else if (data.commentData[i].selectoption == 3) { %>
+            가격에 비해 가성비가 좋아요
+        <% } %>
+        <hr><br>
+
         <% } %>
         <% } else {  %>
         작성된 댓글이 없습니다.
@@ -151,7 +161,7 @@
     <script>
         async function submitData() {
             var itemCode = document.getElementById('myBtn').value;
-            var data = document.querySelector('input[name="opinion"]:checked').value;
+            var dataindex = document.querySelector('input[name="opinion"]:checked').value;
             var textarea = document.getElementById('textarea').value;
             try {
                 const response = await fetch(`http://localhost:3000/submitcomment`, {
@@ -159,7 +169,7 @@
                     headers: {
                         "Content-Type": 'application/json'
                     },
-                    body: JSON.stringify({ itemCode, data, textarea })
+                    body: JSON.stringify({ itemCode, dataindex, textarea })
                 });
             } catch (err) {
                 window.alert('Data submit Err');

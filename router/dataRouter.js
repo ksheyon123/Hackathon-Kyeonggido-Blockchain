@@ -75,11 +75,11 @@ dataRouter.post('/item_detail', async (req, res) => {
 
         //상품에 대한 Comment 호출
         var comment = await dataModel.selectAllComment(itemCode);
-        console.log('comment : ', comment[0])
+        console.log('comment : ', comment)
         data = {
             userData: req.session.user,
             itemData: result[0][0],
-            commentData : comment[0],
+            commentData : comment,
             statusData: status
         }
         res.render('items/showitem_detail.html', { data: data });
@@ -113,27 +113,24 @@ dataRouter.post('/editmyitem', (req, res) => {
         res.render('items/myitemedit.html', {data:data})
 });
 
-
-
-dataRouter.post('/editconfirm', async (req, res) => {
-    try {
-
-    } catch (err) {
-
-    }
-});
-
 dataRouter.post('/submitcomment', async (req, res) => {
     try{
-        console.log(req.body);
+        console.log('/submitComment', req.body);
         data = {
             itemCode: req.body.itemCode,
-            itemData: req.body.itemData,
+            itemData: req.body.dataindex,
             textarea: req.body.textarea,
             userData: req.session.user.userID
         }
         var result = await dataModel.insertComment(data);
-        
+        console.log('/submitComment result : ', result);
+        if(result == 0) {
+            var result = await dataModel.changeSoldItemStatus(data);
+            console.log(result);
+            res.redirect('/');
+        } else {
+            res.redirect('/item_detail');
+        }
     } catch (err) {
         console.log('submitcomment router Err', err);
     }

@@ -1,48 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Index Page</title>
     <style>
-        #topbar {
+        .topbar {
             background-color: #d3e682;
             padding: 10px;
             border: 0;
             margin: 0;
         }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* The Modal (background) */
+        .loginmodal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+            -webkit-animation-name: fadeIn;
+            /* Fade in the background */
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .loginmodal-content {
+            position: fixed;
+            bottom: 100px;
+            background-color: #fefefe;
+            width: 50%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s
+        }
+
+        /* The Close Button */
+        .closelogin {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .closelogin:hover,
+        .closelogin:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .loginmodal-header {
+            padding: 5px 2px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .loginmodal-body {
+            padding: 2px 16px;
+        }
     </style>
 </head>
+
 <body>
-        <!-- Login Template
+    <!-- Login Template
             Home Banner
             Category Link
             Premium Item Link -->
-            <div id='topbar'>
+
+    <form>
+        <div class='topbar'>
             <a href='/'><img src='media/home.jpg' width="45px" height="45px"></a>
             <a href='/shop'><img src='media/shop.png' width="40px" height="40px"></a>
             <% if (!data.userData) { %>
             <a href='/login'>LOGIN</a>
             <a href='/register'>REGISTER</a>
             <% } else { %>
-                <% if(data.userData.userDN == 1) { %>
-                    <a href='/buytoken'>BuyToken</a>
-                    <a href='/itemup'>ITEMUP</a>
-                    <a href='/myinfo'>MYINFO</a>
-                    <a href='/logout'>LOGOUT</a>
-                <% } else if (data.userData.userDN == 2) { %>
-                    <a href='/tokenconfirm'>Token Confirmation</a>
-                    <a href='/sellerconfirm'>Seller Confirmation</a>
-                    <a href='/myinfo'>MYINFO</a>
-                    <a href='/logout'>LOGOUT</a>
-                <% } else { %>
-                    <a href='/buytoken'>BuyToken</a>
-                    <a href='/myinfo'>MYINFO</a>
-                    <a href='/logout'>LOGOUT</a>
-                <% } %>
-            
+            <% if(data.userData.userDN == 1) { %>
+            <a href='/buytoken'>BuyToken</a>
+            <a href='/itemup'>ITEMUP</a>
+            <a href='/myinfo'>MYINFO</a>
+            <a href='/logout'>LOGOUT</a>
+            <% } else if (data.userData.userDN == 2) { %>
+            <a href='/tokenconfirm'>Token Confirmation</a>
+            <a href='/sellerconfirm'>Seller Confirmation</a>
+            <a href='/myinfo'>MYINFO</a>
+            <a href='/logout'>LOGOUT</a>
+            <% } else { %>
+            <a href='/buytoken'>BuyToken</a>
+            <a href='/myinfo'>MYINFO</a>
+            <a href='/logout'>LOGOUT</a>
+            <% } %>
+
             <% } %>
         </div>
+    </form>
+
 </body>
+
 </html>

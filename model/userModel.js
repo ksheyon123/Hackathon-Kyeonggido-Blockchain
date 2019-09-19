@@ -1,8 +1,8 @@
 var myConnection = require('../dbConfig');
 var web3js = require('./web3');
-var myContract = require('./abi');
-var Web3 = require("web3");
-var web3 = new Web3();
+var Contract = require('./abi');
+var myContract = Contract.myContract;
+var web3 = Contract.web3;
 
 class User {
     //Login
@@ -123,8 +123,7 @@ class User {
                         console.log(result);
                         console.log('userWallet', req.session.user.userWallet);
                         //Mindhub Solidity
-                        await myContract.methods._register_seller(req.session.user.userWallet);
-
+                        await myContract.methods._register_seller(req.session.user.userWallet).send({from : '0xf3ac3482fa86ef9c437c5f4f3adf820634c3f056' });
                         //inc Database에 Data저장
                         const incsql = 'INSERT INTO inc (user, inc_name, inc_address, inc_info) values (?, ?, ?, ?)';
                         await myConnection.query(incsql, [data.userID, data.incInfo.inc_name, data.incInfo.inc_address, data.incInfo.inc_info]);

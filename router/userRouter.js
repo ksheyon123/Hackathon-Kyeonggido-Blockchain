@@ -38,6 +38,7 @@ userRouter.get('/login', async (req, res) => {
 //Login Confirm
 userRouter.post('/loginConfirmation', async (req, res) => {
     try {
+        console.log(req.body);
         var result = await userModel.login(req);
         if (result[0].length > 0) {
             var accountsInfo = await web3js.sendAccountInfo(result[0][0].wallet);

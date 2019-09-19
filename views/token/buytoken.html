@@ -11,10 +11,86 @@
 <body>
     <%- include ../topbar/topbar.html %>
     <hr>
+    <button id='loginBtn'>Login</button>
     <form method='POST' action='/buytoken'>
-        신청 금액 : <input type="text" name="token" id="token">
-        <button type='submit'>신청</button>
+        <div id='buytoken-form'>
+
+        </div>
     </form>
+
+
+    <div id="loginModal" class="loginmodal">
+        <div class="loginmodal-content">
+            <div class="loginmodal-header">
+                <span class="closelogin">&times;</span>
+                <h2>Login Please</h2>
+            </div>
+            <div class="loginmodal-body">
+                <div>
+                    Login ID : <input type='text' id='userID' value=''>
+                    Login PW : <input type='password' id='userPW' value=''>
+                    <button type='submit' onclick='loginconfirm()'>제출</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        async function loginconfirm() {
+            var userID = document.getElementById('userID').value;
+            var userPW = document.getElementById('userPW').value;
+            try {
+                console.log(userID + userPW);
+                const response = await fetch('http://localhost:3000/tokenlogin', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({ userID, userPW })
+
+                });
+                var dataResult = await response.json();
+                console.log('dataResult', dataResult)
+                if (dataResult) {
+                    console.log('hi')
+                    const container = document.getElementById('buytoken-form');
+                    var template =
+                        `신청 금액 : <input type="text" name="token" id="token">` +
+                        `<button type='submit'>신청</button>`;
+                    container.innerHTML = template;
+                }
+
+            } catch (err) {
+                window.alert('Login Failed');
+            }
+        }
+        // Get the modal
+        var modal = document.getElementById("loginModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("loginBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("closelogin")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
 </html>

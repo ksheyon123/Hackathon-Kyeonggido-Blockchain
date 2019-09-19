@@ -1,7 +1,9 @@
 var myConnection = require('../dbConfig');
-var Web3 = require("web3");
-var web3 = new Web3();
-var myContract = require('./abi');
+// var Web3 = require("web3");
+// var web3 = new Web3();
+var Contract = require('./abi');
+var myContract = Contract.myContract;
+var web3 = Contract.web3;
 
 class Item {
     itemup(req) {
@@ -162,13 +164,8 @@ class Item {
                 const sql = 'SELECT status FROM solditem WHERE item_code = ? AND user = ?';
                 try {
                     var result = await myConnection.query(sql, [data.itemCode, data.userID]);
-                    console.log(result);
-                    if(result[0][0]) {
-                        resolve(0);
-                    } else {
-                        resolve(1);
-                    }
-
+                    console.log('dataModel Status : ', result[0][0].status);
+                    resolve(result[0][0].status);
                 } catch (err) {
                     reject(err);
                 }
@@ -179,12 +176,27 @@ class Item {
     insertComment(data) {
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'INSERT INTO (buyer, comment, item_code, selectoption) values (?, ?, ?, ?)';
+                const sql = 'INSERT INTO comment (buyer, comment, item_code) values (?, ?, ?)';
                 try {
-                    await myConnection.query(sql, [data.userData, data.textarea, data.itemCode, data.itemData]);
-                    resolve(data.itemData);
+                    console.log(data);
+                    await myConnection.query(sql, [data.userData, data.textarea, data.itemCode]);
+                    resolve(0);
                 } catch (err) {
-                    reject(err);
+                    reject(1);
+                }
+            }
+        )
+    }
+    changeSoldItemStatus(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                console.log('changeSoldItemStatus Data : ', data);
+                const sql = 'UPDATE solditem SET status = 1 WHERE user = ? AND item_code = ?';
+                try {
+                    await myConnection.query(sql, [data.userData, data.itemCode]);
+                    resolve('Complete');
+                } catch (err) {
+                    reject('changeSoldItemStatus Err : ',err);
                 }
             }
         )

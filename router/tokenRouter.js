@@ -4,6 +4,21 @@ var tokenRouter = express.Router();
 var web3js = require('../model/web3');
 var userModel = require('../model/userModel');
 
+tokenRouter.post('/tokenlogin', async (req, res) => {
+    try {
+        if(req.body.userID == req.session.user.userID){
+            result = await userModel.login(req);
+            console.log('token Login result', result[0][0]);
+            res.status(200).send(result[0][0]);
+        } else {
+            console.log('token Login Err : ', err);
+        }
+    } catch (err) {
+        console.log('token Login Err : ', err);
+    }
+});
+
+
 tokenRouter.get('/buytoken', (req, res) => {
     data = {
         userData: req.session.user
@@ -11,8 +26,10 @@ tokenRouter.get('/buytoken', (req, res) => {
     res.render('token/buytoken.html', {data:data})
 });
 
+//토큰 구매
 tokenRouter.post('/buytoken', async(req, res) => {
     try {
+        console.log(req.body);
         var token = req.body.token * 1000000000000000000;
         data = {
             userData: req.session.user,
@@ -26,7 +43,7 @@ tokenRouter.post('/buytoken', async(req, res) => {
     }
 });
 
-
+//상품 거래
 tokenRouter.post('/contract', async (req, res) => {
     try {
         var data = JSON.parse(req.body.data);

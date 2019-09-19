@@ -255,4 +255,4 @@ const abi = [
 const contractAddr = '0x0935036b39a457ee5e6674deec1d698542e6284c';
 const myContract = new web3.eth.Contract(abi, contractAddr);
 
-module.exports = myContract;
+module.exports = { myContract, web3 };
