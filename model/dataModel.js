@@ -177,7 +177,7 @@ class Item {
                     var result = await myConnection.query(sql, [data.itemCode, data.userID]);
                     console.log('status', result[0][0]);
                     if(!result[0][0]) {
-                        resolve(0);
+                        resolve(result[0][0]);
                     } else {
                         console.log('dataModel Status : ', result[0][0].status);
                         resolve(result[0][0].status);
@@ -203,7 +203,7 @@ class Item {
             }
         )
     }
-    changeSoldItemStatus(data) {
+    changeSoldItemStatustoOne(data) {
         return new Promise (
             async (resolve, reject) => {
                 console.log('changeSoldItemStatus Data : ', data);
@@ -213,6 +213,35 @@ class Item {
                     resolve(0);
                 } catch (err) {
                     reject('changeSoldItemStatus Err : ',err);
+                }
+            }
+        )
+    }
+    changeSoldItemStatustoTwo(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                console.log('changeSoldItemStatus Data : ', data);
+                const sql = 'UPDATE solditem SET status = 2 WHERE id = ?';
+                try {
+                    await myConnection.query(sql, [data.id]);
+                    resolve(0);
+                } catch (err) {
+                    reject('changeSoldItemStatus Err : ',err);
+                }
+            }
+        )
+    }
+
+    deleteItemFromSolditem(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                console.log('id : ' + data.id + ' deleting');
+                const sql = 'DELETE FROM solditem WHERE id = ?';
+                try {
+                    await myConnection.query(sql, [data.id]);
+                    resolve('Delete Complete');
+                } catch (err) {
+                    reject(err);
                 }
             }
         )

@@ -206,7 +206,7 @@ class User {
                     console.log('buyerBalance', ableToken);
                     resolve(ableToken);
                 } catch (err) {
-                    console.log(err);
+                    reject(err);
                 }
 
             }

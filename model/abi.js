@@ -22,10 +22,6 @@ const abi = [
 			{
 				"name": "_payId",
 				"type": "uint256"
-			},
-			{
-				"name": "_productId",
-				"type": "uint256"
 			}
 		],
 		"name": "_auto_confirm",
@@ -39,10 +35,6 @@ const abi = [
 		"inputs": [
 			{
 				"name": "_payId",
-				"type": "uint256"
-			},
-			{
-				"name": "_productId",
 				"type": "uint256"
 			}
 		],
@@ -182,7 +174,40 @@ const abi = [
 		"name": "_get_ablebalance",
 		"outputs": [
 			{
-				"name": "blanace",
+				"name": "balance",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "_get_balanceOf",
+		"outputs": [
+			{
+				"name": "balance",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "_get_payment_count",
+		"outputs": [
+			{
+				"name": "",
 				"type": "uint256"
 			}
 		],
@@ -203,56 +228,9 @@ const abi = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_account",
-				"type": "address"
-			}
-		],
-		"name": "_get_seller_info",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "deployer",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "mindTokenContract",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
 	}
 ];
-const contractAddr = '0xC0D23AC5b4a8390e609b21941bD4628099265aCd';
+const contractAddr = '0x81387D012eB7A765D92cf4B16ee0D45f4e6eCE52';
 const myContract = new web3.eth.Contract(abi, contractAddr);
 
 module.exports = { myContract, web3 };

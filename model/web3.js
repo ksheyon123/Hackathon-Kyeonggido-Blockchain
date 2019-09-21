@@ -154,21 +154,24 @@ class web3js {
     }
 
     finalConfirmation(data) {
-        //req.body.confirm 0 => 구매 확정
-        //req.body.confirm 1 => 구매 취소
+        //you received data = {id, confirm}
         return new Promise(
             async (resolve, reject) => {
-                console.log(data);
+                console.log('data.confirm', data.confirm);
                 try {
-                    const sql = 'SELECT index FROM solditem WHERE index = ?'
-                    var result = await myConnection.query(sql, [data.index])
-                    var itemCode = result[0][0].item_code;
-                    if (data.confirm = 0) {
-                        await myContract.methods._purchase_confirmation(data.index, itemCode).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
+                    // Get item_code from solditem based on id
+                    // const sql = 'SELECT item_code FROM solditem WHERE id = ?'
+                    // var result = await myConnection.query(sql, [data.id])
+                    // var itemCode = result[0][0].item_code;
+                    var payID = data.id-1;
+                    console.log('payID', payID);
+                    if (data.confirm == 0) {
+                        var result = await myContract.methods._purchase_confirmation(payID).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
                         //거래 확정 tx 생성
+                        console.log(result);
                         resolve(0);
-                    } else if (data.confirm = 1) {
-                        await myContract.methods._adobt(data.index, itemCode).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 })
+                    } else if (data.confirm == 1) {
+                        await myContract.methods._adobt(payID).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
                         //거래 취소 tx 생성
                         resolve(1)
                     } else {

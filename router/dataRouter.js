@@ -59,9 +59,9 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
+        console.log(req.body.data);
         itemData = JSON.parse(req.body.data);
         console.log('itemDetail', itemData);
-        //_purchase_product(구매자주소, 물품번호).sender(~~);
         var itemCode = itemData.item_code
         //item_Code를 바탕으로 Item 정보 호출
         var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
@@ -126,7 +126,7 @@ dataRouter.post('/submitcomment', async (req, res) => {
         var result = await dataModel.insertComment(data);
         console.log('/submitComment result : ', result);
         if(result == 0) {
-            var result = await dataModel.changeSoldItemStatus(data);
+            var result = await dataModel.changeSoldItemStatustoOne(data);
             //result = 0 문제 없이 solditem status 변경
             res.status(200).send(true);
         } else {
@@ -139,14 +139,22 @@ dataRouter.post('/submitcomment', async (req, res) => {
 
 dataRouter.post('/purchaseconfirm', async (req, res) => {
     try {
-        console.log(req.body);
+        //if you click purchaseconfirm button then req.body = {id(of item), confirm (0)}, if not req.body = {id, confirm (1)}
+        console.log('/purchaseconfirm', req.body);
         //req.body.confirm 0 => 구매 확정
         //req.body.confirm 1 => 구매 취소
-        var result = await web3js.finalConfirmation(req.body);
-        if(result = 0) {
+        var confirmData = await web3js.finalConfirmation(req.body);
+        console.log('confirmData : ', confirmData);
+        var ableToken = await web3js.sendAccountInfo(req.session.user.userWallet);
+        req.session.user.userBalance = ableToken;
+        if(confirmData == 0) {
+            console.log('result=0');
+            await dataModel.changeSoldItemStatustoTwo(req.body)
             res.redirect('/');
-        } else if (result = 1) {
-            res.redirect('/transactioninfo');
+        } else if (confirmData = 1) {
+            console.log('result=1');
+            await dataModel.deleteItemFromSolditem(req.body);
+            res.redirect('/');
         }
     } catch (err) {
         console.log('Purchase Router Err', err);

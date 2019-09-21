@@ -133,9 +133,14 @@
         작성된 댓글이 없습니다.
         <% } %>
     </form>
-    <% if(data.statusData == 0) { %>
-    <button id='myBtn' name='itemCode' value='<%= data.itemData.item_code %>'>댓글
-        작성</button>
+
+    <% if (data.statusData == undefined) { %>
+
+    <% } else if (data.statusData == 2)  { %>
+        <button id='myBtn' name='itemCode' value='<%= data.itemData.item_code %>'>댓글
+    작성</button>
+    <% } else { %>
+
     <% } %>
 
 

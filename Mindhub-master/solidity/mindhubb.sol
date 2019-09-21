@@ -4,8 +4,8 @@ import "./MindToken.sol";
 
 contract MindHub {
     
-    MindToken public mindTokenContract;
-    address payable public deployer;
+    MindToken private mindTokenContract;
+    address payable private deployer;
 
     /*
     배송 상태 {구매완료, 배송중, 배송완료, 구매확정, 완료}
@@ -101,7 +101,8 @@ contract MindHub {
     */
     //물품 구매
     function _purchase_product(address payable _buyerAddress, uint _productId) public payable {
-        require(userList[_buyerAddress].ableBalance >= productList[_productId].price);
+        require(userList[_buyerAddress].ableBalance >= userList[_buyerAddress].ableBalance - productList[_productId].price);
+        require( (userList[_buyerAddress].ableBalance - productList[_productId].price) >= 0 );
         //require(productList[_productId].price == msg.value);
         userList[_buyerAddress].paymentArray.push(paymentId);
         payList[paymentId].price = productList[_productId].price;
@@ -113,8 +114,8 @@ contract MindHub {
         //토큰으로 구매하는 부분
         mindTokenContract.approve(_buyerAddress, _buyerAddress, 0);
         mindTokenContract.increaseAllowance(_buyerAddress, _buyerAddress, productList[_productId].price);
-        userList[_buyerAddress].ableBalance = 
-        (mindTokenContract.balanceOf(_buyerAddress) - productList[_productId].price);
+        
+        userList[_buyerAddress].ableBalance -= productList[_productId].price;
 
         _add_payid();
         emit evtPurchaseProduct();
@@ -123,13 +124,17 @@ contract MindHub {
     function _add_payid() private {
         paymentId++;
     }
+    //결제내역 갯수 불러오기
+    function _get_payment_count() view public returns (uint) { 
+        return paymentId-1;
+    }
     
     //물품 구매 확정 (배송완료)
-    function _purchase_confirmation(uint _payId, uint _productId) public 
+    function _purchase_confirmation(uint _payId) public 
     isPurchaseCompletion(payList[_payId].state) {
-        require(productList[_productId].seller_owner == payList[_payId].sellerAddress);
+        //require(productList[_productId].seller_owner == payList[_payId].sellerAddress);
         mindTokenContract.transferFrom(payList[_payId].buyerAddress, payList[_payId].buyerAddress, 
-        payList[_payId].sellerAddress, productList[_productId].price);
+        payList[_payId].sellerAddress, payList[_payId].price);
         //payList[_payId].sellerAddress.transfer(payList[_payId].price);
         payList[_payId].state = State.Completion;
         emit evtPurchaseConfirmation();
@@ -138,8 +143,8 @@ contract MindHub {
     //물품 결제 취소 (결제취소)
     function _adobt(uint _payId) public 
     isPurchaseCompletion(payList[_payId].state) {
-        mindTokenContract.transferFrom(payList[_payId].buyerAddress, payList[_payId].buyerAddress, 
-        payList[_payId].buyerAddress, payList[_payId].price);
+        //mindTokenContract.transferFrom(payList[_payId].buyerAddress, payList[_payId].buyerAddress, 
+        //payList[_payId].buyerAddress, payList[_payId].price);
         //payList[_payId].buyerAddress.transfer(payList[_payId].price);
         payList[_payId].state = State.Cancel;
         userList[payList[_payId].buyerAddress].ableBalance += payList[_payId].price;
@@ -147,9 +152,9 @@ contract MindHub {
     }
     
     //물품 강제 배송확정 (30초후)
-    function _auto_confirm(uint _payId, uint _productId) public {
+    function _auto_confirm(uint _payId) public {
         require(now >= payList[_payId].deliveryTime);
-        _purchase_confirmation(_payId, _productId);
+        _purchase_confirmation(_payId);
         emit evtAutoConfirm();
     }
 
@@ -163,15 +168,15 @@ contract MindHub {
     }
     
     //판매자 정보 불러오기
-    function _get_seller_info(address _account) view public returns  (address) {
-        return (userList[_account].account);
-    }
+    // function _get_seller_info(address _account) view public returns  (address) {
+    //     return (userList[_account].account);
+    // }
     
     //물품 갯수 불러오기
     function _get_product_count() view public returns (uint) { 
-        return productId;
+        return productId-1;
     }
-
+    
 
     /*
     ============================물품 등록================================
@@ -206,8 +211,13 @@ contract MindHub {
     /*
     ===========================Balance get ============================
     */
-
-    function _get_ablebalance(address _buyerAddress) public view returns (uint blanace) {
+    function _get_ablebalance(address _buyerAddress) public view returns (uint balance) {
         return userList[_buyerAddress].ableBalance;
     }
+
+    //Real Balance get
+    function _get_balanceOf(address _address) public view returns (uint balance) {
+        return mindTokenContract.balanceOf(_address);
+    }
+    
 }
