@@ -61,6 +61,7 @@ dataRouter.post('/item_detail', async (req, res) => {
     try {
         itemData = JSON.parse(req.body.data);
         console.log('itemDetail', itemData);
+        //_purchase_product(구매자주소, 물품번호).sender(~~);
         var itemCode = itemData.item_code
         //item_Code를 바탕으로 Item 정보 호출
         var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
@@ -126,13 +127,29 @@ dataRouter.post('/submitcomment', async (req, res) => {
         console.log('/submitComment result : ', result);
         if(result == 0) {
             var result = await dataModel.changeSoldItemStatus(data);
-            console.log(result);
-            res.redirect('/');
+            //result = 0 문제 없이 solditem status 변경
+            res.status(200).send(true);
         } else {
             res.redirect('/item_detail');
         }
     } catch (err) {
         console.log('submitcomment router Err', err);
+    }
+});
+
+dataRouter.post('/purchaseconfirm', async (req, res) => {
+    try {
+        console.log(req.body);
+        //req.body.confirm 0 => 구매 확정
+        //req.body.confirm 1 => 구매 취소
+        var result = await web3js.finalConfirmation(req.body);
+        if(result = 0) {
+            res.redirect('/');
+        } else if (result = 1) {
+            res.redirect('/transactioninfo');
+        }
+    } catch (err) {
+        console.log('Purchase Router Err', err);
     }
 });
 

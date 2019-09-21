@@ -40,8 +40,10 @@ userRouter.post('/loginConfirmation', async (req, res) => {
     try {
         console.log(req.body);
         var result = await userModel.login(req);
+        console.log('loginresult', result[0][0]);
         if (result[0].length > 0) {
             var accountsInfo = await web3js.sendAccountInfo(result[0][0].wallet);
+            console.log('accountsInfo', accountsInfo);
             req.session.user = {
                 userIndex: result[0][0].index,
                 userID: result[0][0].user,
@@ -182,7 +184,6 @@ userRouter.post('/sellerconfirm', async (req, res) => {
 
 
 userRouter.get('/transactioninfo', async (req, res) => {
-    console.log(req.session.user);
     try {
         var result = await userModel.CallBoughtItemData(req.session.user.userID);
         data = {

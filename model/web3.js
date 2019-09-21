@@ -5,6 +5,10 @@ var Contract = require('./abi');
 var myContract = Contract.myContract;
 var web3 = Contract.web3;
 
+web3.setProvider(
+    new web3.providers.HttpProvider('http://localhost:7545')
+);
+
 class web3js {
     //register 시, eth 계정 생성
     makeAccounts(data) {
@@ -12,9 +16,6 @@ class web3js {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    web3.setProvider(
-                        new web3.providers.HttpProvider('http://localhost:8545')
-                    );
                     var newAccount = await web3.eth.personal.newAccount(data);
                     console.log('Ether Account', newAccount);
                     resolve(newAccount);
@@ -25,17 +26,17 @@ class web3js {
         );
     }
 
+
     //Ether Account 호출
     sendAccountInfo(data) {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    web3.setProvider(
-                        new web3.providers.HttpProvider('http://localhost:8545')
-                    );
-                    var accountInfo = await web3.eth.getBalance(data);
-                    var money = accountInfo / 1000000000000000000;
-                    resolve(money);
+                    console.log('sendAccounts');
+                    var ableToken = await myContract.methods._get_ablebalance(data).call();
+                    console.log('ableToken : ', ableToken);
+
+                    resolve(ableToken);
                 } catch (err) {
                     console.log(err);
                     reject('Cannot getAccounts');
@@ -47,27 +48,18 @@ class web3js {
     //token 전송
     sendTokenFromAdmin(data) {
         console.log('sendTokenFromAdmin', data);
+        console.log('sendTokenFromAdmin', data.userData.userWallet);
+        console.log('sendTokenFromAdmin', typeof (parseInt(data.userMoney)));
+        console.log('sendTokenFromAdmin', parseInt(data.userMoney));
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    web3.setProvider(
-                        new web3.providers.HttpProvider('http://localhost:8545')
-                    );
-                    var result = await web3.eth.sendTransaction({ from: "0xf3ac3482fa86ef9c437c5f4f3adf820634c3f056", to: `${data.userData.userWallet}`, value: `${data.userMoney}` });
+                    var result = await myContract.methods._token_purchase(data.userData.userWallet, parseInt(data.userMoney)).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
+                    // var result = await web3.eth.sendTransaction({ from: "0xf3ac3482fa86ef9c437c5f4f3adf820634c3f056", to: `${data.userData.userWallet}`, value: `${data.userMoney}` });
                     if (result.blockNumber) {
-
-                        //Under Below 4 Statement should be a Function
-                        //Get Block Data
-                        var blockData = await web3.eth.getBlock(result.blockNumber);
-
-                        //Solve Transaction Code into Hex Transaction Code 
-                        var txData = blockData.transactions.toString();
-
-                        //Get Transaction Information
-                        var TransactionData = await web3.eth.getTransaction(txData);
-
-                        //Sum After Transaction userBalance
-                        data.userData.userBalance = data.userData.userBalance + TransactionData.value / 1000000000000000000;
+                        var ableToken = await myContract.methods._get_ablebalance(data.userData.userWallet).call();
+                        console.log('ableToken : ', ableToken);
+                        data.userData.userBalance = ableToken;
                         resolve(data);
                     } else {
                         console.log('get Transaction Info Error');
@@ -86,18 +78,15 @@ class web3js {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    web3.setProvider(
-                        new web3.providers.HttpProvider('http://localhost:8545')
-                    );
                     const sql = `SELECT wallet FROM kyeonggidb WHERE user ="${data.itemData.user}"`;
                     var result = await myConnection.query(sql);
                     //sendTransaction userData: 구매자 result : 판매자
-                    var txResult = await web3.eth.sendTransaction({ from: `${data.userData.userWallet}`, to: `${result[0][0].wallet}`, value: `${data.itemData.item_price * 1000000000000000000}` });
-
-                    var balance = await web3.eth.getBalance(data.userData.userWallet);
+                    // var txResult = await web3.eth.sendTransaction({ from: `${data.userData.userWallet}`, to: `${result[0][0].wallet}`, value: `${data.itemData.item_price * 1000000000000000000}` });
+                    var txResult = await myContract.methods._purchase_product(data.userData.userWallet, data.itemData.item_code).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
+                    var balance = await myContract.methods._get_ablebalance(data.userData.userWallet).call();
 
                     //Sum After Transaction userBalance
-                    data.userData.userBalance = balance / 1000000000000000000;
+                    data.userData.userBalance = balance
 
                     //Buying Data Put In Database
                     if (txResult.blockNumber) {
@@ -119,10 +108,7 @@ class web3js {
 
                         console.log('data.tx', data.tx);
                         const sql = 'INSERT INTO solditem (user, seller, item_name, item_price, blocknum, tx, item_code) values (?, ?, ?, ?, ?, ?, ?)';
-                        await myConnection.query(sql, [data.user, data.itemS, data.itemN, data.itemP, data.blockNum, data.tx, data.itemC]); 
-
-                        
-
+                        await myConnection.query(sql, [data.user, data.itemS, data.itemN, data.itemP, data.blockNum, data.tx, data.itemC]);
                     } else {
                         console.log('Get Block Number Fail');
                     }
@@ -135,30 +121,27 @@ class web3js {
         );
     }
 
-    //Token 구매자에서 판매자로 전달
-    getBalanceOfBuyer(data) {
+    // //Token 구매자에서 판매자로 전달
+    // getBalanceOfBuyer(data) {
+    //     return new Promise(
+    //         async (resolve, reject) => {
+    //             try {
+    //                 web3.setProvider(
+    //                     new web3.providers.HttpProvider('http://localhost:7545')
+    //                 );
+    //                 var ableToken = await myContract.methods._get_ablebalance(data.userData.userWallet).call();
+    //                 console.log('getBalanceOfBuyer', ableToken);
+    //                 resolve(result);
+    //             } catch (err) {
+    //                 reject(err);
+    //             }
+    //         });
+    // }
+    //wallet Unlock 현재는 의미 없음
+    unlockWallet(data) {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    web3.setProvider(
-                        new web3.providers.HttpProvider('http://localhost:8545')
-                    );
-                    var result = await web3.eth.getBalance(data);
-                    console.log('getBalanceOfBuyer', result);
-                    resolve(result);
-                } catch (err) {
-                    reject(err);
-                }
-            });
-    }
-    //wallet Unlock 현재는 의미 없음
-    unlockWallet(data) {
-        return new Promise (
-            async (resolve, reject) => {
-                try {
-                    web3.setProvider(
-                        new web3.providers.HttpProvider('http://localhost:8545')
-                    );
                     console.log('unlock data', data);
                     var result = await web3.eth.personal.unlockAccount(data.walletAddr, data.walletPW, 15000);
                     console.log('unlockresult', result);
@@ -170,6 +153,34 @@ class web3js {
         )
     }
 
+    finalConfirmation(data) {
+        //req.body.confirm 0 => 구매 확정
+        //req.body.confirm 1 => 구매 취소
+        return new Promise(
+            async (resolve, reject) => {
+                console.log(data);
+                try {
+                    const sql = 'SELECT index FROM solditem WHERE index = ?'
+                    var result = await myConnection.query(sql, [data.index])
+                    var itemCode = result[0][0].item_code;
+                    if (data.confirm = 0) {
+                        await myContract.methods._purchase_confirmation(data.index, itemCode).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
+                        //거래 확정 tx 생성
+                        resolve(0);
+                    } else if (data.confirm = 1) {
+                        await myContract.methods._adobt(data.index, itemCode).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 })
+                        //거래 취소 tx 생성
+                        resolve(1)
+                    } else {
+                        //예외 Err
+                        resolve(2);
+                    }
+                } catch (err) {
+                    console.log('Buying Final Confirm Err : ', err);
+                }
+            }
+        )
+    }
 }
 
 

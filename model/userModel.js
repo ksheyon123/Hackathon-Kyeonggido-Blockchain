@@ -4,6 +4,10 @@ var Contract = require('./abi');
 var myContract = Contract.myContract;
 var web3 = Contract.web3;
 
+web3.setProvider(
+    new web3.providers.HttpProvider('http://localhost:7545')
+);
+
 class User {
     //Login
     login(req) {
@@ -113,17 +117,12 @@ class User {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    web3.setProvider(
-                        new web3.providers.HttpProvider('http://localhost:8545')
-                    );
                     if (req.session.user.userDN == 0) {
                         const sql = 'UPDATE kyeonggidb SET status = 1 WHERE user = ?';
                         console.log(sql);
                         var result = await myConnection.query(sql, data.userID);
                         console.log(result);
                         console.log('userWallet', req.session.user.userWallet);
-                        //Mindhub Solidity
-                        await myContract.methods._register_seller(req.session.user.userWallet).send({from : '0xf3ac3482fa86ef9c437c5f4f3adf820634c3f056' });
                         //inc Database에 Data저장
                         const incsql = 'INSERT INTO inc (user, inc_name, inc_address, inc_info) values (?, ?, ?, ?)';
                         await myConnection.query(incsql, [data.userID, data.incInfo.inc_name, data.incInfo.inc_address, data.incInfo.inc_info]);
@@ -175,10 +174,20 @@ class User {
         console.log(data);
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'UPDATE kyeonggidb, inc SET kyeonggidb.status = 0, kyeonggidb.dnum = 1, inc.inc_confirm = 1 WHERE kyeonggidb.user = ? AND inc.user = ?';
+                const sql = `SELECT wallet FROM kyeonggidb WHERE user = "${data}" AND status = 1`;
+                console.log(sql);
+                var result = await myConnection.query(sql);
+                console.log('wallet Result :', result[0][0]);
+                //Mindhub Solidity
+                await myContract.methods._register_seller(result[0][0].wallet).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9" });
                 try {
-                    var result = await myConnection.query(sql, [data, data]);
-                    resolve(result);
+                    if (result[0][0].wallet) {
+                        const sql = 'UPDATE kyeonggidb, inc SET kyeonggidb.status = 0, kyeonggidb.dnum = 1, inc.inc_confirm = 1 WHERE kyeonggidb.user = ? AND inc.user = ?';
+                        var result1 = await myConnection.query(sql, [data, data]);
+                        resolve(result1);
+                    } else {
+                        resolve('None');
+                    }
                 } catch (err) {
                     reject(err);
                 }
@@ -190,39 +199,29 @@ class User {
     CallBuyerWalletBalance(data) {
         return new Promise(
             async (resolve, reject) => {
-                //두 번째 try 까지 없어도 되는 함수
-                console.log(data.itemData);
-                const sql = `SELECT wallet FROM kyeonggidb WHERE user = "${data.itemData.user}"`;
                 try {
-                    var result = await myConnection.query(sql, data.itemData.user);
-                    console.log('Transaction Complete Function', data.userData);
-                    try {
-                        //Get buyer's Balance 
-                        var buyerBalance = await web3js.getBalanceOfBuyer(data.userData.userWallet);
-                        console.log('buyerBalance', buyerBalance);
-                        var buyerBalanceC = buyerBalance / 1000000000000000000;
-
-
-                        resolve(buyerBalanceC);
-                    } catch(err) {
-                        console.log(err);
-                    }
+                    console.log('CallBuyerWalletBalance', data.userData);
+                    //Get buyer's Balance 
+                    var ableToken = await myContract.methods._get_ablebalance(data.userData.userWallet).call();
+                    console.log('buyerBalance', ableToken);
+                    resolve(ableToken);
                 } catch (err) {
-                    reject(err);
+                    console.log(err);
                 }
+
             }
         )
     }
 
     //거래 내역 조회
     CallBoughtItemData(data) {
-        return new Promise (
+        return new Promise(
             async (resolve, reject) => {
                 const sql = `SELECT * FROM solditem WHERE user = '${data}'`;
                 try {
                     var result = await myConnection.query(sql);
                     resolve(result);
-                } catch(err) {
+                } catch (err) {
                     reject(err);
                 }
             }

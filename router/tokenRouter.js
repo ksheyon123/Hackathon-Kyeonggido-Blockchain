@@ -3,10 +3,13 @@ var tokenRouter = express.Router();
 
 var web3js = require('../model/web3');
 var userModel = require('../model/userModel');
+var Contract = require('../model/abi');
+var myContract = Contract.myContract;
+var web3 = Contract.web3;
 
 tokenRouter.post('/tokenlogin', async (req, res) => {
     try {
-        if(req.body.userID == req.session.user.userID){
+        if (req.body.userID == req.session.user.userID) {
             result = await userModel.login(req);
             console.log('token Login result', result[0][0]);
             res.status(200).send(result[0][0]);
@@ -23,20 +26,21 @@ tokenRouter.get('/buytoken', (req, res) => {
     data = {
         userData: req.session.user
     }
-    res.render('token/buytoken.html', {data:data})
+    res.render('token/buytoken.html', { data: data })
 });
 
 //토큰 구매
-tokenRouter.post('/buytoken', async(req, res) => {
+tokenRouter.post('/buytoken', async (req, res) => {
     try {
         console.log(req.body);
-        var token = req.body.token * 1000000000000000000;
+        var token = req.body.token;
+        // var token = req.body.token * 1000000000000000000;
         data = {
             userData: req.session.user,
             userMoney: token
         }
         var result = await web3js.sendTokenFromAdmin(data);
-        console.log(result);
+        console.log('buytoken result', result);
         res.redirect('/')
     } catch (err) {
         console.log(err);
@@ -74,13 +78,13 @@ tokenRouter.post('/unlockwallet', async (req, res) => {
     console.log(req.body.walletPW);
     try {
         data = {
-            walletPW : req.body.walletPW,
-            walletAddr : req.session.user.userWallet
+            walletPW: req.body.walletPW,
+            walletAddr: req.session.user.userWallet
         }
         var result = await web3js.unlockWallet(data);
         console.log('unlock data', result);
         res.redirect('/');
-    } catch(err) {
+    } catch (err) {
         console.log(err);
     }
 })

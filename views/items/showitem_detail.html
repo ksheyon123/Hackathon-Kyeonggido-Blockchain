@@ -116,15 +116,15 @@
         <% if (data.commentData) { %>
         <%= console.log('in the showitem_detatil', data) %>
         <% for(var  i = 0; i < data.commentData.length; i++) { %>
-        <%= data.commentData[i].buyer %> <%= data.commentData[i].comment %> 
+        <%= data.commentData[i].buyer %> <%= data.commentData[i].comment %>
         <% if(data.commentData[i].selectoption == 0) { %>
-            가격에 비해 가성비가 좋아요
+        가격에 비해 가성비가 좋아요
         <% } else if (data.commentData[i].selectoption == 1) { %>
-            이미지보다 실물이 더 예뻐요
+        이미지보다 실물이 더 예뻐요
         <% } else if (data.commentData[i].selectoption == 2) { %>
-            상품이 튼튼해요
+        상품이 튼튼해요
         <% } else if (data.commentData[i].selectoption == 3) { %>
-            가격에 비해 가성비가 좋아요
+        가격에 비해 가성비가 좋아요
         <% } %>
         <hr><br>
 
@@ -133,10 +133,10 @@
         작성된 댓글이 없습니다.
         <% } %>
     </form>
-        <% if(data.statusData == 0) { %>
-            <button id='myBtn' name='itemCode' value='<%= data.itemData.item_code %>'>댓글
-                작성</button>
-        <% } %>
+    <% if(data.statusData == 0) { %>
+    <button id='myBtn' name='itemCode' value='<%= data.itemData.item_code %>'>댓글
+        작성</button>
+    <% } %>
 
 
     <div id="myModal" class="modal">
@@ -171,6 +171,11 @@
                     },
                     body: JSON.stringify({ itemCode, dataindex, textarea })
                 });
+                var dataResult = await response.json();
+                console.log('dataResult', dataResult);
+                if (dataResult = true) {
+                    modal.style.display = "none";
+                }
             } catch (err) {
                 window.alert('Data submit Err');
             }

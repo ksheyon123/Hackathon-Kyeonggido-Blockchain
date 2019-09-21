@@ -5,6 +5,10 @@ var Contract = require('./abi');
 var myContract = Contract.myContract;
 var web3 = Contract.web3;
 
+web3.setProvider(
+    new web3.providers.HttpProvider('http://localhost:7545')
+);
+
 class Item {
     itemup(req) {
         var data = {
@@ -15,23 +19,30 @@ class Item {
             item_img: req.body.item_img,
             item_info: req.body.item_info
         }
-        console.log(data.user);
+        console.log('seller info', req.session.user);
+        console.log('user', data.user);
         return new Promise(
             async (resolve, reject) => {
                 try {
                     //item_code ++1;
+
                     const sql = 'SELECT MAX(item_code) AS result FROM item';
                     var result = await myConnection.query(sql);
-                    if (!result[0][0].result) {
+                    console.log('Maxitemcode', result);
+                    if (result[0][0].result == null) {
                         var item_code = 0;
                     } else {
-                        console.log(result[0][0].result);
+                        console.log('if item exist', result[0][0].result);
                         var item_code = result[0][0].result + 1;
                     }
                     try {
                         const sql = 'INSERT INTO item (user, item_name, item_category, item_price, item_img, item_info,item_code) values (?, ?, ?, ?, ?, ?, ?)';
-                        var result = await myConnection.query(sql, [data.user, data.item_name, data.item_category, data.item_price, data.item_img, data.item_info, item_code]);
-                        resolve('hi');
+                        await myConnection.query(sql, [data.user, data.item_name, data.item_category, data.item_price, data.item_img, data.item_info, item_code]);
+                        //itemUp 
+                        console.log('itemupwallet', req.session.user.userWallet);
+                        await myContract.methods._register_product(req.session.user.userWallet, data.item_name, parseInt(data.item_price))
+                        .send({from:'0x3b8886c692611ae5113d8ba5dec7392d839ab3b9', gas :3000000});
+                        resolve('kyeongJae');
                     } catch (err) {
                         reject(err);
                     }
@@ -161,11 +172,16 @@ class Item {
         console.log('dataModel', data);
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'SELECT status FROM solditem WHERE item_code = ? AND user = ?';
                 try {
+                    const sql = 'SELECT status FROM solditem WHERE item_code = ? AND user = ?';
                     var result = await myConnection.query(sql, [data.itemCode, data.userID]);
-                    console.log('dataModel Status : ', result[0][0].status);
-                    resolve(result[0][0].status);
+                    console.log('status', result[0][0]);
+                    if(!result[0][0]) {
+                        resolve(0);
+                    } else {
+                        console.log('dataModel Status : ', result[0][0].status);
+                        resolve(result[0][0].status);
+                    }
                 } catch (err) {
                     reject(err);
                 }
@@ -176,10 +192,10 @@ class Item {
     insertComment(data) {
         return new Promise(
             async (resolve, reject) => {
-                const sql = 'INSERT INTO comment (buyer, comment, item_code) values (?, ?, ?)';
+                const sql = 'INSERT INTO comment (buyer, comment, item_code, selectoption) values (?, ?, ?, ?)';
                 try {
                     console.log(data);
-                    await myConnection.query(sql, [data.userData, data.textarea, data.itemCode]);
+                    await myConnection.query(sql, [data.userData, data.textarea, data.itemCode, data.itemData]);
                     resolve(0);
                 } catch (err) {
                     reject(1);
@@ -194,7 +210,7 @@ class Item {
                 const sql = 'UPDATE solditem SET status = 1 WHERE user = ? AND item_code = ?';
                 try {
                     await myConnection.query(sql, [data.userData, data.itemCode]);
-                    resolve('Complete');
+                    resolve(0);
                 } catch (err) {
                     reject('changeSoldItemStatus Err : ',err);
                 }
