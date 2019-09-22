@@ -246,6 +246,20 @@ class Item {
             }
         )
     }
+    UpItemRank(data) {
+        return new Promise (
+            async (resolve, reject) => {
+                console.log('UpItemRank');
+                const sql = 'UPDATE item SET item_rank = item_rank + 1 WHERE id = ?';
+                try {
+                    await myConnection.query(sql, [data]);
+                    resolve(0);
+                } catch (err) {
+                    reject('UpItemRank Err ', err );
+                }
+            }
+        )
+    }
 
 }
 

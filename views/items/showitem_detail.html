@@ -114,7 +114,6 @@
     </form>
     <form method="POST" action="/commentEdit">
         <% if (data.commentData) { %>
-        <%= console.log('in the showitem_detatil', data) %>
         <% for(var  i = 0; i < data.commentData.length; i++) { %>
         <%= data.commentData[i].buyer %> <%= data.commentData[i].comment %>
         <% if(data.commentData[i].selectoption == 0) { %>

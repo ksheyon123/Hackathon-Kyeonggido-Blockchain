@@ -21,13 +21,6 @@
         내 이름 : <%= data.userData.userName %>
     </p>
     <p>
-        성 별 : <% if (data.userData.userGen == 1) { %>
-        male
-        <% } else if (data.userData.userGen == 2) { %>
-        female
-        <% } %>
-    </p>
-    <p>
         집 주소 : <%= data.userData.userAddr %>
     </p>
     <p>
@@ -41,14 +34,19 @@
     </p>
     <!-- wallet Unlock 현재는 의미 없음 -->
     <form>
-        Enter Wallet PW : <input type='text' name='walletPW' id='walletPW'></br>
+        Enter Wallet PW : <input type='password' name='walletPW' id='walletPW'></br>
         <input type='button' value='unlock' onclick="unlockWallet()">
     </form>
-
+    <%= console.log(data.userData.userStatus) %>
     <% if(data.userData.userDN == 0) { %>
     <a href='/myinfo_detail'>내 정보 수정</a>
+    <% if (data.userData.userStatus == 0) { %>
     <a href='/tobeseller'>판매자 등록</a>
+    <% } else if (data.userData.userStatus == 1) {%>
+    <p>판매자 허가 대기중</p>
+    <% } %>
     <% } else if (data.userData.userDN == 1) { %>
+    <a href='/myinfo_detail'>내 정보 수정</a>
     <a href='/myshop'>내 상품</a>
     <% } %>
 
@@ -62,9 +60,10 @@
                         "Content-Type": 'application/json'
                     },
                     body: JSON.stringify({ 'walletPW': walletpw })
-                })       
-            } catch(err) {
-
+                })
+                window.alert('Wallet Unlock Complete');
+            } catch (err) {
+                window.alert('Window Unlock Failed Err: ', err);
             }
         }
     </script>

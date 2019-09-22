@@ -34,13 +34,16 @@
         </p>
         <button type='submit' name='data' value='<%= JSON.stringify(data.solditemData[i]) %>'>상품 후기 작성</button>
     </form>
-        <% if(data.solditemData[i].status == 0) { %>
-    <button id='confirmData' name='confirmData' value='<%= data.solditemData[i].id %>' onclick='purchaseconfirm()'>구매
-        확정</button>
-    <button id='abortData' name='abortData' value='<%= data.solditemData[i].id %>' onclick='abortion()'>구매
-        취소</button>
+    <% if(data.solditemData[i].status == 0) { %>
+    <div id='purchase-condition'>
+        <button id='confirmData' name='confirmData' value='<%= data.solditemData[i].id %>'
+            onclick='purchaseconfirm()'>구매
+            확정</button>
+        <button id='abortData' name='abortData' value='<%= data.solditemData[i].id %>' onclick='abortion()'>구매
+            취소</button>
+    </div>
     <hr>
-        <% } %>
+    <% } %>
     <% } %>
 
     <script>
@@ -54,7 +57,12 @@
                         "Content-Type": 'application/json'
                     },
                     body: JSON.stringify({ id, confirm })
-                })
+                });
+                var hide = document.getElementById('purchase-condition');
+                hide.onclick = function () {
+                    window.alert('결제를 취소합니다');
+                    hide.style.display = "none";
+                }
             } catch (err) {
                 console.log('abortion Err : ', err);
             }
@@ -70,6 +78,11 @@
                     },
                     body: JSON.stringify({ id, confirm })
                 });
+                var hide = document.getElementById('purchase-condition');
+                hide.onclick = function () {
+                    window.alert('결제를 최종확인합니다.')
+                    hide.style.display = "none";
+                }
             } catch (err) {
                 console.log('purchaseConfirm Err : ', err);
             }

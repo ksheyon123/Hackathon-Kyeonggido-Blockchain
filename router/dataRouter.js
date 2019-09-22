@@ -59,9 +59,8 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
-        console.log(req.body.data);
         itemData = JSON.parse(req.body.data);
-        console.log('itemDetail', itemData);
+
         var itemCode = itemData.item_code
         //item_Code를 바탕으로 Item 정보 호출
         var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
@@ -140,12 +139,12 @@ dataRouter.post('/submitcomment', async (req, res) => {
 dataRouter.post('/purchaseconfirm', async (req, res) => {
     try {
         //if you click purchaseconfirm button then req.body = {id(of item), confirm (0)}, if not req.body = {id, confirm (1)}
-        console.log('/purchaseconfirm', req.body);
-        //req.body.confirm 0 => 구매 확정
-        //req.body.confirm 1 => 구매 취소
         var confirmData = await web3js.finalConfirmation(req.body);
         console.log('confirmData : ', confirmData);
+
+        //Call get_balance using User Wallet Addr 
         var ableToken = await web3js.sendAccountInfo(req.session.user.userWallet);
+        console.log('ableToken', ableToken);
         req.session.user.userBalance = ableToken;
         if(confirmData == 0) {
             console.log('result=0');

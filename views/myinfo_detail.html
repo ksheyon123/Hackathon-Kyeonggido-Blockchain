@@ -19,13 +19,6 @@
         <p>
             내 이름 : <%= data.userData.userName %>
         </p>
-        <p>
-            성 별 : <% if (data.userData.userGen == 1) { %>
-            male
-            <% } else if (data.userData.userGen == 2) { %>
-            female
-            <% } %>
-        </p>
         <p id='change'>
             집 주소 : <input type='text' name='userAddr' value='' placeholder="<%= data.userData.userAddr %>">
         </p>

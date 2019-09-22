@@ -50,10 +50,10 @@ userRouter.post('/loginConfirmation', async (req, res) => {
                 userPW: result[0][0].password,
                 userName: result[0][0].name,
                 userAddr: result[0][0].address,
-                userGen: result[0][0].gender,
                 userPN: result[0][0].phonenumber,
                 userDN: result[0][0].dnum,
                 userWallet: result[0][0].wallet,
+                userStatus: result[0][0].status,
                 userBalance: accountsInfo
             }
             res.redirect('/');
@@ -136,13 +136,10 @@ userRouter.post('/sellerconfirmation', async (req, res) => {
     try {
         var result = await userModel.tobeseller(req);
         if (result == 1) {
-            console.log('이미 판매자로 등록된 회원입니다.');
             res.redirect('/myinfo');
         } else if (result == 2) {
-            console.log('관리자입니다.');
             res.redirect('/');
         } else {
-            console.log('판매자로 등록되셨습니다.');   
             res.redirect('/')
         }
     } catch (err) {
@@ -156,8 +153,9 @@ userRouter.get('/sellerconfirm', async (req, res) => {
         var result = await userModel.adminConfirm();
         var incresult = await userModel.selectInc();
         data = {
-            userData: result,
-            incData: incresult
+            userData: req.session.user,
+            regiData: result[0],
+            incData: incresult[0]
         }
         res.render('admin.html', { data: data });
     } catch (err) {
@@ -175,7 +173,7 @@ userRouter.post('/sellerconfirm', async (req, res) => {
             incData: incresult
         }
         var result = await userModel.beingSellerComplete(req.body.id);
-        await res.render('admin.html', { data: data })
+        res.redirect('/sellerconfirm');
     } catch (err) {
         console.log(err);
         console.log('admin post Err');

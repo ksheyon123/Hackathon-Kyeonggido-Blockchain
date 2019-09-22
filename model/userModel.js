@@ -67,18 +67,20 @@ class User {
                             break;
                         default:
                             var web3Data = await web3js.makeAccounts(req.body.userWalletPW);
-                            const sql = 'INSERT INTO kyeonggidb (user, password, name, address, gender, phonenumber, wallet) values (? ,? ,?, ?, ?, ?, ?)';
-                            await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userGen, req.body.userPN, web3Data]);
+                            const sql = 'INSERT INTO kyeonggidb (user, password, name, address, phonenumber, wallet, status) values (? ,? ,?, ?, ?, ?, ?)';
+                            await myConnection.query(sql, [req.body.userID, req.body.userPW, req.body.userName, req.body.userAddr, req.body.userPN, web3Data, 0]);
                             req.session.user = {
                                 userID: req.body.userID,
                                 userPW: req.body.userPW,
                                 userName: req.body.userName,
                                 userAddr: req.body.userAddr,
-                                userGen: req.body.userGen,
                                 userPN: req.body.userPN,
                                 userDN: 0,
-                                userWallet: web3Data
+                                userWallet: web3Data,
+                                userStatus: 0
                             }
+
+                            
                             resolve(req.session.user);
                     }
                 } catch (err) {
@@ -118,15 +120,18 @@ class User {
             async (resolve, reject) => {
                 try {
                     if (req.session.user.userDN == 0) {
+                        //kyeonggidb Status Update to 1
                         const sql = 'UPDATE kyeonggidb SET status = 1 WHERE user = ?';
-                        console.log(sql);
-                        var result = await myConnection.query(sql, data.userID);
-                        console.log(result);
-                        console.log('userWallet', req.session.user.userWallet);
+                        var result = await myConnection.query(sql, [data.userID]);
+
+                        //Put userStatus 
+                        const statussql = 'SELECT status FROM kyeonggidb WHERE user = ?';
+                        var statusValue = await myConnection.query(statussql, [data.userID]);
+                        req.session.user.userStatus = statusValue[0][0];
+
                         //inc Database에 Data저장
                         const incsql = 'INSERT INTO inc (user, inc_name, inc_address, inc_info) values (?, ?, ?, ?)';
                         await myConnection.query(incsql, [data.userID, data.incInfo.inc_name, data.incInfo.inc_address, data.incInfo.inc_info]);
-
                         resolve(req.session.user);
                     } else if (req.session.user.userDN == 1) {
                         resolve(1);

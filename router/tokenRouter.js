@@ -3,6 +3,7 @@ var tokenRouter = express.Router();
 
 var web3js = require('../model/web3');
 var userModel = require('../model/userModel');
+var dataModel = require('../model/dataModel');
 var Contract = require('../model/abi');
 var myContract = Contract.myContract;
 var web3 = Contract.web3;
@@ -60,8 +61,12 @@ tokenRouter.post('/contract', async (req, res) => {
 
         //Comparing buyerBalance with item_price(0 : lack of Balance )
         if (result >= data.itemData.item_price) {
-            var result = await web3js.sendToken(data);
-
+            //Token Send Function
+            var call = await web3js.sendToken(data);
+            console.log('balance', call);
+            if(call == 0) {
+                await dataModel.UpItemRank(data.itemData.id);
+            }
             res.redirect('/');
         } else {
             console.log('잔액 부족');
