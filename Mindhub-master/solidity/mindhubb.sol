@@ -95,15 +95,27 @@ contract MindHub {
         require( state == State.PurchaseCompletion );
         _;
     }
+
+    //결제 내역 갯수가 초과를 했는가?
+    modifier isOverPayment(uint _payCount) {
+        require( _payCount <= _get_payment_count() );
+        _;
+    }
+
+    //결제 내역 갯수가 초과를 했는가?
+    modifier isZeroId(uint _id) {
+        require( _id != 0 );
+        _;
+    }
     
     /*
     ============================구매부분================================
     */
     //물품 구매
     function _purchase_product(address payable _buyerAddress, uint _productId) public payable {
+        require(_productId <= _get_product_count());
         require(userList[_buyerAddress].ableBalance >= userList[_buyerAddress].ableBalance - productList[_productId].price);
         require( (userList[_buyerAddress].ableBalance - productList[_productId].price) >= 0 );
-        //require(productList[_productId].price == msg.value);
         userList[_buyerAddress].paymentArray.push(paymentId);
         payList[paymentId].price = productList[_productId].price;
         payList[paymentId].sellerAddress = productList[_productId].seller_owner;
@@ -125,27 +137,22 @@ contract MindHub {
         paymentId++;
     }
     //결제내역 갯수 불러오기
-    function _get_payment_count() view public returns (uint) { 
+    function _get_payment_count() view public isZeroId(productId) returns (uint) { 
         return paymentId-1;
     }
     
     //물품 구매 확정 (배송완료)
     function _purchase_confirmation(uint _payId) public 
-    isPurchaseCompletion(payList[_payId].state) {
-        //require(productList[_productId].seller_owner == payList[_payId].sellerAddress);
+    isPurchaseCompletion(payList[_payId].state) isOverPayment(_payId) {
         mindTokenContract.transferFrom(payList[_payId].buyerAddress, payList[_payId].buyerAddress, 
         payList[_payId].sellerAddress, payList[_payId].price);
-        //payList[_payId].sellerAddress.transfer(payList[_payId].price);
         payList[_payId].state = State.Completion;
         emit evtPurchaseConfirmation();
     }
     
     //물품 결제 취소 (결제취소)
     function _adobt(uint _payId) public 
-    isPurchaseCompletion(payList[_payId].state) {
-        //mindTokenContract.transferFrom(payList[_payId].buyerAddress, payList[_payId].buyerAddress, 
-        //payList[_payId].buyerAddress, payList[_payId].price);
-        //payList[_payId].buyerAddress.transfer(payList[_payId].price);
+    isPurchaseCompletion(payList[_payId].state) isOverPayment(_payId) {
         payList[_payId].state = State.Cancel;
         userList[payList[_payId].buyerAddress].ableBalance += payList[_payId].price;
         emit evtAdobt();
@@ -173,7 +180,7 @@ contract MindHub {
     // }
     
     //물품 갯수 불러오기
-    function _get_product_count() view public returns (uint) { 
+    function _get_product_count() view public isZeroId(productId) returns (uint)  { 
         return productId-1;
     }
     

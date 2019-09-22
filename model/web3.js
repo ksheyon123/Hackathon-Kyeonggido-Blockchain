@@ -137,10 +137,8 @@ class web3js {
             async (resolve, reject) => {
                 console.log('data.confirm', data.confirm);
                 try {
-                    
-
                     if (data.confirm == 0) {
-                        var payID = data.id-1;
+                        var payID = data.id;
                         console.log('confirm payID', payID);
                         await myContract.methods._purchase_confirmation(payID).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
                         //거래 확정 tx 생성
