@@ -11,7 +11,7 @@
 <body>
 
     <%- include ./topbar/topbar.html %>
-    <hr>
+    <div class="container1-page">
     <form action='/myinfo_detail' method='post'>
         <p>
             내 아이디 : <%= data.userData.userID %>
@@ -31,6 +31,7 @@
         <button type='submit'>변경</button>
         <!-- 변경 click 시, 재확인 alert 발생 시켜야함-->
     </form>
+    </div>
 </body>
 
 </html>

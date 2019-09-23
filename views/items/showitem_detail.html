@@ -87,61 +87,63 @@
     <% include ../topbar/topbar.html %>
     <h3>결제 창</h3>
     <hr>
-    <form action="/contract" method='post'>
-        <p>
-            <div>
-                <img src='/media/itemimages/<%= data.itemData.item_img %>'>
-            </div>
-            <div>
-                <%= data.itemData.item_price %>
-            </div>
-            <div>
-                <%= data.itemData.item_category %>
-            </div>
-            <div>
-                <%= data.itemData.item_info %>
-            </div>
-            <div>
-                <%= data.itemData.item_inc %>
-            </div>
-            <div>
-                <%= data.itemData.item_inc_addr %>
-            </div>
-            <input type='hidden' name='data' value="<%= JSON.stringify(data.itemData) %>">
-        </p>
-        <input type='submit' value='결제'>
+    <div class="container1-page">
+        <form action="/contract" method='post'>
+            <p>
+                <div>
+                    <img src='/media/itemimages/<%= data.itemData.item_img %>'>
+                </div>
+                <div>
+                    <%= data.itemData.item_price %>
+                </div>
+                <div>
+                    <%= data.itemData.item_category %>
+                </div>
+                <div>
+                    <%= data.itemData.item_info %>
+                </div>
+                <div>
+                    <%= data.itemData.item_inc %>
+                </div>
+                <div>
+                    <%= data.itemData.item_inc_addr %>
+                </div>
+                <input type='hidden' name='data' value="<%= JSON.stringify(data.itemData) %>">
+            </p>
+            <input type='submit' value='결제'>
 
-    </form>
-    <form method="POST" action="/commentEdit">
-        <% if (data.commentData) { %>
-        <% for(var  i = 0; i < data.commentData.length; i++) { %>
-        <%= data.commentData[i].buyer %> <%= data.commentData[i].comment %>
-        <% if(data.commentData[i].selectoption == 0) { %>
-        가격에 비해 가성비가 좋아요
-        <% } else if (data.commentData[i].selectoption == 1) { %>
-        이미지보다 실물이 더 예뻐요
-        <% } else if (data.commentData[i].selectoption == 2) { %>
-        상품이 튼튼해요
-        <% } else if (data.commentData[i].selectoption == 3) { %>
-        가격에 비해 가성비가 좋아요
-        <% } %>
-        <hr><br>
+        </form>
 
-        <% } %>
-        <% } else {  %>
-        작성된 댓글이 없습니다.
-        <% } %>
-    </form>
+        <form method="POST" action="/commentEdit">
+            <% if (data.commentData) { %>
+            <% for(var  i = 0; i < data.commentData.length; i++) { %>
+            <%= data.commentData[i].buyer %> <%= data.commentData[i].comment %>
+            <% if(data.commentData[i].selectoption == 0) { %>
+            가격에 비해 가성비가 좋아요
+            <% } else if (data.commentData[i].selectoption == 1) { %>
+            이미지보다 실물이 더 예뻐요
+            <% } else if (data.commentData[i].selectoption == 2) { %>
+            상품이 튼튼해요
+            <% } else if (data.commentData[i].selectoption == 3) { %>
+            가격에 비해 가성비가 좋아요
+            <% } %>
+            <hr><br>
 
-    <% if (data.statusData == undefined) { %>
+            <% } %>
+            <% } else {  %>
+            작성된 댓글이 없습니다.
+            <% } %>
+        </form>
 
-    <% } else if (data.statusData == 2)  { %>
+        <% if (data.statusData == undefined) { %>
+
+        <% } else if (data.statusData == 2)  { %>
         <button id='myBtn' name='itemCode' value='<%= data.itemData.item_code %>'>댓글
-    작성</button>
-    <% } else { %>
+            작성</button>
+        <% } else { %>
 
-    <% } %>
-
+        <% } %>
+    </div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">

@@ -10,20 +10,22 @@
 
 <body>
     <% include ../topbar/topbar.html %>
-    <p>
-        <%= data.userData.userID %> 님이 판매중인 상품 List 입니다
-    </p>
-    <hr>
-
-    <form method='post' action='/editmyitem'>
-        <% for(var i = 0; i < data.itemData.length; i++) { %>
+    <div class="container1-page">
         <p>
-            #<%=i+1%> <img src='/media/itemimages/<%= data.itemData[i].item_img %>'> <%= data.itemData[i].item_name %> <%= data.itemData[i].item_price %>
-            <button type='submit' name='data' value='<%= JSON.stringify(data.itemData[i]) %>'>수정</button>
+            <%= data.userData.userID %> 님이 판매중인 상품 List 입니다
         </p>
-        <% } %>
-    </form>
+        <hr>
 
+        <form method='post' action='/editmyitem'>
+            <% for(var i = 0; i < data.itemData.length; i++) { %>
+            <p>
+                #<%=i+1%> <img src='/media/itemimages/<%= data.itemData[i].item_img %>'>
+                <%= data.itemData[i].item_name %> <%= data.itemData[i].item_price %>
+                <button type='submit' name='data' value='<%= JSON.stringify(data.itemData[i]) %>'>수정</button>
+            </p>
+            <% } %>
+        </form>
+    </div>
 </body>
 
 </html>

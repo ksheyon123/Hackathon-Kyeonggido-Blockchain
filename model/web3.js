@@ -75,8 +75,8 @@ class web3js {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    const sql = `SELECT wallet FROM kyeonggidb WHERE user ="${data.itemData.user}"`;
-                    var result = await myConnection.query(sql);
+                    // const sql = `SELECT wallet FROM kyeonggidb WHERE user ="${data.itemData.user}"`;
+                    // var result = await myConnection.query(sql);
                     //sendTransaction userData: 구매자 result : 판매자
                     var txResult = await myContract.methods._purchase_product(data.userData.userWallet, data.itemData.item_code).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
                     var balance = await myContract.methods._get_ablebalance(data.userData.userWallet).call();

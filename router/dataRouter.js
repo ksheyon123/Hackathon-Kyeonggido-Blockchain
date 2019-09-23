@@ -44,7 +44,6 @@ dataRouter.get('/shop', async (req, res) => {
     } catch (err) {
         console.log('selectAllItem Err', err);
     }
-
 });
 
 dataRouter.post('/shop_sub', async (req, res) => {

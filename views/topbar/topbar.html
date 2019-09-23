@@ -6,117 +6,590 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Index Page</title>
-    <style>
-        .topbar {
-            background-color: #d3e682;
-            padding: 10px;
-            border: 0;
-            margin: 0;
-        }
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="../ohj/images/icons/favicon.png" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/fonts/themify/themify-icons.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/fonts/elegant-font/html-css/style.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/slick/slick.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/vendor/lightbox2/css/lightbox.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../ohj/css/util.css">
+    <link rel="stylesheet" type="text/css" href="../ohj/css/main.css">
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
 
-        /* The Modal (background) */
-        .loginmodal {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Stay in place */
-            z-index: 1;
-            /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
-            -webkit-animation-name: fadeIn;
-            /* Fade in the background */
-            -webkit-animation-duration: 0.4s;
-            animation-name: fadeIn;
-            animation-duration: 0.4s
-        }
-
-        /* Modal Content */
-        .loginmodal-content {
-            position: fixed;
-            bottom: 100px;
-            background-color: #fefefe;
-            width: 50%;
-            -webkit-animation-name: slideIn;
-            -webkit-animation-duration: 0.4s;
-            animation-name: slideIn;
-            animation-duration: 0.4s
-        }
-
-        /* The Close Button */
-        .closelogin {
-            color: white;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .closelogin:hover,
-        .closelogin:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .loginmodal-header {
-            padding: 5px 2px;
-            background-color: #5cb85c;
-            color: white;
-        }
-
-        .loginmodal-body {
-            padding: 2px 16px;
-        }
-    </style>
 </head>
 
-<body>
-    <!-- Login Template
-            Home Banner
-            Category Link
-            Premium Item Link -->
+<body class="animsition">
+    <header class="header3">
+        <!-- Header desktop -->
+        <div class="container-menu-header-v3">
+            <div class="wrap_header3 p-t-74">
+                <!-- Logo -->
+                <a href="/" class="logo3">
+                    <img src="../ohj/images/icons/logo.png" alt="IMG-LOGO">
+                </a>
 
-    <form>
-        <div class='topbar'>
-            <a href='/'><img src='media/home.jpg' width="45px" height="45px"></a>
-            <a href='/shop'><img src='media/shop.png' width="40px" height="40px"></a>
-            <% if (!data.userData) { %>
-            <a href='/login'>LOGIN</a>
-            <a href='/register'>REGISTER</a>
-            <% } else { %>
-            <% if(data.userData.userDN == 1) { %>
-            <a href='/buytoken'>BuyToken</a>
-            <a href='/itemup'>ITEMUP</a>
-            <a href='/myinfo'>MYINFO</a>
-            <a href='/logout'>LOGOUT</a>
-            <% } else if (data.userData.userDN == 2) { %>
-            <a href='/tokenconfirm'>Token Confirmation</a>
-            <a href='/sellerconfirm'>Seller Confirmation</a>
-            <a href='/myinfo'>MYINFO</a>
-            <a href='/logout'>LOGOUT</a>
-            <% } else { %>
-            <a href='/buytoken'>BuyToken</a>
-            <a href='/myinfo'>MYINFO</a>
-            <a href='/logout'>LOGOUT</a>
-            <% } %>
+                <!-- Header Icon -->
+                <div class="header-icons3 p-t-38 p-b-60 p-l-8">
+                    <a href="/myinfo" class="header-wrapicon1 dis-block">
+                        <img src="../ohj/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+                    </a>
 
-            <% } %>
+                    <span class="linedivide1"></span>
+
+                    <div class="header-wrapicon2">
+                        <img src="../ohj/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown"
+                            alt="ICON">
+                        <span class="header-icons-noti">0</span>
+
+
+
+                        <!-- Header cart noti -->
+                        <div class="header-cart header-dropdown">
+                            <ul class="header-cart-wrapitem">
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-img">
+                                        <img src="../ohj/images/item-cart-01.jpg" alt="IMG">
+                                    </div>
+
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            White Shirt With Pleat Detail Back
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                            1 x $19.00
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-img">
+                                        <img src="../ohj/images/item-cart-02.jpg" alt="IMG">
+                                    </div>
+
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            Converse All Star Hi Black Canvas
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                            1 x $39.00
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-img">
+                                        <img src="../ohj/images/item-cart-03.jpg" alt="IMG">
+                                    </div>
+
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            Nixon Porter Leather Watch In Tan
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                            1 x $17.00
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="header-cart-total">
+                                Total: $75.00
+                            </div>
+
+                            <div class="header-cart-buttons">
+                                <div class="header-cart-wrapbtn">
+                                    <!-- Button -->
+                                    <a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        View Cart
+                                    </a>
+                                </div>
+
+                                <div class="header-cart-wrapbtn">
+                                    <!-- Button -->
+                                    <a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        Check Out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu -->
+                <div class="wrap_menu">
+                    <nav class="menu">
+                        <ul class="main_menu">
+                            <li>
+                                <a href="/">Home</a>
+                            </li>
+                            <li class="sale-noti">
+                                <a href="/shop">Shop</a>
+                            </li>
+                            <% if(!data.userData) { %>
+                            <li>
+                                <a href="/login">Login</a>
+                            </li>
+                            <li>
+                                <a href="/register">Register</a>
+                            </li>
+                            <% } else { %>
+                            <% if (data.userData.userDN == 1) { %>
+                            <li>
+                                <a href="/buytoken">Token</a>
+                            </li>
+                            <li>
+                                <a href="/itemup">Itemup</a>
+                            </li>
+                            <li>
+                                <a href="/myinfo">MYINFO</a>
+                            </li>
+                            <li>
+                                <a href="/logout">LOGOUT</a>
+                            </li>
+                            <% } else if (data.userData.userDN == 2) { %>
+                            <li>
+                                <a href="/sellerconfirm">Sellerconfirm</a>
+                            </li>
+                            <li>
+                                <a href="/myinfo">MYINFO</a>
+                            </li>
+                            <li>
+                                <a href="/logout">LOGOUT</a>
+                            </li>
+                            <% } else { %>
+                            <li>
+                                <a href="/buytoken">Token</a>
+                            </li>
+                            <li>
+                                <a href="/myinfo">MYINFO</a>
+                            </li>
+                            <li>
+                                <a href="/logout">LOGOUT</a>
+                            </li>
+                            <% } %>
+                            <%} %>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="bottombar flex-col-c p-b-65">
+                <div class="bottombar-social t-center p-b-8">
+                    <a href="#" class="topbar-social-item fa fa-facebook"></a>
+                    <a href="#" class="topbar-social-item fa fa-instagram"></a>
+                    <a href="#" class="topbar-social-item fa fa-pinterest-p"></a>
+                    <a href="#" class="topbar-social-item fa fa-snapchat-ghost"></a>
+                    <a href="#" class="topbar-social-item fa fa-youtube-play"></a>
+                </div>
+
+                <% if (!data.userData) { %>
+
+                <li>
+                    <a href='/login'>Login</a>
+                </li>
+
+                <li>
+                    <a href='/register'>Register</a>
+                <li>
+
+                    <% } else { %>
+                <li>
+                    <% if(data.userData.userDN == 1) { %>
+                </li>
+
+
+                <li>
+                    <a href='/logout'>Logout</a>
+                </li>
+
+                <li>
+                    <% } else if (data.userData.userDN == 2) { %>
+                </li>
+
+                <li>
+                    <a href='/logout'>Logout</a>
+                <li>
+                    <% } else { %>
+
+                <li>
+                    <a href='/logout'>Logout</a>
+                </li>
+                <% } %>
+                <% } %>
+
+            </div>
+
+
+
         </div>
-    </form>
+
+        <!-- Header Mobile -->
+        <div class="wrap_header_mobile">
+            <!-- Logo moblie -->
+            <a href="index.html" class="logo-mobile">
+                <img src="../ohj/images/icons/logo.png" alt="IMG-LOGO">
+            </a>
+
+            <!-- Button show menu -->
+            <div class="btn-show-menu">
+                <!-- Header Icon mobile -->
+                <div class="header-icons-mobile">
+                    <a href="#" class="header-wrapicon1 dis-block">
+                        <img src="../ohj/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+                    </a>
+
+                    <span class="linedivide2"></span>
+
+                    <div class="header-wrapicon2">
+                        <img src="../ohj/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown"
+                            alt="ICON">
+                        <span class="header-icons-noti">0</span>
+
+                        <!-- Header cart noti -->
+                        <div class="header-cart header-dropdown">
+                            <ul class="header-cart-wrapitem">
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-img">
+                                        <img src="../ohj/images/item-cart-01.jpg" alt="IMG">
+                                    </div>
+
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            White Shirt With Pleat Detail Back
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                            1 x $19.00
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-img">
+                                        <img src="../ohj/images/item-cart-02.jpg" alt="IMG">
+                                    </div>
+
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            Converse All Star Hi Black Canvas
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                            1 x $39.00
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-img">
+                                        <img src="../ohj/images/item-cart-03.jpg" alt="IMG">
+                                    </div>
+
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            Nixon Porter Leather Watch In Tan
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                            1 x $17.00
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="header-cart-total">
+                                Total: $75.00
+                            </div>
+
+                            <div class="header-cart-buttons">
+                                <div class="header-cart-wrapbtn">
+                                    <!-- Button -->
+                                    <a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        View Cart
+                                    </a>
+                                </div>
+
+                                <div class="header-cart-wrapbtn">
+                                    <!-- Button -->
+                                    <a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                        Check Out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile -->
+        <div class="wrap-side-menu">
+            <nav class="side-menu">
+                <ul class="main-menu">
+                    <li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
+                        <span class="topbar-child1">
+                            Free shipping for standard order over $100
+                        </span>
+                    </li>
+
+                    <li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
+                        <div class="topbar-child2-mobile">
+                            <span class="topbar-email">
+                                fashe@example.com
+                            </span>
+                        </div>
+                    </li>
+
+                    <li class="item-topbar-mobile p-l-10">
+                        <div class="topbar-social-mobile">
+                            <a href="#" class="topbar-social-item fa fa-facebook"></a>
+                            <a href="#" class="topbar-social-item fa fa-instagram"></a>
+                            <a href="#" class="topbar-social-item fa fa-pinterest-p"></a>
+                            <a href="#" class="topbar-social-item fa fa-snapchat-ghost"></a>
+                            <a href="#" class="topbar-social-item fa fa-youtube-play"></a>
+                        </div>
+                    </li>
+
+                    <% if (!data.userData) { %>
+                    <li class="item-menu-mobile">
+                        <a href='/index.html'>Home</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/shop'>Shop</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/product.html'>Sale</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/cart.html'>Features</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/blog.html'>Blog</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/about.html'>About</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/contact.html'>Contact</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/login'>Login</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/register'>Register</a>
+                    </li>
+
+                    <% } else { %>
+                    <li class="item-menu-mobile">
+                        <% if(data.userData.userDN == 1) { %>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/buytoken'>BuyToken</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/itemup'>ITEMUP</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/index.html'>Home</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/shop'>Shop</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/product.html'>Sale</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/cart.html'>Features</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/blog.html'>Blog</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/about.html'>About</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/contact.html'>Contact</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/logout'>Logout</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <% } else if (data.userData.userDN == 2) { %>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/tokenconfirm'>Token Confirmation</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/sellerconfirm'>Seller Confirmation</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/index.html'>Home</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/shop'>Shop</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/product.html'>Sale</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/cart.html'>Features</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/blog.html'>Blog</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/about.html'>About</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/contact.html'>Contact</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/logout'>Logout</a>
+                    <li>
+                        <% } else { %>
+                    <li class="item-menu-mobile">
+                        <a href='/buytoken'>BuyToken</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/index.html'>Home</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/shop'>Shop</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/product.html'>Sale</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/cart.html'>Features</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/blog.html'>Blog</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/about.html'>About</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/contact.html'>Contact</a>
+                    </li>
+
+                    <li class="item-menu-mobile">
+                        <a href='/logout'>Logout</a>
+                    </li>
+                    <% } %>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/bootstrap/js/popper.js"></script>
+    <script type="text/javascript" src="../ohj/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/select2/select2.min.js"></script>
+    <script type="text/javascript">
+        $(".selection-1").select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $('#dropDownSelect1')
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/slick/slick.min.js"></script>
+    <script type="text/javascript" src="../ohj/js/slick-custom.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/lightbox2/js/lightbox.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="../ohj/vendor/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.block2-btn-addcart').each(function () {
+            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to cart !", "success");
+            });
+        });
+
+        $('.block2-btn-addwishlist').each(function () {
+            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to wishlist !", "success");
+            });
+        });
+    </script>
+
+    <!--===============================================================================================-->
+    <script src="../ohj/js/main.js"></script>
+
 
 </body>
 

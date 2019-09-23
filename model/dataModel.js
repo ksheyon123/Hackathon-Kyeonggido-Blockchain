@@ -41,7 +41,7 @@ class Item {
                         //itemUp 
                         console.log('itemupwallet', req.session.user.userWallet);
                         await myContract.methods._register_product(req.session.user.userWallet, data.item_name, parseInt(data.item_price))
-                        .send({from:'0x3b8886c692611ae5113d8ba5dec7392d839ab3b9', gas :3000000});
+                            .send({ from: '0x3b8886c692611ae5113d8ba5dec7392d839ab3b9', gas: 3000000 });
                         resolve('kyeongJae');
                     } catch (err) {
                         reject(err);
@@ -153,6 +153,80 @@ class Item {
             }
         )
     }
+    // SELECT TOP 8 Item Based On item_rank
+    selectTop8Item() {
+        return new Promise(
+            async (resolve, reject) => {
+                const sql = 'SELECT item_img, item_name, item_price, item_code FROM item ORDER BY item_rank DESC limit 0,8;';
+                try {
+                    var result = await myConnection.query(sql);
+                    resolve(result[0]);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
+    // SELECT RECEENT Rsegister 8 Item Based On item_code
+    selectRecentProductItem() {
+        return new Promise(
+            async (resolve, reject) => {
+                const sql = 'SELECT item_img, item_name, item_price, item_code FROM item ORDER BY item_code DESC limit 8;';
+                try {
+                    var result = await myConnection.query(sql);
+                    resolve(result[0]);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
+
+    // SELECT Low Price 8 Item Based On item_code
+    selectlowPriceItem() {
+        return new Promise(
+            async (resolve, reject) => {
+                const sql = 'SELECT item_img, item_name, item_price, item_code FROM item ORDER BY item_price ASC limit 8;';
+                try {
+                    var result = await myConnection.query(sql);
+                    resolve(result[0]);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
+
+    // SELECT Best Item Based On item_code
+    selectBestTopItem() {
+        return new Promise(
+            async (resolve, reject) => {
+                const sql = 'SELECT item_img, item_name, item_price, item_code FROM item ORDER BY item_rank DESC limit 1;';
+                try {
+                    var result = await myConnection.query(sql);
+                    resolve(result[0]);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
+
+    // SELECT Best Item Based On item_code
+    selectRecentSellerInc() {
+        return new Promise(
+            async (resolve, reject) => {
+                const sql = 'SELECT id, user, inc_name, inc_address, inc_info FROM inc ORDER BY id DESC limit 3;';
+                try {
+                    var result = await myConnection.query(sql);
+                    resolve(result[0]);
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        )
+    }
+
     //Select All Comment Data From Comment Table
     selectAllComment(data) {
         return new Promise(
@@ -176,7 +250,7 @@ class Item {
                     const sql = 'SELECT status FROM solditem WHERE item_code = ? AND user = ?';
                     var result = await myConnection.query(sql, [data.itemCode, data.userID]);
                     console.log('status', result[0][0]);
-                    if(!result[0][0]) {
+                    if (!result[0][0]) {
                         resolve(result[0][0]);
                     } else {
                         console.log('dataModel Status : ', result[0][0].status);
@@ -204,7 +278,7 @@ class Item {
         )
     }
     changeSoldItemStatustoOne(data) {
-        return new Promise (
+        return new Promise(
             async (resolve, reject) => {
                 console.log('changeSoldItemStatus Data : ', data);
                 const sql = 'UPDATE solditem SET status = 1 WHERE user = ? AND item_code = ?';
@@ -212,13 +286,13 @@ class Item {
                     await myConnection.query(sql, [data.userData, data.itemCode]);
                     resolve(0);
                 } catch (err) {
-                    reject('changeSoldItemStatus Err : ',err);
+                    reject('changeSoldItemStatus Err : ', err);
                 }
             }
         )
     }
     changeSoldItemStatustoTwo(data) {
-        return new Promise (
+        return new Promise(
             async (resolve, reject) => {
                 console.log('changeSoldItemStatus Data : ', data);
                 const sql = 'UPDATE solditem SET status = 2 WHERE id = ?';
@@ -226,14 +300,16 @@ class Item {
                     await myConnection.query(sql, [data.id]);
                     resolve(0);
                 } catch (err) {
-                    reject('changeSoldItemStatus Err : ',err);
+                    reject('changeSoldItemStatus Err : ', err);
                 }
             }
         )
     }
 
+
+
     deleteItemFromSolditem(data) {
-        return new Promise (
+        return new Promise(
             async (resolve, reject) => {
                 console.log('id : ' + data.id + ' deleting');
                 const sql = 'DELETE FROM solditem WHERE id = ?';
@@ -247,7 +323,7 @@ class Item {
         )
     }
     UpItemRank(data) {
-        return new Promise (
+        return new Promise(
             async (resolve, reject) => {
                 console.log('UpItemRank');
                 const sql = 'UPDATE item SET item_rank = item_rank + 1 WHERE id = ?';
@@ -255,7 +331,7 @@ class Item {
                     await myConnection.query(sql, [data]);
                     resolve(0);
                 } catch (err) {
-                    reject('UpItemRank Err ', err );
+                    reject('UpItemRank Err ', err);
                 }
             }
         )

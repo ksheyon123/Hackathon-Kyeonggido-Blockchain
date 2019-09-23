@@ -1,6 +1,6 @@
 var express = require('express');
 var tokenRouter = express.Router();
-
+var fs = require('fs');
 var web3js = require('../model/web3');
 var userModel = require('../model/userModel');
 var dataModel = require('../model/dataModel');
@@ -10,12 +10,19 @@ var web3 = Contract.web3;
 
 tokenRouter.post('/tokenlogin', async (req, res) => {
     try {
+        console.log(req.body);
         if (req.body.userID == req.session.user.userID) {
             result = await userModel.login(req);
             console.log('token Login result', result[0][0]);
-            res.status(200).send(result[0][0]);
+            await fs.readFile('views/token/pay_back.html', async (err, data) => {
+                if(err) {
+                    console.log('fs.ReadFile Err : ', err);
+                }
+                res.render('token/pay_back.html');
+            });
+            
         } else {
-            console.log('token Login Err : ', err);
+            res.status(500).send('Wrong Data ');
         }
     } catch (err) {
         console.log('token Login Err : ', err);
@@ -27,7 +34,7 @@ tokenRouter.get('/buytoken', (req, res) => {
     data = {
         userData: req.session.user
     }
-    res.render('token/buytoken.html', { data: data })
+    res.render('token/buytoken.html', { data: data });
 });
 
 //토큰 구매
@@ -35,14 +42,13 @@ tokenRouter.post('/buytoken', async (req, res) => {
     try {
         console.log(req.body);
         var token = req.body.token;
-        // var token = req.body.token * 1000000000000000000;
         data = {
             userData: req.session.user,
             userMoney: token
         }
         var result = await web3js.sendTokenFromAdmin(data);
         console.log('buytoken result', result);
-        res.redirect('/')
+        res.redirect('/');
     } catch (err) {
         console.log(err);
     }

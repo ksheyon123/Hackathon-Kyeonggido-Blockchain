@@ -17,12 +17,33 @@ var userModel = require('../model/userModel');
 var dataModel = require('../model/dataModel');
 var web3js = require('../model/web3');
 
+// userRouter.get('/', async (req, res) => {
+//     try {
+//         var result = await dataModel.selectTop3Item();
+//         data = {
+//             userData: req.session.user,
+//             itemCode: result
+//         }
+//         res.render('index.html', { data: data });
+//     } catch (err) {
+//         console.log(err);
+//     }
+// });
+
 userRouter.get('/', async (req, res) => {
     try {
-        var result = await dataModel.selectTop3Item();
+        var result = await dataModel.selectTop8Item();
+        var recentItem = await dataModel.selectRecentProductItem();
+        var lowPriceItem = await dataModel.selectlowPriceItem();
+        var bestItem = await dataModel.selectBestTopItem();
+        var recentSellerInc = await dataModel.selectRecentSellerInc();
         data = {
             userData: req.session.user,
-            itemCode: result
+            recentItemCode: recentItem,
+            topItemCode: result,
+            lowPriceCode: lowPriceItem,
+            bestCode: bestItem,
+            recentSellerIncCode: recentSellerInc
         }
         res.render('index.html', { data: data });
     } catch (err) {
@@ -157,6 +178,7 @@ userRouter.get('/sellerconfirm', async (req, res) => {
             regiData: result[0],
             incData: incresult[0]
         }
+        console.log(data);
         res.render('admin.html', { data: data });
     } catch (err) {
         console.log(err);

@@ -10,37 +10,39 @@
 
 <body>
     <%- include ./topbar/topbar.html %>
-    <hr>
-    <% for(var i=0; i<data.regiData.length; i++) { %>
-    <form id="<%= data.regiData[i].user %>" action="/sellerconfirm" method="post">
-        <p>
-            판매자 : <%= data.regiData[i].name %>
-        </p>
-        <p>
-            판매자 ID : <%= data.regiData[i].user %>
-        </p>
-        <p>
-            판매자 주소 : <%= data.regiData[i].address %>
-            판매자 전화 번호 : <%= data.regiData[i].phonenumber %>
-        </p>
-        <p>
-            판매자 지갑 주소 : <%= data.regiData[i].wallet %>
-        </p>
-        <p>
-            회사명 : <%= data.incData[i].inc_name %>
-            회사 주소 : <%= data.incData[i].inc_address %>
-            회사 정보 : <%= data.incData[i].inc_info %>
-        </p>
-        <button type="submit" value="<%= data.regiData[i].user %>" name="id" onclick='hidefunction(this.value)'>확인</button>
-    </form>
+    <div class="container1-page">
+        <% for(var i=0; i<data.regiData.length; i++) { %>
+        <form id="<%= data.regiData[i].user %>" action="/sellerconfirm" method="post">
+            <p>
+                판매자 : <%= data.regiData[i].name %>
+            </p>
+            <p>
+                판매자 ID : <%= data.regiData[i].user %>
+            </p>
+            <p>
+                판매자 주소 : <%= data.regiData[i].address %>
+                판매자 전화 번호 : <%= data.regiData[i].phonenumber %>
+            </p>
+            <p>
+                판매자 지갑 주소 : <%= data.regiData[i].wallet %>
+            </p>
+            <p>
+                회사명 : <%= data.incData[i].inc_name %>
+                회사 주소 : <%= data.incData[i].inc_address %>
+                회사 정보 : <%= data.incData[i].inc_info %>
+            </p>
+            <button type="submit" value="<%= data.regiData[i].user %>" name="id"
+                onclick='hidefunction(this.value)'>확인</button>
+        </form>
+    </div>
     <Script>
-            function hidefunction(data) {
-                var inputid = '"' + data + '"';
-                console.log(inputid);
-                var data = document.getElementById(inputid);
-                data.style.display = "none";
-            }
-        </Script>
+        function hidefunction(data) {
+            var inputid = '"' + data + '"';
+            console.log(inputid);
+            var data = document.getElementById(inputid);
+            data.style.display = "none";
+        }
+    </Script>
     <% } %>
 
 </body>

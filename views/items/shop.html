@@ -11,21 +11,22 @@
 
 <body>
     <% include ../topbar/topbar.html %>
-    <h3>Item List</h3>
-    <hr>
-    <form>
-        <select name='category' onchange='categorySelected(this.value)'>
-            <% for(var i=0; i<data.cateData.length; i++) { %>
-            <option value='<%= data.cateData[i].content %>'><%= data.cateData[i].content %></option>
-            <% } %>
+    <div class="container1-page">
+        <h3>Item List</h3>
+        <hr>
+        <form>
+            <select name='category' onchange='categorySelected(this.value)'>
+                <% for(var i=0; i<data.cateData.length; i++) { %>
+                <option value='<%= data.cateData[i].content %>'><%= data.cateData[i].content %></option>
+                <% } %>
 
-        </select>
+            </select>
 
-        <div id='item-data'>
+            <div id='item-data'>
 
-        </div>
-    </form>
-
+            </div>
+        </form>
+    </div>
     <script>
 
         async function categorySelected(data) {
@@ -39,15 +40,15 @@
                     result = JSON.stringify(data[i]);
                     console.log('data[i]', data[i]);
                     var template =
-                        `<form method='post' action='/item_detail'>` +
-                        `<img src='/media/itemimages/${data[i].item_img}' width="60px" height="60px">` +
-                        `<button type='submit'>` +
-                        `판매자 :  ${data[i].user}` +
-                        `상품명: ${data[i].item_name}` +
-                        `상품 가격: ${data[i].item_price} ` +
-                        `<input type='hidden' name='data' value='${result}'>` +
-                        `</button>` +
-                        `</form>`;
+                        `<form method='post' action='/item_detail'>
+                        <img src='/media/itemimages/${data[i].item_img}' width="60px" height="60px">
+                        <button type='submit'>
+                        판매자 :  ${data[i].user}
+                        상품명: ${data[i].item_name}
+                        상품 가격: ${data[i].item_price}
+                        <input type='hidden' name='data' value='${result}'>
+                        </button>
+                        </form>`;
                     const e = document.createElement('p');
                     e.innerHTML = template;
                     container.appendChild(e);

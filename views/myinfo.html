@@ -1,54 +1,142 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>
-        MyInfo Page
-    </title>
-
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Dashboard by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="../ohj/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="../ohj/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="../ohj/css/fontastic.css">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <!-- jQuery Circle-->
+    <link rel="stylesheet" href="../ohj/css/grasp_mobile_progress_circle-1.0.0.min.css">
+    <!-- Custom Scrollbar-->
+    <link rel="stylesheet" href="../ohj/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="../ohj/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="../ohj/css/custom.css">
+  </head>
 
 <body>
 
     <%- include ./topbar/topbar.html %>
+    
+    <section>
+    <div class="container1-page">
+    <div class="container-fluid">
+        
+        <header> 
+          <h1 class="h3 display">내정보</h1>
+        </header>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>Mind Made 프로필</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <tbody>
+                      <p>
+                        내 아이디 : <%= data.userData.userID %>
+                    </p>
+                    <p>
+                        내 이름 : <%= data.userData.userName %>
+                    </p>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>내 연락처</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <tbody>
+                    <p>
+                        집 주소 : <%= data.userData.userAddr %>
+                    </p>
+                    <p>
+                        전화번호 : <%= data.userData.userPN %>
+                    </p>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>내 지갑 정보</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover">
+                    <tbody>
+                    <p>
+                        내 월렛 주소 : <%= data.userData.userWallet %>
+                    </p>
+                    <p>
+                        내 월렛 잔액 : <%= data.userData.userBalance %>
+                    </p>
+                    <br>
+                    <br>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>기타 등등</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped table-sm">
 
-    <hr>
-    My Information <a href='/transactioninfo'>거래 내역 조회</a>
-    <p>
-        내 아이디 : <%= data.userData.userID %>
-    </p>
-    <p>
-        내 이름 : <%= data.userData.userName %>
-    </p>
-    <p>
-        집 주소 : <%= data.userData.userAddr %>
-    </p>
-    <p>
-        전화번호 : <%= data.userData.userPN %>
-    </p>
-    <p>
-        내 월렛 주소 : <%= data.userData.userWallet %>
-    </p>
-    <p>
-        내 월렛 잔액 : <%= data.userData.userBalance %>
-    </p>
-    <!-- wallet Unlock 현재는 의미 없음 -->
-    <form>
-        Enter Wallet PW : <input type='password' name='walletPW' id='walletPW'></br>
-        <input type='button' value='unlock' onclick="unlockWallet()">
-    </form>
-    <%= console.log(data.userData.userStatus) %>
-    <% if(data.userData.userDN == 0) { %>
-    <a href='/myinfo_detail'>내 정보 수정</a>
-    <% if (data.userData.userStatus == 0) { %>
-    <a href='/tobeseller'>판매자 등록</a>
-    <% } else if (data.userData.userStatus == 1) {%>
-    <p>판매자 허가 대기중</p>
-    <% } %>
-    <% } else if (data.userData.userDN == 1) { %>
-    <a href='/myinfo_detail'>내 정보 수정</a>
-    <a href='/myshop'>내 상품</a>
-    <% } %>
+                    <tbody>
+                    <form>
+                        Enter Wallet PW : <input type='text' name='walletPW' id='walletPW'></br>
+                        <input type='button' value='지갑 잠금해제' onclick="unlockWallet()">
+                    </form>
+                
+                    <% if(data.userData.userDN == 0) { %>
+                    <br><a href='/myinfo_detail'>내 정보 수정</a>
+                    <br><a href='/tobeseller'>판매자 등록</a>
+                    <% } else if (data.userData.userDN == 1) { %>
+                    <br><a href='/myshop'>내 상품</a>
+                    <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='/transactioninfo'>거래 내역 조회</a>
+    </div>
+    </section>
+       
 
     <script>
         async function unlockWallet() {
@@ -60,13 +148,22 @@
                         "Content-Type": 'application/json'
                     },
                     body: JSON.stringify({ 'walletPW': walletpw })
-                })
-                window.alert('Wallet Unlock Complete');
-            } catch (err) {
-                window.alert('Window Unlock Failed Err: ', err);
+                })       
+            } catch(err) {
+
             }
         }
     </script>
+    <script src="../ohj/vendor/jquery/jquery.min.js"></script>
+    <script src="../ohj/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="../ohj/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../ohj/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+    <script src="../ohj/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="../ohj/vendor/chart.js/Chart.min.js"></script>
+    <script src="../ohj/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../ohj/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Main File-->
+    <script src="../ohj/js/front.js"></script>
 
 </body>
 
