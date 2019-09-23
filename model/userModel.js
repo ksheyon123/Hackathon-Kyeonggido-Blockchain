@@ -127,7 +127,7 @@ class User {
                         //Put userStatus 
                         const statussql = 'SELECT status FROM kyeonggidb WHERE user = ?';
                         var statusValue = await myConnection.query(statussql, [data.userID]);
-                        req.session.user.userStatus = statusValue[0][0];
+                        req.session.user.userStatus = statusValue[0][0].status;
 
                         //inc Database에 Data저장
                         const incsql = 'INSERT INTO inc (user, inc_name, inc_address, inc_info) values (?, ?, ?, ?)';
