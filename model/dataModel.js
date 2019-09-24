@@ -297,7 +297,7 @@ class Item {
                 console.log('changeSoldItemStatus Data : ', data);
                 const sql = 'UPDATE solditem SET status = 2 WHERE id = ?';
                 try {
-                    await myConnection.query(sql, [data.id]);
+                    await myConnection.query(sql, [data.data]);
                     resolve(0);
                 } catch (err) {
                     reject('changeSoldItemStatus Err : ', err);
@@ -311,10 +311,10 @@ class Item {
     deleteItemFromSolditem(data) {
         return new Promise(
             async (resolve, reject) => {
-                console.log('id : ' + data.id + ' deleting');
+                console.log('id : ' + data.data + ' deleting');
                 const sql = 'DELETE FROM solditem WHERE id = ?';
                 try {
-                    await myConnection.query(sql, [data.id]);
+                    await myConnection.query(sql, [data.data]);
                     resolve('Delete Complete');
                 } catch (err) {
                     reject(err);

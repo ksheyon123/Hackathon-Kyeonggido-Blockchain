@@ -58,9 +58,9 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
-        itemData = JSON.parse(req.body.data);
+        var itemData = JSON.parse(req.body.data);
 
-        var itemCode = itemData.item_code
+        var itemCode = itemData.item_code;
         //item_Code를 바탕으로 Item 정보 호출
         var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
         console.log('result', result[0][0]);
@@ -138,6 +138,7 @@ dataRouter.post('/submitcomment', async (req, res) => {
 dataRouter.post('/purchaseconfirm', async (req, res) => {
     try {
         //if you click purchaseconfirm button then req.body = {id(of item), confirm (0)}, if not req.body = {id, confirm (1)}
+        console.log('purchase item id', req.body);
         var confirmData = await web3js.finalConfirmation(req.body);
         console.log('confirmData : ', confirmData);
 
@@ -150,7 +151,6 @@ dataRouter.post('/purchaseconfirm', async (req, res) => {
             await dataModel.changeSoldItemStatustoTwo(req.body)
             res.redirect('/');
         } else if (confirmData = 1) {
-            console.log('result=1');
             await dataModel.deleteItemFromSolditem(req.body);
             res.redirect('/');
         }

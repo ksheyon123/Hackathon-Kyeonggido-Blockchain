@@ -117,7 +117,6 @@
                         Enter Wallet PW : <input type='text' name='walletPW' id='walletPW'></br>
                         <input type='button' value='지갑 잠금해제' onclick="unlockWallet()">
                       </form>
-                      <%= console.log(data.userData) %>
                       <% if(data.userData.userDN == 0) { %>
                       <br><a href='/myinfo_detail'>내 정보 수정</a>
                       <% if (data.userData.userStatus == 0) { %>

@@ -88,10 +88,11 @@
     <h3>결제 창</h3>
     <hr>
     <div class="container1-page">
+        <%= console.log(data.statusData) %>
         <form action="/contract" method='post'>
             <p>
                 <div>
-                    <img src='/media/itemimages/<%= data.itemData.item_img %>'>
+                    <img src='../../ohj/images/itemimages/<%= data.itemData.item_img %>'>
                 </div>
                 <div>
                     <%= data.itemData.item_price %>

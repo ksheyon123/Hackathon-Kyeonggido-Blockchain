@@ -18,9 +18,11 @@
 
         <form method='post' action='/editmyitem'>
             <% for(var i = 0; i < data.itemData.length; i++) { %>
-            <p>
-                #<%=i+1%> <img src='/media/itemimages/<%= data.itemData[i].item_img %>'>
+            <p><p>
+                #<%=i+1%> <img src='../../ohj/images/itemimages/<%= data.itemData[i].item_img %>' style="width:100px; heigth: 100px">
+
                 <%= data.itemData[i].item_name %> <%= data.itemData[i].item_price %>
+            </p>
                 <button type='submit' name='data' value='<%= JSON.stringify(data.itemData[i]) %>'>수정</button>
             </p>
             <% } %>

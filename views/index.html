@@ -200,7 +200,7 @@
                         <a href="/logout">LOGOUT</a>
                      </li>
                      <% } %>
-                     <%} %>
+                     <% } %>
 
                   </ul>
                </nav>
@@ -333,27 +333,55 @@
                      <a href="https://www.youtube.com/" class="topbar-social-item fa fa-youtube-play"></a>
                   </div>
                </li>
-
-               <li class="item-menu-mobile">
                <li class="item-menu-mobile">
                   <a href="/">Home</a>
                </li>
-
                <li class="item-menu-mobile">
                   <a href="/shop">Shop</a>
                </li>
-
+               <% if(!data.userData) { %>
                <li class="item-menu-mobile">
-                  <a href="/buytoken">BuyToken</a>
+                  <a href="/login">Login</a>
                </li>
-
                <li class="item-menu-mobile">
-                  <a href="about.html">About</a>
+                  <a href="/register">Register</a>
                </li>
-
+               <% } else { %>
+               <% if (data.userData.userDN == 1) { %>
                <li class="item-menu-mobile">
-                  <a href="contact.html">Contact</a>
+                  <a href="/buytoken">Token</a>
                </li>
+               <li class="item-menu-mobile">
+                  <a href="/itemup">Itemup</a>
+               </li>
+               <li class="item-menu-mobile">
+                  <a href="/myinfo">MYINFO</a>
+               </li>
+               <li class="item-menu-mobile">
+                  <a href="/logout">LOGOUT</a>
+               </li>
+               <% } else if (data.userData.userDN == 2) { %>
+               <li class="item-menu-mobile">
+                  <a href="/sellerconfirm">Sellerconfirm</a>
+               </li>
+               <li class="item-menu-mobile">
+                  <a href="/myinfo">MYINFO</a>
+               </li>
+               <li class="item-menu-mobile">
+                  <a href="/logout">LOGOUT</a>
+               </li>
+               <% } else { %>
+               <li class="item-menu-mobile">
+                  <a href="/buytoken">Token</a>
+               </li>
+               <li class="item-menu-mobile">
+                  <a href="/myinfo">MYINFO</a>
+               </li>
+               <li class="item-menu-mobile">
+                  <a href="/logout">LOGOUT</a>
+               </li>
+               <% } %>
+               <% } %>
             </ul>
          </nav>
       </div>
@@ -513,18 +541,17 @@
 
                      <div class="ab-t-l sizefull flex-col-c-b p-l-15 p-r-15 p-b-20">
                         <div class="t-center">
-                           <%= console.log(data.bestCode) %>
                            <% if(data.bestCode == null) { %>
-                              
-                              <a href="product-detail.html" class="dis-block s-text3 p-b-5">
-                                    <%= data.bestCode[0].item_name %>
-                                 </a>
-      
-                                 <span class="block2-oldprice m-text6 p-r-5">
-                                    <%= data.bestCode[0].item_price%> MDT
-                                 </span>
+
+                           <a href="product-detail.html" class="dis-block s-text3 p-b-5">
+                              <%= data.bestCode[0].item_name %>
+                           </a>
+
+                           <span class="block2-oldprice m-text6 p-r-5">
+                              <%= data.bestCode[0].item_price%> MDT
+                           </span>
                            <% } else { %>
-                              BEST 상품 대기중입니다.
+                           BEST 상품 대기중입니다.
                            <% } %>
                         </div>
                      </div>

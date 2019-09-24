@@ -92,9 +92,7 @@ tokenRouter.post('/unlockwallet', async (req, res) => {
             walletPW: req.body.walletPW,
             walletAddr: req.session.user.userWallet
         }
-        var result = await web3js.unlockWallet(data);
-        console.log('unlock data', result);
-        res.redirect('/');
+        await web3js.unlockWallet(data);
     } catch (err) {
         console.log(err);
     }

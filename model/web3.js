@@ -34,8 +34,6 @@ class web3js {
                 try {
                     console.log('sendAccounts');
                     var ableToken = await myContract.methods._get_ablebalance(data).call();
-                    console.log('ableToken : ', ableToken);
-
                     resolve(ableToken);
                 } catch (err) {
                     console.log(err);
@@ -120,9 +118,7 @@ class web3js {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    console.log('unlock data', data);
                     var result = await web3.eth.personal.unlockAccount(data.walletAddr, data.walletPW, 15000);
-                    console.log('unlockresult', result);
                     resolve(result);
                 } catch (err) {
                     reject(err);
@@ -137,14 +133,16 @@ class web3js {
             async (resolve, reject) => {
                 console.log('data.confirm', data.confirm);
                 try {
+                    console.log(data);
+                    var variable = parseInt(data.data);
+                    var payID = variable-1;
+                    console.log('typeof PayID', typeof(payID));
                     if (data.confirm == 0) {
-                        var payID = data.id;
                         console.log('confirm payID', payID);
                         await myContract.methods._purchase_confirmation(payID).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
                         //거래 확정 tx 생성
                         resolve(0);
                     } else if (data.confirm == 1) {
-                        var payID = data.id;
                         console.log('adobt payID', payID);
                         await myContract.methods._adobt(payID).send({ from: "0x3b8886c692611ae5113d8ba5dec7392d839ab3b9", gas: 3000000 });
                         //거래 취소 tx 생성

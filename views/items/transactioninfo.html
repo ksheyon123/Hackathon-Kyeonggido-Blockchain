@@ -33,14 +33,20 @@
             <p>
                 판 매 자 : <%= data.solditemData[i].seller %>
             </p>
-            <button type='submit' name='data' value='<%= JSON.stringify(data.solditemData[i]) %>'>상품 후기 작성</button>
+            <% if(data.solditemData[i].status == 2) { %>
+            <button type='submit' value='<%= JSON.stringify(data.solditemData[i]) %>'>상품 후기 작성</button>
+            <% } %>
+
         </form>
         <% if(data.solditemData[i].status == 0) { %>
         <div id='purchase-condition'>
             <button id='confirmData' name='confirmData' value='<%= data.solditemData[i].id %>'
-                onclick='purchaseconfirm()'>구매
+                onclick='purchaseconfirm(this.value)'>구매
                 확정</button>
-            <button id='abortData' name='abortData' value='<%= data.solditemData[i].id %>' onclick='abortion()'>구매
+
+            <%= console.log(i + ' transactionInfo_Web '+ data.solditemData[i].id) %>
+            <button id='abortData' name='abortData' value='<%= data.solditemData[i].id %>'
+                onclick='abortion(this.value)'>구매
                 취소</button>
         </div>
         <hr>
@@ -48,16 +54,18 @@
         <% } %>
     </div>
     <script>
-        async function abortion() {
+        async function abortion(data) {
             try {
-                var id = document.getElementById('abortData').value;
+
+                // var id = document.getElementById('abortData').value;
+                console.log(data + ' abortion click id');
                 var confirm = 1;
                 const response = fetch('http://localhost:3000/purchaseconfirm', {
                     method: 'POST',
                     headers: {
                         "Content-Type": 'application/json'
                     },
-                    body: JSON.stringify({ id, confirm })
+                    body: JSON.stringify({ data, confirm })
                 });
                 var hide = document.getElementById('purchase-condition');
                 hide.onclick = function () {
@@ -68,16 +76,16 @@
                 console.log('abortion Err : ', err);
             }
         }
-        async function purchaseconfirm() {
+        async function purchaseconfirm(data) {
             try {
-                var id = document.getElementById('confirmData').value;
+                // var id = document.getElementById('confirmData').value;
                 var confirm = 0;
                 const response = fetch('http://localhost:3000/purchaseconfirm', {
                     method: 'POST',
                     headers: {
                         "Content-Type": 'application/json'
                     },
-                    body: JSON.stringify({ id, confirm })
+                    body: JSON.stringify({ data, confirm })
                 });
                 var hide = document.getElementById('purchase-condition');
                 hide.onclick = function () {

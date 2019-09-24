@@ -14,7 +14,6 @@
                 판매자 : <%= data.userData.userID %> <input type="hidden" name="user" value="<%= data.userData.userID %>">
             </p>
             <select name='item_category'>
-                <%= console.log(data.cateData[0].content) %>
                 <% for(var i=0; i<data.cateData.length; i++) { %>
                 <option value='<%= data.cateData[i].content %>'><%= data.cateData[i].content %></option>
                 <% } %>

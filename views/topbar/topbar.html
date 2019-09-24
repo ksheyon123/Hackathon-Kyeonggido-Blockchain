@@ -150,12 +150,6 @@
                                 <a href="/shop">Shop</a>
                             </li>
                             <% if(!data.userData) { %>
-                            <li>
-                                <a href="/login">Login</a>
-                            </li>
-                            <li>
-                                <a href="/register">Register</a>
-                            </li>
                             <% } else { %>
                             <% if (data.userData.userDN == 1) { %>
                             <li>
@@ -167,9 +161,6 @@
                             <li>
                                 <a href="/myinfo">MYINFO</a>
                             </li>
-                            <li>
-                                <a href="/logout">LOGOUT</a>
-                            </li>
                             <% } else if (data.userData.userDN == 2) { %>
                             <li>
                                 <a href="/sellerconfirm">Sellerconfirm</a>
@@ -177,18 +168,12 @@
                             <li>
                                 <a href="/myinfo">MYINFO</a>
                             </li>
-                            <li>
-                                <a href="/logout">LOGOUT</a>
-                            </li>
                             <% } else { %>
                             <li>
                                 <a href="/buytoken">Token</a>
                             </li>
                             <li>
                                 <a href="/myinfo">MYINFO</a>
-                            </li>
-                            <li>
-                                <a href="/logout">LOGOUT</a>
                             </li>
                             <% } %>
                             <%} %>
@@ -250,7 +235,7 @@
         <!-- Header Mobile -->
         <div class="wrap_header_mobile">
             <!-- Logo moblie -->
-            <a href="index.html" class="logo-mobile">
+            <a href="/" class="logo-mobile">
                 <img src="../ohj/images/icons/logo.png" alt="IMG-LOGO">
             </a>
 
@@ -357,9 +342,41 @@
             <nav class="side-menu">
                 <ul class="main-menu">
                     <li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
-                        <span class="topbar-child1">
-                            Free shipping for standard order over $100
-                        </span>
+
+                    <li class="item-menu-mobile">
+                        <% if (!data.userData) { %>
+                    </li>
+                    <li class="item-menu-mobile">
+                        <a href='/login'>Login</a>
+                    </li>
+                    <li class="item-menu-mobile">
+                        <a href='/register'>Register</a>
+                    </li class="item-menu-mobile">
+                    <% } else { %>
+                    <li class="item-menu-mobile">
+                        <% if(data.userData.userDN == 1) { %>
+                    </li>
+                    <li class="item-menu-mobile">
+                        <a href='/logout'>Logout</a>
+                    </li>
+                    <li class="item-menu-mobile">
+                        <% } else if (data.userData.userDN == 2) { %>
+                    </li>
+                    <li class="item-menu-mobile">
+                        <a href='/logout'>Logout</a>
+                    </li>
+                    <% } else { %>
+                    <li class="item-menu-mobile">
+                        <a href='/logout'>Logout</a>
+                    </li>
+                    <% } %>
+                    <% } %>
+
+
+
+                    <span class="topbar-child1">
+                        Free shipping for standard order over $100
+                    </span>
                     </li>
 
                     <li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
