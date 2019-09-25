@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 app.set("/views", static(path.join(__dirname, 'views')));
+app.use('/media', express.static(path.join(__dirname, '/images')));
 // app.set("/views/items", static(path.join(__dirname, 'views', 'items')));
 
 //Router 설정

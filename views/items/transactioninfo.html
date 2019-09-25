@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Transaction Info</title>
+</head>
+
+<body>
+
+    <% include ../topbar/topbar.html %>
+    <div class="container1-page">
+        <form method='post' action='/item_detail'>
+            <p>
+                <%= data.userData.userID %> 님께서 구매하신 상품 내역입니다
+            </p>
+            <hr>
+            <% for (var i = 0; i < data.solditemData.length; i++) { %>
+            <p>
+                상품 명 : <%= data.solditemData[i].item_name %>
+            </p>
+            <p>
+                상품 가격 : <%= data.solditemData[i].item_price %>
+            </p>
+            <p>
+                블록 번호 : <%= data.solditemData[i].blocknum %>
+            </p>
+            <p>
+                트랜 잭션 : <%= data.solditemData[i].tx %>
+            </p>
+            <p>
+                판 매 자 : <%= data.solditemData[i].seller %>
+            </p>
+            <% if(data.solditemData[i].status == 2) { %>
+            <button type='submit' value='<%= JSON.stringify(data.solditemData[i]) %>'>상품 후기 작성</button>
+            <% } %>
+
+        </form>
+        <% if(data.solditemData[i].status == 0) { %>
+        <div id='purchase-condition'>
+            <button id='confirmData' name='confirmData' value='<%= data.solditemData[i].id %>'
+                onclick='purchaseconfirm(this.value)'>구매
+                확정</button>
+
+            <%= console.log(i + ' transactionInfo_Web '+ data.solditemData[i].id) %>
+            <button id='abortData' name='abortData' value='<%= data.solditemData[i].id %>'
+                onclick='abortion(this.value)'>구매
+                취소</button>
+        </div>
+        <hr>
+        <% } %>
+        <% } %>
+    </div>
+    <script>
+        async function abortion(data) {
+            try {
+
+                // var id = document.getElementById('abortData').value;
+                console.log(data + ' abortion click id');
+                var confirm = 1;
+                const response = fetch('http://localhost:3000/purchaseconfirm', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({ data, confirm })
+                });
+                var hide = document.getElementById('purchase-condition');
+                hide.onclick = function () {
+                    window.alert('결제를 취소합니다');
+                    hide.style.display = "none";
+                }
+            } catch (err) {
+                console.log('abortion Err : ', err);
+            }
+        }
+        async function purchaseconfirm(data) {
+            try {
+                // var id = document.getElementById('confirmData').value;
+                var confirm = 0;
+                const response = fetch('http://localhost:3000/purchaseconfirm', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({ data, confirm })
+                });
+                var hide = document.getElementById('purchase-condition');
+                hide.onclick = function () {
+                    window.alert('결제를 최종확인합니다.')
+                    hide.style.display = "none";
+                }
+            } catch (err) {
+                console.log('purchaseConfirm Err : ', err);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

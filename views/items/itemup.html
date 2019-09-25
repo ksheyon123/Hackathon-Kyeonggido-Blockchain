@@ -7,34 +7,35 @@
 
 <body>
     <% include ../topbar/topbar.html %>
-    <h3>상품을 등록해주세요</h3>
-    <form method="post" action='/itemregister'>
-        <p>
-            판매자 : <%= data.userData.userID %> <input type="hidden" name="user" value="<%= data.userData.userID %>">
-        </p>
-        <select name='item_category'>
-            <%= console.log(data.cateData[0].content) %>
-            <% for(var i=0; i<data.cateData.length; i++) { %>
+    <div class="container1-page">
+        <h3>상품을 등록해주세요</h3>
+        <form method="post" action='/itemregister'>
+            <p>
+                판매자 : <%= data.userData.userID %> <input type="hidden" name="user" value="<%= data.userData.userID %>">
+            </p>
+            <select name='item_category'>
+                <% for(var i=0; i<data.cateData.length; i++) { %>
                 <option value='<%= data.cateData[i].content %>'><%= data.cateData[i].content %></option>
-            <% } %>
-            
-        </select>
-        <p>
-            상품 명 : <input type="text" name="item_name" id="name">
-        </p>
-        <p>
-            상품 가격 : <input type="text" name="item_price" id="price">
-        </p>
-        <p>
-            상품 이미지 : <input type="text" name="item_img" id="img">
-        </p>
-        <p>
-            상품 정보 : <input type="text" name="item_info" id="info">
-        </p>
-        <p>
-            <input type="submit" value="확인">
-        </p>
-    </form>
+                <% } %>
+
+            </select>
+            <p>
+                상품 명 : <input type="text" name="item_name" id="name">
+            </p>
+            <p>
+                상품 가격 : <input type="text" name="item_price" id="price">
+            </p>
+            <p>
+                상품 이미지 : <input type="text" name="item_img" id="img">
+            </p>
+            <p>
+                상품 정보 : <input type="text" name="item_info" id="info">
+            </p>
+            <p>
+                <input type="submit" value="확인">
+            </p>
+        </form>
+    </div>
 </body>
 
 </html>

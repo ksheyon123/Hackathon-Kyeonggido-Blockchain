@@ -44,7 +44,6 @@ dataRouter.get('/shop', async (req, res) => {
     } catch (err) {
         console.log('selectAllItem Err', err);
     }
-
 });
 
 dataRouter.post('/shop_sub', async (req, res) => {
@@ -59,10 +58,28 @@ dataRouter.post('/shop_sub', async (req, res) => {
 
 dataRouter.post('/item_detail', async (req, res) => {
     try {
-        result = JSON.parse(req.body.data);
+        var itemData = JSON.parse(req.body.data);
+
+        var itemCode = itemData.item_code;
+        //item_Code를 바탕으로 Item 정보 호출
+        var result = await dataModel.selectAllItemBasedOnItemCode(itemCode);
+        console.log('result', result[0][0]);
+        solditem = {
+            userID : req.session.user.userID,
+            itemCode :  itemCode
+        }
+        //solditem info의 status 가 0이면 댓글 미작성, 1 이면 작성완료 상태
+        var status = await dataModel.showSolditemStatus(solditem);
+        console.log('status :', status);
+
+        //상품에 대한 Comment 호출
+        var comment = await dataModel.selectAllComment(itemCode);
+        console.log('comment : ', comment)
         data = {
             userData: req.session.user,
-            itemData: result
+            itemData: result[0][0],
+            commentData : comment,
+            statusData: status
         }
         res.render('items/showitem_detail.html', { data: data });
     } catch (err) {
@@ -70,29 +87,75 @@ dataRouter.post('/item_detail', async (req, res) => {
     }
 });
 
-dataRouter.post('/contract', async (req, res) => {
+dataRouter.get('/myshop', async (req, res) => {
     try {
-        var data = JSON.parse(req.body.data);
+        var result = await dataModel.selectAllItemBasedOnUserId(req.session.user.userID);
+        //내 상품 전체 load -> user 로 , inc 정보 , item 정보 
+        //Item Edit 기능
         data = {
             userData: req.session.user,
-            itemData: data
+            itemData: result[0]
         }
-        //seller Wallet Balance 호출
-        var result = await userModel.CallBuyerWalletBalance(data);
-
-
-        //Comparing buyerBalance with item_price(0 : lack of Balance, )
-        if (result >= data.itemData.item_price) {
-            var result = await web3js.sendToken(data);
-
-            res.redirect('/');
-        } else {
-            console.log('잔액 부족');
-            res.redirect('/');
-        }
-        
+        res.render('items/myitemlist.html', { data: data });
     } catch (err) {
-        throw err;
+
+    }
+});
+
+dataRouter.post('/editmyitem', (req, res) => {
+
+        var result = JSON.parse(req.body.data);
+        data = {
+            userData: req.session.user,
+            itemData: result
+        }
+        res.render('items/myitemedit.html', {data:data})
+});
+
+dataRouter.post('/submitcomment', async (req, res) => {
+    try{
+        console.log('/submitComment', req.body);
+        data = {
+            itemCode: req.body.itemCode,
+            itemData: req.body.dataindex,
+            textarea: req.body.textarea,
+            userData: req.session.user.userID
+        }
+        var result = await dataModel.insertComment(data);
+        console.log('/submitComment result : ', result);
+        if(result == 0) {
+            var result = await dataModel.changeSoldItemStatustoOne(data);
+            //result = 0 문제 없이 solditem status 변경
+            res.status(200).send(true);
+        } else {
+            res.redirect('/item_detail');
+        }
+    } catch (err) {
+        console.log('submitcomment router Err', err);
+    }
+});
+
+dataRouter.post('/purchaseconfirm', async (req, res) => {
+    try {
+        //if you click purchaseconfirm button then req.body = {id(of item), confirm (0)}, if not req.body = {id, confirm (1)}
+        console.log('purchase item id', req.body);
+        var confirmData = await web3js.finalConfirmation(req.body);
+        console.log('confirmData : ', confirmData);
+
+        //Call get_balance using User Wallet Addr 
+        var ableToken = await web3js.sendAccountInfo(req.session.user.userWallet);
+        console.log('ableToken', ableToken);
+        req.session.user.userBalance = ableToken;
+        if(confirmData == 0) {
+            console.log('result=0');
+            await dataModel.changeSoldItemStatustoTwo(req.body)
+            res.redirect('/');
+        } else if (confirmData = 1) {
+            await dataModel.deleteItemFromSolditem(req.body);
+            res.redirect('/');
+        }
+    } catch (err) {
+        console.log('Purchase Router Err', err);
     }
 });
 

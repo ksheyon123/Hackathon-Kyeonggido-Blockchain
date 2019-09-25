@@ -14,14 +14,41 @@ userRouter.use(session({
 
 //Model Import
 var userModel = require('../model/userModel');
+var dataModel = require('../model/dataModel');
 var web3js = require('../model/web3');
 
-userRouter.get('/', function (req, res) {
-    data = {
-        userData: req.session.user
+// userRouter.get('/', async (req, res) => {
+//     try {
+//         var result = await dataModel.selectTop3Item();
+//         data = {
+//             userData: req.session.user,
+//             itemCode: result
+//         }
+//         res.render('index.html', { data: data });
+//     } catch (err) {
+//         console.log(err);
+//     }
+// });
+
+userRouter.get('/', async (req, res) => {
+    try {
+        var result = await dataModel.selectTop8Item();
+        var recentItem = await dataModel.selectRecentProductItem();
+        var lowPriceItem = await dataModel.selectlowPriceItem();
+        var bestItem = await dataModel.selectBestTopItem();
+        var recentSellerInc = await dataModel.selectRecentSellerInc();
+        data = {
+            userData: req.session.user,
+            recentItemCode: recentItem,
+            topItemCode: result,
+            lowPriceCode: lowPriceItem,
+            bestCode: bestItem,
+            recentSellerIncCode: recentSellerInc
+        }
+        res.render('index.html', { data: data });
+    } catch (err) {
+        console.log(err);
     }
-    console.log('페이지 접속', req.session.user);
-    res.render('index.html', { data: data });
 });
 
 //Login(로그인)
@@ -32,23 +59,24 @@ userRouter.get('/login', async (req, res) => {
 //Login Confirm
 userRouter.post('/loginConfirmation', async (req, res) => {
     try {
+        console.log(req.body);
         var result = await userModel.login(req);
+        console.log('loginresult', result[0][0]);
         if (result[0].length > 0) {
-            console.log(result[0][0]);
             var accountsInfo = await web3js.sendAccountInfo(result[0][0].wallet);
+            console.log('accountsInfo', accountsInfo);
             req.session.user = {
                 userIndex: result[0][0].index,
                 userID: result[0][0].user,
                 userPW: result[0][0].password,
                 userName: result[0][0].name,
                 userAddr: result[0][0].address,
-                userGen: result[0][0].gender,
                 userPN: result[0][0].phonenumber,
                 userDN: result[0][0].dnum,
                 userWallet: result[0][0].wallet,
+                userStatus: result[0][0].status,
                 userBalance: accountsInfo
             }
-            console.log(req.session.user);
             res.redirect('/');
         } else {
             res.redirect('/login');
@@ -66,7 +94,7 @@ userRouter.get('/register', (req, res) => {
 
 userRouter.post('/registerConfirmation', async (req, res) => {
     try {
-        var result =  await userModel.register(req);
+        var result = await userModel.register(req);
         //eth.accounts 생성 function
         res.redirect('/');
     } catch (err) {
@@ -97,7 +125,7 @@ userRouter.get('/myinfo', (req, res) => {
 });
 
 //myinfo_detail(내 정보 변경)
-userRouter.get('/myinfo/myinfo_detail', (req, res) => {
+userRouter.get('/myinfo_detail', (req, res) => {
     data = {
         userData: req.session.user
     }
@@ -105,7 +133,7 @@ userRouter.get('/myinfo/myinfo_detail', (req, res) => {
 });
 
 //myinfo_detail (변경 사항) -> 수정필요 신상 변경 내역이 바로 반영 x
-userRouter.post('/myinfo/myinfo_detail', async (req, res) => {
+userRouter.post('/myinfo_detail', async (req, res) => {
     try {
         var result = await userModel.myinfoChange(req);
         res.redirect('/');
@@ -117,7 +145,7 @@ userRouter.post('/myinfo/myinfo_detail', async (req, res) => {
 });
 
 //판매자 전환
-userRouter.get('/myinfo/tobeseller', async (req, res) => {
+userRouter.get('/tobeseller', async (req, res) => {
     data = {
         userData: req.session.user
     }
@@ -125,18 +153,14 @@ userRouter.get('/myinfo/tobeseller', async (req, res) => {
 });
 
 //판매자 전환 대기상태
-userRouter.post('/myinfo/tobeseller/sellerconfirmation', async (req, res) => {
+userRouter.post('/sellerconfirmation', async (req, res) => {
     try {
-        console.log(req.session.user);
         var result = await userModel.tobeseller(req);
         if (result == 1) {
-            console.log('이미 판매자로 등록된 회원입니다.');
             res.redirect('/myinfo');
         } else if (result == 2) {
-            console.log('관리자입니다.');
             res.redirect('/');
         } else {
-            console.log('판매자로 등록되셨습니다.');
             res.redirect('/')
         }
     } catch (err) {
@@ -150,11 +174,13 @@ userRouter.get('/sellerconfirm', async (req, res) => {
         var result = await userModel.adminConfirm();
         var incresult = await userModel.selectInc();
         data = {
-            userData: result,
-            incData: incresult
+            userData: req.session.user,
+            regiData: result[0],
+            incData: incresult[0]
         }
-        res.render('admin.html', {data:data});
-    } catch(err) {
+        console.log(data);
+        res.render('admin.html', { data: data });
+    } catch (err) {
         console.log(err);
         console.log('admin Err');
     }
@@ -169,18 +195,28 @@ userRouter.post('/sellerconfirm', async (req, res) => {
             incData: incresult
         }
         var result = await userModel.beingSellerComplete(req.body.id);
-        console.log(result);
-        await res.render('admin.html', {data:data})
-    } catch(err) {
+        res.redirect('/sellerconfirm');
+    } catch (err) {
         console.log(err);
         console.log('admin post Err');
     }
 });
 
 
-userRouter.get('/transactioninfo', (req, res) => {
-
+userRouter.get('/transactioninfo', async (req, res) => {
+    try {
+        var result = await userModel.CallBoughtItemData(req.session.user.userID);
+        data = {
+            userData: req.session.user,
+            solditemData: result[0]
+        }
+        res.render('items/transactioninfo.html', { data: data });
+    } catch (err) {
+        console.log('transaction Err');
+    }
 });
+
+
 
 
 module.exports = userRouter;
