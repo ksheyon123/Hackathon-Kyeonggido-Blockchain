@@ -8,7 +8,7 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
 
 <img src="https://user-images.githubusercontent.com/52062612/72350939-b5660800-3722-11ea-9687-ae1f348c713d.jpg" title="Mindhub" alt="Mindhub-Title"></a>
 
-<a href="https://www.youtube.com/watch?v=MfQ8MxBY1Hc">***시연영상링크***</a>
+<a href="https://www.youtube.com/watch?v=nsK8G63_SCI&t=17s">***시연영상링크***</a>
 
 # 마인드메이드 : 블록체인을 이용한 핸드메이드/수공예 장터 (2019/08/29 - 2019/09/26)
 
