@@ -6,11 +6,11 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
  - Shopping Mall Dapp <br><br>
 <hr>
 
-<img src="https://user-images.githubusercontent.com/52062612/72335305-1c26f980-3702-11ea-8cef-8f6398922b85.png" title="Trucker" alt="Trucker-Title"></a>
+<img src="https://user-images.githubusercontent.com/52062612/72350939-b5660800-3722-11ea-9687-ae1f348c713d.jpg" title="Mindhub" alt="Mindhub-Title"></a>
 
 <a href="https://www.youtube.com/watch?v=MfQ8MxBY1Hc">***시연영상링크***</a>
 
-# 트러커 : 하이브리드 블록체인을 활용한 화물 운송플랫폼 (2019/11/07 - 2019/11/30)
+# 마인드메이드 : 블록체인을 이용한 핸드메이드/수공예 장터 (2019/08/29 - 2019/09/26)
 
 > '트러커'는 화물운송을 의뢰하는 화주(기업 혹은 개인)과 화물을 운송하는 차주(운송업자)가 P2P(Peer to Peer)로 거래하는 탈중앙화 화물 운송 플랫폼 서비스입니다.
 
