@@ -24,11 +24,30 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
 
 ## Service
 
-### '트러커'는 아래의 6가지 서비스를 목표로 개발을 수행합니다.
+### '마인드메이드'는 아래의 4가지 서비스를 목표로 개발을 수행합니다.
 
-<img src="https://user-images.githubusercontent.com/52062612/72349115-3cb17c80-371f-11ea-8f25-03cc610e7c51.png" title="Trucker_Service" alt="Trucker_Service">
+<img src="https://user-images.githubusercontent.com/52062612/72432978-b018c400-37db-11ea-8493-cfa975e21222.jpg" title="Trucker_Service" alt="Trucker_Service">
+
+### Token Economy
+- 구매
+ - 물품을 구매하는데 토큰을 이용해 구매한다. 구매 수수료는 없으며 환전시 환전 수수료가 발생한다.
+
+- 광고
+ - 판매자는 물품의 판촉을 위해 일정 토큰을 지불하여 광고 배너에 판매 제품을 노출시킬 수 있다.
+
+- 수공예 교육 신청
+ - 마인드메이드는 핸드메이드 마켓 활성화를 위해 수공예 교육 프로그램을 제공하며, 수강생들은 일정 토큰을 지불하고 희망 제작자에게 교육을 받게 된다.
+ 
+- 기부
+ - 토큰 기부를 통하여 핸드메이드 제품 제작자와 자선단체 및 지역 공동체에 기여한다.
 
 ---
+## Why Blockchain?
+- 제품 정보와 원작자를 블록으로 올림으로써 원작자의 Originality를 보장
+- 여러 제품에 대한 평균 시세 확인 (현명한 소비)
+- 제품 정보에 대한 투명화
+- 신뢰 기반 거래 및 투명성을 제공
+- SmartContract를 활용한 P2P거래로 중개 수수료 최소화
 
 ## Team
 
@@ -36,7 +55,7 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
 
 - 박경재 (팀장)
   - Web Front-End (Bootstrap)
-  - Solidity
+  - Solidity (ERC20)
   
 - 강서현
   - Front-End (HTML5, Javascript)
@@ -48,10 +67,11 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
 
 - 김석영
   - Planning
+  - Debugging
   
 - 함재준
   - Planning
-
+  - Debugging
 ---
 
 ## Tools
