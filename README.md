@@ -1,11 +1,3 @@
-# Kyeonggido Blockchain Hackathon
-경기도 블록체인 해커톤 장려상 수상 <br>
-MindMade ( 2019/08/25 ~ 2019/09/26 )
- - MindToken Ethereum Project
- - Escrow Payment
- - Shopping Mall Dapp <br><br>
-<hr>
-
 <img src="https://user-images.githubusercontent.com/52062612/72350939-b5660800-3722-11ea-9687-ae1f348c713d.jpg" title="Mindhub" alt="Mindhub-Title"></a>
 
 <a href="https://www.youtube.com/watch?v=nsK8G63_SCI&t=17s">***시연영상링크***</a>
