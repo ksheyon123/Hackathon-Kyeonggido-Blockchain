@@ -86,7 +86,7 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
 ---
 ## UI
 <img src="https://user-images.githubusercontent.com/52062612/72433536-e0149700-37dc-11ea-816a-be759d516af0.jpg" title="Mindmade_Index" alt="Mindmade_Index">
-> 초기 화면은 다음과 같다. SideBar는 Admin, Seller, Buyer로 구분된다.
+*초기 화면* 
 
 - Index
   - Home
@@ -116,5 +116,29 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
   - Token
   - Myinfo
   - Logout
+
+<img src="https://user-images.githubusercontent.com/52062612/72433689-426d9780-37dd-11ea-9b71-d4e6c203e4dd.jpg" title="Mindmade_Index" alt="Mindmade_Index">
+
+*토큰을 구매하는 과정* 
+
+- Admin 계정으로 구매하였으며 이미지와 같이 금액이 추가되는 것을 확인할 수 있다. Register User시 Wallet이 생성되며 Token은 Wallet으로 입금된다.
+
+<img src="https://user-images.githubusercontent.com/52062612/72433747-59ac8500-37dd-11ea-88fd-6fd11b411ca5.jpg" title="Mindmade_Index" alt="Mindmade_Index">
+
+*Seller의 상품 등록 및 Shop에서 등록된 상품을 확인하는 과정*
+
+- Solidity의 상품 등록 함수로 ProductId가 생성되며 ProductId에 상품에 대한 정보를 담는다.
+
+<img src="https://user-images.githubusercontent.com/52062612/72433777-7052dc00-37dd-11ea-87a2-f8cb0d1ccba9.jpg" title="Mindmade_Index" alt="Mindmade_Index">
+
+*Buyer가 상품 상세 정보를 확인하는 과정*
+
+- 제품의 상세 정보 및 구매를 신청할 수 있으며, 상품 구매를 완료하면 상품평(댓글)을 작성할 수 있다.
+
+<img src="https://user-images.githubusercontent.com/52062612/72433850-9a0c0300-37dd-11ea-8d0d-93af913b58d1.jpg" title="Mindmade_Index" alt="Mindmade_Index">
+
+*Buyer가 구매를 확정하는 과정*
+
+
 
 ---
