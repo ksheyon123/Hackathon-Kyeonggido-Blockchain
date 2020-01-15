@@ -85,6 +85,35 @@ MindMade ( 2019/08/25 ~ 2019/09/26 )
 
 ---
 ## UI
-<img src="https://user-images.githubusercontent.com/52062612/72338401-bccbe800-3707-11ea-850d-45ec762dc43c.jpg" title="Trucker_Process" alt="Trucker-Process">
+<img src="https://user-images.githubusercontent.com/52062612/72433536-e0149700-37dc-11ea-816a-be759d516af0.jpg" title="Mindmade_Index" alt="Mindmade_Index">
+> 초기 화면은 다음과 같다. SideBar는 Admin, Seller, Buyer로 구분된다.
+- Index
+  - Home
+  - Shop
+  - Login
+  - Register
+
+- Admin
+  - Home
+  - Shop
+  - Token
+  - SellerConfirm
+  - Myinfo
+  - Logout
+  
+- Seller
+  - Home
+  - Shop
+  - Token
+  - ItemUp
+  - Myinfo
+  - Logout
+  
+- Buyer
+  - Home
+  - Shop
+  - Token
+  - Myinfo
+  - Logout
 
 ---
